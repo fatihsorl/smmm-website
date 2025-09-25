@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
@@ -16,26 +16,29 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const [blockScroll, setBlockScroll] = useState(true);
   const [isHoveringHero, setIsHoveringHero] = useState(false);
+
+  // Mouse throttling için
+  const lastMouseUpdate = useRef(0);
   // Mouse-following background for hero
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const b1x = useSpring(
-    useTransform(mouseX, (v) => v * 0.08),
-    { stiffness: 80, damping: 20 }
+    useTransform(mouseX, (v) => v * 0.04),
+    { stiffness: 60, damping: 25 }
   );
   const b1y = useSpring(
-    useTransform(mouseY, (v) => v * 0.08),
-    { stiffness: 80, damping: 20 }
+    useTransform(mouseY, (v) => v * 0.04),
+    { stiffness: 60, damping: 25 }
   );
   const b2x = useSpring(
-    useTransform(mouseX, (v) => v * -0.06),
-    { stiffness: 80, damping: 20 }
+    useTransform(mouseX, (v) => v * -0.03),
+    { stiffness: 60, damping: 25 }
   );
   const b2y = useSpring(
-    useTransform(mouseY, (v) => v * -0.06),
-    { stiffness: 80, damping: 20 }
+    useTransform(mouseY, (v) => v * -0.03),
+    { stiffness: 60, damping: 25 }
   );
 
   // Splash kapanışı artık progress bar tamamlandığında tetiklenecek
@@ -65,29 +68,15 @@ export default function Home() {
             }}
           >
             {/* Decorative animated blobs */}
-            <motion.div
+            <div
               aria-hidden
-              className="absolute -top-24 -left-24 w-[360px] h-[360px] rounded-full blur-3xl"
+              className="absolute -top-24 -left-24 w-[360px] h-[360px] rounded-full blur-3xl opacity-70"
               style={{ background: "rgba(33,87,159,0.35)" }}
-              initial={{ opacity: 0.6, scale: 0.9 }}
-              animate={{ opacity: 0.9, scale: 1.05 }}
-              transition={{
-                repeat: Infinity,
-                repeatType: "mirror",
-                duration: 4,
-              }}
             />
-            <motion.div
+            <div
               aria-hidden
-              className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full blur-3xl"
+              className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full blur-3xl opacity-60"
               style={{ background: "rgba(33,87,159,0.28)" }}
-              initial={{ opacity: 0.5, scale: 1.05 }}
-              animate={{ opacity: 0.85, scale: 0.95 }}
-              transition={{
-                repeat: Infinity,
-                repeatType: "mirror",
-                duration: 4.8,
-              }}
             />
             <div className="flex flex-col items-center">
               <motion.div
@@ -103,6 +92,7 @@ export default function Home() {
                   width={200}
                   height={200}
                   priority
+                  quality={85}
                   className="w-full h-full object-cover"
                 />
               </motion.div>
@@ -113,8 +103,8 @@ export default function Home() {
                   <motion.div
                     className="h-full rounded-full bg-white"
                     initial={{ width: "0%" }}
-                    animate={{ width: ["0%", "55%", "100%"] }}
-                    transition={{ duration: 1.8, ease: "easeInOut" }}
+                    animate={{ width: ["0%", "100%"] }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
                     onAnimationComplete={() => setShowSplash(false)}
                   />
                 </div>
@@ -130,6 +120,10 @@ export default function Home() {
         className="relative overflow-hidden bg-gradient-to-br from-dark to-primary min-h-[100dvh] flex items-center"
         onMouseEnter={() => setIsHoveringHero(true)}
         onMouseMove={(e) => {
+          const now = Date.now();
+          if (now - lastMouseUpdate.current < 16) return; // 60fps throttle
+          lastMouseUpdate.current = now;
+
           const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
           const relX = e.clientX - rect.left;
           const relY = e.clientY - rect.top;
@@ -412,10 +406,10 @@ export default function Home() {
 
               <div className="flex flex-col gap-4">
                 <motion.div
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: -8 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.4 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -444,10 +438,10 @@ export default function Home() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: -8 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.4, delay: 0.05 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.25, delay: 0.05, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -478,10 +472,10 @@ export default function Home() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: -8 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.25, delay: 0.1, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -512,10 +506,10 @@ export default function Home() {
             </div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="relative"
             >
               <div className="aspect-[4/3] rounded-lg overflow-hidden">
