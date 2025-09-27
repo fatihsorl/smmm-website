@@ -17,31 +17,47 @@ export default function Home() {
   const [blockScroll, setBlockScroll] = useState(true);
   const [isHoveringHero, setIsHoveringHero] = useState(false);
 
-  // Mouse throttling için
+  // Mouse throttling için - sadece desktop'ta çalışsın
   const lastMouseUpdate = useRef(0);
-  // Mouse-following background for hero
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Mouse-following background for hero - sadece desktop'ta
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
+
+  // Spring animasyonlarını daha performanslı yap
   const b1x = useSpring(
-    useTransform(mouseX, (v) => v * 0.04),
-    { stiffness: 60, damping: 25 }
+    useTransform(mouseX, (v) => v * 0.02),
+    { stiffness: 40, damping: 30 }
   );
   const b1y = useSpring(
-    useTransform(mouseY, (v) => v * 0.04),
-    { stiffness: 60, damping: 25 }
+    useTransform(mouseY, (v) => v * 0.02),
+    { stiffness: 40, damping: 30 }
   );
   const b2x = useSpring(
-    useTransform(mouseX, (v) => v * -0.03),
-    { stiffness: 60, damping: 25 }
+    useTransform(mouseX, (v) => v * -0.015),
+    { stiffness: 40, damping: 30 }
   );
   const b2y = useSpring(
-    useTransform(mouseY, (v) => v * -0.03),
-    { stiffness: 60, damping: 25 }
+    useTransform(mouseY, (v) => v * -0.015),
+    { stiffness: 40, damping: 30 }
   );
 
   // Splash kapanışı artık progress bar tamamlandığında tetiklenecek
+
+  // Desktop kontrolü ekle
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    checkIsDesktop();
+    window.addEventListener("resize", checkIsDesktop);
+
+    return () => window.removeEventListener("resize", checkIsDesktop);
+  }, []);
 
   useEffect(() => {
     if (blockScroll) {
@@ -118,63 +134,87 @@ export default function Home() {
       <section
         id="hero"
         className="relative overflow-hidden bg-gradient-to-br from-dark to-primary min-h-[100dvh] flex items-center"
-        onMouseEnter={() => setIsHoveringHero(true)}
-        onMouseMove={(e) => {
-          const now = Date.now();
-          if (now - lastMouseUpdate.current < 16) return; // 60fps throttle
-          lastMouseUpdate.current = now;
+        {...(isDesktop && {
+          onMouseEnter: () => setIsHoveringHero(true),
+          onMouseMove: (e: React.MouseEvent) => {
+            const now = Date.now();
+            if (now - lastMouseUpdate.current < 32) return; // 30fps throttle for better performance
+            lastMouseUpdate.current = now;
 
-          const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-          const relX = e.clientX - rect.left;
-          const relY = e.clientY - rect.top;
-          const cx = relX - rect.width / 2;
-          const cy = relY - rect.height / 2;
-          mouseX.set(cx);
-          mouseY.set(cy);
-          cursorX.set(relX);
-          cursorY.set(relY);
-        }}
-        onMouseLeave={() => {
-          mouseX.set(0);
-          mouseY.set(0);
-          setIsHoveringHero(false);
-        }}
+            const rect = (
+              e.currentTarget as HTMLElement
+            ).getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+            const cx = relX - rect.width / 2;
+            const cy = relY - rect.height / 2;
+            mouseX.set(cx);
+            mouseY.set(cy);
+            cursorX.set(relX);
+            cursorY.set(relY);
+          },
+          onMouseLeave: () => {
+            mouseX.set(0);
+            mouseY.set(0);
+            setIsHoveringHero(false);
+          },
+        })}
       >
         <div className="absolute inset-0 opacity-20"></div>
-        {/* Mouse-following spotlight cursor */}
-        <motion.div
-          aria-hidden
-          className="hidden md:block pointer-events-none absolute z-40 rounded-full ring-1 ring-white/20 shadow-[0_0_90px_rgba(33,87,159,0.45)]"
-          style={{
-            width: 64,
-            height: 64,
-            left: cursorX,
-            top: cursorY,
-            marginLeft: -32,
-            marginTop: -32,
-            opacity: isHoveringHero ? 1 : 0,
-            background:
-              "radial-gradient(closest-side, rgba(255,255,255,0.16), rgba(33,87,159,0.22), transparent 70%)",
-            backdropFilter: "blur(2px)",
-          }}
-        />
-        {/* Interactive parallax blobs */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full blur-3xl"
-          style={{ background: "rgba(33,87,159,0.25)", x: b1x, y: b1y }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-40 -right-40 w-[520px] h-[520px] rounded-full blur-[72px]"
-          style={{ background: "rgba(33,87,159,0.22)", x: b2x, y: b2y }}
-        />
+        {/* Mouse-following spotlight cursor - sadece desktop'ta */}
+        {isDesktop && (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute z-40 rounded-full ring-1 ring-white/20"
+            style={{
+              width: 64,
+              height: 64,
+              left: cursorX,
+              top: cursorY,
+              marginLeft: -32,
+              marginTop: -32,
+              opacity: isHoveringHero ? 0.8 : 0,
+              background:
+                "radial-gradient(closest-side, rgba(255,255,255,0.12), rgba(33,87,159,0.18), transparent 70%)",
+              filter: "blur(1px)", // backdrop-filter yerine daha performanslı blur
+            }}
+          />
+        )}
+        {/* Interactive parallax blobs - sadece desktop'ta ve daha az blur */}
+        {isDesktop ? (
+          <>
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-2xl opacity-60"
+              style={{ background: "rgba(33,87,159,0.2)", x: b1x, y: b1y }}
+            />
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-2xl opacity-50"
+              style={{ background: "rgba(33,87,159,0.18)", x: b2x, y: b2y }}
+            />
+          </>
+        ) : (
+          // Mobile için statik arka plan
+          <>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-2xl opacity-40"
+              style={{ background: "rgba(33,87,159,0.15)" }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-2xl opacity-30"
+              style={{ background: "rgba(33,87,159,0.12)" }}
+            />
+          </>
+        )}
         <div className="container relative z-30">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="max-w-3xl mx-auto text-center select-none"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="max-w-3xl mx-auto text-center select-none transform-gpu"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Profesyonel Mali Müşavirlik Hizmetleri
@@ -214,10 +254,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Service Card 1 */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -248,10 +288,10 @@ export default function Home() {
 
             {/* Service Card 2 */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, delay: 0.05, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.2, delay: 0.02, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -280,10 +320,10 @@ export default function Home() {
 
             {/* Service Card 3 */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.2, delay: 0.04, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -313,10 +353,10 @@ export default function Home() {
 
             {/* Service Card 4 - Profesyonel Web Site Oluşturma */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.2, delay: 0.06, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -346,10 +386,10 @@ export default function Home() {
 
             {/* Service Card 5 - Hukuk Danışmanlığı */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, delay: 0.2, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.2, delay: 0.08, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -384,10 +424,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <motion.h2
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
                 className="text-3xl md:text-4xl font-bold mb-6"
               >
                 Neden Bizi Seçmelisiniz?
@@ -396,7 +436,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                transition={{ duration: 0.4, delay: 0.05 }}
                 className="text-gray-600 dark:text-gray-400 mb-8"
               >
                 Yılların deneyimi ve uzmanlığı ile işletmenizin finansal
@@ -406,10 +446,10 @@ export default function Home() {
 
               <div className="flex flex-col gap-4">
                 <motion.div
-                  initial={{ opacity: 0, x: -8 }}
+                  initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -438,10 +478,10 @@ export default function Home() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, x: -8 }}
+                  initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.25, delay: 0.05, ease: "easeOut" }}
+                  transition={{ duration: 0.2, delay: 0.02, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -472,10 +512,10 @@ export default function Home() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, x: -8 }}
+                  initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.25, delay: 0.1, ease: "easeOut" }}
+                  transition={{ duration: 0.2, delay: 0.04, ease: "easeOut" }}
                   className="flex items-start"
                 >
                   <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -509,7 +549,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               className="relative"
             >
               <div className="aspect-[4/3] rounded-lg overflow-hidden">

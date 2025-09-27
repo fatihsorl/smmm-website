@@ -28,6 +28,25 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Smooth scroll için performans optimizasyonu */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @layer utilities {
   .container {
     max-width: 1280px;
@@ -100,13 +119,31 @@ html {
   }
 
   .glass-effect {
-    background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
   }
 
   @media (prefers-color-scheme: dark) {
     .glass-effect {
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.85);
     }
+  }
+
+  /* Performans için will-change ekle */
+  .glass-effect {
+    will-change: transform;
+  }
+
+  /* GPU hızlandırması için transform3d kullan */
+  .transform-gpu {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Animasyonlar için performans optimizasyonu */
+  .motion-safe {
+    transform: translateZ(0);
+    will-change: transform, opacity;
   }
 }

@@ -14,11 +14,19 @@ const Header = () => {
   };
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 100);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -26,7 +34,7 @@ const Header = () => {
     <>
       {/* Bottom Header - kayarak aşağı gider */}
       <header
-        className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 glass-effect border-t border-gray-200 dark:border-gray-800 ${
+        className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 glass-effect border-t border-gray-200 dark:border-gray-800 transform-gpu ${
           isScrolled ? "translate-y-full" : "translate-y-0"
         }`}
       >
@@ -165,7 +173,7 @@ const Header = () => {
 
       {/* Top Header - üstten aşağı gelir */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 glass-effect border-b border-gray-200 dark:border-gray-800 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 glass-effect border-b border-gray-200 dark:border-gray-800 transform-gpu ${
           isScrolled ? "translate-y-0" : "-translate-y-full"
         }`}
       >
