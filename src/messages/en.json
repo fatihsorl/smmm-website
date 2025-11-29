@@ -1,0 +1,71 @@
+{
+  "navigation": {
+    "services": "Services",
+    "whyUs": "Why Us?",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "title": "Professional Financial Advisory Services",
+    "subtitle": "As Soral Consulting, we are with you while managing your business's financial processes. We add value to your business with our reliable, transparent and expert service approach.",
+    "contactButton": "Contact Us",
+    "servicesButton": "Our Services"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "We offer customized solutions for your business needs.",
+    "accounting": {
+      "title": "Accounting Services",
+      "description": "We ensure that you fulfill your legal obligations completely by keeping your company's financial records regularly and accurately."
+    },
+    "tax": {
+      "title": "Tax Consulting",
+      "description": "By following the changes in tax legislation, we help you manage your business's tax obligations in the most efficient way."
+    },
+    "financial": {
+      "title": "Financial Consulting",
+      "description": "By analyzing your business's financial situation, we guide you in making strategic decisions for the future."
+    },
+    "website": {
+      "title": "Professional Website Development",
+      "description": "We design and develop fast and SEO-friendly websites that suit your corporate identity."
+    },
+    "legal": {
+      "title": "Legal Consulting",
+      "description": "We provide solution-oriented consulting in contracts, commercial law and compliance processes."
+    }
+  },
+  "whyUs": {
+    "title": "Why Should You Choose Us?",
+    "subtitle": "With years of experience and expertise, we safely manage your business's financial processes. We make a difference with our customer satisfaction-oriented working approach.",
+    "expertTeam": {
+      "title": "Expert Team",
+      "description": "We are always with you with our expert and experienced team in their field."
+    },
+    "personalizedService": {
+      "title": "Personalized Service",
+      "description": "We offer special solutions by understanding the unique needs of each business."
+    },
+    "upToDate": {
+      "title": "Up-to-Date Information",
+      "description": "We keep your business up to date by constantly following regulatory changes."
+    },
+    "cta": {
+      "title": "Reliable Financial Consulting",
+      "description": "The financial health of your business is our priority. We are with you with our transparent and reliable service approach.",
+      "button": "Get In Touch"
+    }
+  },
+  "contact": {
+    "title": "Let's Manage Your Financial Processes Professionally",
+    "subtitle": "Contact us immediately for solutions tailored to your business needs.",
+    "freeConsultation": "Get Free Consultation"
+  },
+  "footer": {
+    "companyName": "Soral Consulting",
+    "description": "Professional Financial Advisory Services",
+    "menu": "Menu",
+    "contact": "Contact",
+    "copyright": "All rights reserved."
+  }
+}
+

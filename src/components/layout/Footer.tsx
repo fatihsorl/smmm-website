@@ -1,17 +1,20 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const t = useTranslations("footer");
+  const tNav = useTranslations("navigation");
 
   return (
-    <footer className="bg-dark text-white">
-      <div className="container py-12 border-t border-gray-800">
+    <footer className="bg-dark text-white transform-gpu">
+      <div className="container py-12 border-t border-gray-800 ios-scroll-fix">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">Soral Danışmanlık</h3>
-            <p className="text-gray-300 mb-4">
-              Profesyonel Mali Müşavirlik Hizmetleri
-            </p>
+            <h3 className="text-xl font-bold mb-4">{t("companyName")}</h3>
+            <p className="text-gray-300 mb-4">{t("description")}</p>
             <div className="flex gap-4">
               <a
                 href="https://www.instagram.com/soraldanismanlik/"
@@ -32,14 +35,14 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-xl font-bold mb-4">Menü</h3>
+            <h3 className="text-xl font-bold mb-4">{t("menu")}</h3>
             <ul className="flex flex-col gap-2">
               <li>
                 <Link
                   href="#hizmetler"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Hizmetlerimiz
+                  {tNav("services")}
                 </Link>
               </li>
               <li>
@@ -47,14 +50,14 @@ const Footer = () => {
                   href="#neden-biz"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Neden Biz?
+                  {tNav("whyUs")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-xl font-bold mb-4">İletişim</h3>
+            <h3 className="text-xl font-bold mb-4">{t("contact")}</h3>
             <ul className="flex flex-col gap-2 text-gray-300">
               <li className="flex items-start">
                 <svg
@@ -105,7 +108,9 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; {currentYear} Soral Danışmanlık Tüm hakları saklıdır.</p>
+          <p>
+            &copy; {currentYear} {t("companyName")} {t("copyright")}
+          </p>
         </div>
       </div>
     </footer>

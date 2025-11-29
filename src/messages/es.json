@@ -1,0 +1,71 @@
+{
+  "navigation": {
+    "services": "Servicios",
+    "whyUs": "¿Por Qué Nosotros?",
+    "contact": "Contáctanos"
+  },
+  "hero": {
+    "title": "Servicios Profesionales de Asesoría Financiera",
+    "subtitle": "Como Soral Consulting, estamos contigo mientras gestionamos los procesos financieros de tu empresa. Agregamos valor a tu negocio con nuestro enfoque de servicio confiable, transparente y experto.",
+    "contactButton": "Contáctanos",
+    "servicesButton": "Nuestros Servicios"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Ofrecemos soluciones personalizadas para las necesidades de tu empresa.",
+    "accounting": {
+      "title": "Servicios de Contabilidad",
+      "description": "Aseguramos que cumplas completamente con tus obligaciones legales manteniendo los registros financieros de tu empresa de manera regular y precisa."
+    },
+    "tax": {
+      "title": "Consultoría Fiscal",
+      "description": "Siguiendo los cambios en la legislación fiscal, te ayudamos a gestionar las obligaciones fiscales de tu empresa de la manera más eficiente."
+    },
+    "financial": {
+      "title": "Consultoría Financiera",
+      "description": "Analizando la situación financiera de tu empresa, te guiamos en la toma de decisiones estratégicas para el futuro."
+    },
+    "website": {
+      "title": "Desarrollo Profesional de Sitios Web",
+      "description": "Diseñamos y desarrollamos sitios web rápidos y SEO-friendly que se adaptan a tu identidad corporativa."
+    },
+    "legal": {
+      "title": "Consultoría Legal",
+      "description": "Proporcionamos consultoría orientada a soluciones en contratos, derecho comercial y procesos de cumplimiento."
+    }
+  },
+  "whyUs": {
+    "title": "¿Por Qué Deberías Elegirnos?",
+    "subtitle": "Con años de experiencia y expertise, gestionamos de manera segura los procesos financieros de tu empresa. Marcamos la diferencia con nuestro enfoque de trabajo orientado a la satisfacción del cliente.",
+    "expertTeam": {
+      "title": "Equipo Experto",
+      "description": "Siempre estamos contigo con nuestro equipo experto y experimentado en su campo."
+    },
+    "personalizedService": {
+      "title": "Servicio Personalizado",
+      "description": "Ofrecemos soluciones especiales entendiendo las necesidades únicas de cada empresa."
+    },
+    "upToDate": {
+      "title": "Información Actualizada",
+      "description": "Mantenemos tu empresa actualizada siguiendo constantemente los cambios regulatorios."
+    },
+    "cta": {
+      "title": "Consultoría Financiera Confiable",
+      "description": "La salud financiera de tu empresa es nuestra prioridad. Estamos contigo con nuestro enfoque de servicio transparente y confiable.",
+      "button": "Ponte en Contacto"
+    }
+  },
+  "contact": {
+    "title": "Gestionemos Profesionalmente Tus Procesos Financieros",
+    "subtitle": "Contáctanos inmediatamente para soluciones adaptadas a las necesidades de tu empresa.",
+    "freeConsultation": "Obtén Consulta Gratuita"
+  },
+  "footer": {
+    "companyName": "Soral Consulting",
+    "description": "Servicios Profesionales de Asesoría Financiera",
+    "menu": "Menú",
+    "contact": "Contacto",
+    "copyright": "Todos los derechos reservados."
+  }
+}
+

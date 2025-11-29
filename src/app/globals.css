@@ -22,16 +22,34 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Inter", sans-serif;
+  /* iOS Safari scroll optimizasyonu */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  /* Momentum scrolling için */
+  overflow-x: hidden;
 }
 
 html {
-  scroll-behavior: smooth;
+  /* iOS Safari için scroll optimizasyonu */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  /* Touch action optimizasyonu */
+  touch-action: pan-y;
+  /* Varsayılan olarak auto, media query ile smooth yapılacak */
+  scroll-behavior: auto;
 }
 
 /* Smooth scroll için performans optimizasyonu */
-@media (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) and (min-width: 769px) {
   html {
     scroll-behavior: smooth;
+  }
+}
+
+/* Mobile cihazlarda smooth scroll devre dışı */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto !important;
   }
 }
 
@@ -145,5 +163,74 @@ html {
   .motion-safe {
     transform: translateZ(0);
     will-change: transform, opacity;
+  }
+
+  /* iOS Safari scroll optimizasyonu */
+  .ios-scroll-fix {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    /* transform kaldırıldı - fixed positioning'i bozuyordu */
+  }
+
+  /* Fixed header için özel stil */
+  header[class*="fixed"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  /* Header'daki glass-effect için will-change override */
+  header[class*="fixed"] .glass-effect,
+  header[class*="fixed"].glass-effect {
+    will-change: auto !important;
+  }
+
+  /* Mobile touch optimizasyonu */
+  @media (max-width: 768px) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    input,
+    textarea,
+    [contenteditable] {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+
+    /* Scroll container optimizasyonu */
+    .scroll-container {
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scroll-behavior: auto; /* Mobile'da smooth scroll devre dışı */
+    }
+
+    /* iOS Safari viewport fix */
+    body {
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: calc(var(--vh, 1vh) * 100);
+    }
+
+    /* iOS Safari scroll bounce fix */
+    html,
+    body {
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Footer scroll fix */
+    footer {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
   }
 }

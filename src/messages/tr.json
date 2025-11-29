@@ -1,0 +1,71 @@
+{
+  "navigation": {
+    "services": "Hizmetlerimiz",
+    "whyUs": "Neden Biz?",
+    "contact": "Bize Ulaşın"
+  },
+  "hero": {
+    "title": "Profesyonel Mali Müşavirlik Hizmetleri",
+    "subtitle": "Soral Danışmanlık olarak işletmenizin finansal süreçlerini yönetirken yanınızdayız. Güvenilir, şeffaf ve uzman hizmet anlayışımızla işinize değer katıyoruz.",
+    "contactButton": "Bize Ulaşın",
+    "servicesButton": "Hizmetlerimiz"
+  },
+  "services": {
+    "title": "Hizmetlerimiz",
+    "subtitle": "İşletmenizin ihtiyaçlarına özel çözümler sunuyoruz.",
+    "accounting": {
+      "title": "Muhasebe Hizmetleri",
+      "description": "Şirketinizin finansal kayıtlarını düzenli ve doğru şekilde tutarak, yasal yükümlülüklerinizi eksiksiz yerine getirmenizi sağlıyoruz."
+    },
+    "tax": {
+      "title": "Vergi Danışmanlığı",
+      "description": "Vergi mevzuatındaki değişiklikleri takip ederek, işletmenizin vergi yükümlülüklerini en verimli şekilde yönetmenize yardımcı oluyoruz."
+    },
+    "financial": {
+      "title": "Finansal Danışmanlık",
+      "description": "İşletmenizin finansal durumunu analiz ederek, geleceğe yönelik stratejik kararlar almanızda size rehberlik ediyoruz."
+    },
+    "website": {
+      "title": "Profesyonel Web Site Oluşturma",
+      "description": "Kurumsal kimliğinize uygun, hızlı ve SEO dostu web siteleri tasarlıyor ve geliştiriyoruz."
+    },
+    "legal": {
+      "title": "Hukuk Danışmanlığı",
+      "description": "Sözleşme, ticaret hukuku ve uyum süreçlerinde çözüm odaklı danışmanlık sunuyoruz."
+    }
+  },
+  "whyUs": {
+    "title": "Neden Bizi Seçmelisiniz?",
+    "subtitle": "Yılların deneyimi ve uzmanlığı ile işletmenizin finansal süreçlerini güvenle yönetiyoruz. Müşteri memnuniyeti odaklı çalışma anlayışımızla fark yaratıyoruz.",
+    "expertTeam": {
+      "title": "Uzman Kadro",
+      "description": "Alanında uzman ve deneyimli ekibimizle her zaman yanınızdayız."
+    },
+    "personalizedService": {
+      "title": "Kişiselleştirilmiş Hizmet",
+      "description": "Her işletmenin kendine özgü ihtiyaçlarını anlayarak özel çözümler sunuyoruz."
+    },
+    "upToDate": {
+      "title": "Güncel Bilgi",
+      "description": "Mevzuat değişikliklerini sürekli takip ederek, işletmenizi güncel tutuyoruz."
+    },
+    "cta": {
+      "title": "Güvenilir Mali Danışmanlık",
+      "description": "İşletmenizin finansal sağlığı bizim önceliğimizdir. Şeffaf ve güvenilir hizmet anlayışımızla yanınızdayız.",
+      "button": "İletişime Geçin"
+    }
+  },
+  "contact": {
+    "title": "Finansal Süreçlerinizi Profesyonelce Yönetelim",
+    "subtitle": "İşletmenizin ihtiyaçlarına özel çözümler için hemen iletişime geçin.",
+    "freeConsultation": "Ücretsiz Danışmanlık Alın"
+  },
+  "footer": {
+    "companyName": "Soral Danışmanlık",
+    "description": "Profesyonel Mali Müşavirlik Hizmetleri",
+    "menu": "Menü",
+    "contact": "İletişim",
+    "copyright": "Tüm hakları saklıdır."
+  }
+}
+
