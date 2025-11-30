@@ -232,5 +232,25 @@ html {
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
     }
+
+    /* Mobil scroll performans optimizasyonu */
+    main {
+      will-change: scroll-position;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    /* Framer Motion animasyonları için GPU hızlandırması */
+    [data-framer-component] {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Scroll sırasında repaint'leri azalt */
+    section {
+      contain: layout style paint;
+    }
   }
 }

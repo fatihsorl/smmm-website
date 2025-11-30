@@ -90,29 +90,8 @@ export default function Home() {
     }
   }, [blockScroll]);
 
-  // iOS Safari scroll bounce engellemesi
-  useEffect(() => {
-    const preventDefault = (e: TouchEvent) => {
-      if (e.touches.length > 1) return;
-
-      const target = e.target as Element;
-      const scrollableParent = target.closest(".scroll-container, body, html");
-
-      if (!scrollableParent) {
-        e.preventDefault();
-      }
-    };
-
-    if (!isDesktop) {
-      document.addEventListener("touchmove", preventDefault, {
-        passive: false,
-      });
-
-      return () => {
-        document.removeEventListener("touchmove", preventDefault);
-      };
-    }
-  }, [isDesktop]);
+  // iOS Safari scroll bounce engellemesi - CSS ile yapılıyor, bu kod kaldırıldı
+  // overscroll-behavior: none CSS'de zaten tanımlı
 
   // Sayfa yüklendiğinde scroll pozisyonunu sıfırla
   useEffect(() => {
@@ -310,7 +289,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
@@ -342,7 +321,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.2, delay: 0.02, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
@@ -374,7 +353,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.2, delay: 0.04, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
@@ -406,7 +385,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.2, delay: 0.06, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
@@ -438,7 +417,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.2, delay: 0.08, ease: "easeOut" }}
               className="glass-effect p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow"
             >
@@ -477,7 +456,7 @@ export default function Home() {
               <motion.h2
                 initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
+                viewport={{ once: true, amount: 0.2, margin: "-50px" }}
                 transition={{ duration: 0.3 }}
                 className="text-3xl md:text-4xl font-bold mb-6"
               >
@@ -486,7 +465,7 @@ export default function Home() {
               <motion.p
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.4 }}
+                viewport={{ once: true, amount: 0.2, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: 0.05 }}
                 className="text-gray-600 dark:text-gray-400 mb-8"
               >
@@ -497,7 +476,7 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2, margin: "-50px" }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="flex items-start"
                 >
@@ -530,7 +509,7 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2, margin: "-50px" }}
                   transition={{ duration: 0.2, delay: 0.02, ease: "easeOut" }}
                   className="flex items-start"
                 >
@@ -563,7 +542,7 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, x: -4 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2, margin: "-50px" }}
                   transition={{ duration: 0.2, delay: 0.04, ease: "easeOut" }}
                   className="flex items-start"
                 >
@@ -598,7 +577,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2, margin: "-50px" }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="relative"
             >
