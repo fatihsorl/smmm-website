@@ -1,3 +1,4 @@
+import React from "react";
 import type { Locale } from "@/i18n/config";
 
 interface FlagIconProps {
@@ -6,7 +7,7 @@ interface FlagIconProps {
 }
 
 const FlagIcon = ({ locale, className = "" }: FlagIconProps) => {
-  const flags: Record<Locale, JSX.Element> = {
+  const flags: Record<Locale, React.ReactElement> = {
     tr: (
       <svg
         className={className}
