@@ -518,10 +518,11 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Uzman Kadro</h3>
+                    <h3 className="text-lg font-semibold mb-1">
+                      {tWhyUs("expertTeam.title")}
+                    </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Alanında uzman ve deneyimli ekibimizle her zaman
-                      yanınızdayız.
+                      {tWhyUs("expertTeam.description")}
                     </p>
                   </div>
                 </motion.div>
@@ -551,11 +552,10 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">
-                      Kişiselleştirilmiş Hizmet
+                      {tWhyUs("personalizedService.title")}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Her işletmenin kendine özgü ihtiyaçlarını anlayarak özel
-                      çözümler sunuyoruz.
+                      {tWhyUs("personalizedService.description")}
                     </p>
                   </div>
                 </motion.div>
@@ -584,10 +584,11 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Güncel Bilgi</h3>
+                    <h3 className="text-lg font-semibold mb-1">
+                      {tWhyUs("upToDate.title")}
+                    </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Mevzuat değişikliklerini sürekli takip ederek, işletmenizi
-                      güncel tutuyoruz.
+                      {tWhyUs("upToDate.description")}
                     </p>
                   </div>
                 </motion.div>
