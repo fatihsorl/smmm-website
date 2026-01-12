@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import {
   motion,
-  AnimatePresence,
   useMotionValue,
   useTransform,
   useSpring,
@@ -13,8 +12,6 @@ import {
 import { useTranslations } from "next-intl";
 
 export default function Home() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [blockScroll, setBlockScroll] = useState(true);
   const [isHoveringHero, setIsHoveringHero] = useState(false);
 
   // Translations
@@ -29,9 +26,6 @@ export default function Home() {
   const lastMouseUpdate = useRef(0);
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Splash ekranı için minimum bekleme süresi (2 saniye)
-  const splashStartTime = useRef<number | null>(null);
-  const animationCompleted = useRef(false);
 
   // Mouse-following background for hero - sadece desktop'ta
   const mouseX = useMotionValue(0);
@@ -57,10 +51,6 @@ export default function Home() {
     { stiffness: 40, damping: 30 }
   );
 
-  // Splash ekranı için minimum 2 saniye bekleme
-  useEffect(() => {
-    splashStartTime.current = Date.now();
-  }, []);
 
   // Desktop kontrolü ekle
   useEffect(() => {
@@ -91,13 +81,6 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    if (blockScroll) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }, [blockScroll]);
 
   // iOS Safari scroll bounce engellemesi - CSS ile yapılıyor, bu kod kaldırıldı
   // overscroll-behavior: none CSS'de zaten tanımlı
@@ -115,81 +98,6 @@ export default function Home() {
 
   return (
     <>
-      <AnimatePresence onExitComplete={() => setBlockScroll(false)}>
-        {showSplash && (
-          <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden"
-            style={{
-              background:
-                "radial-gradient(1000px 600px at 10% 10%, rgba(33,87,159,0.25), transparent 60%), radial-gradient(900px 500px at 90% 90%, rgba(33,87,159,0.2), transparent 60%), #000",
-            }}
-          >
-            {/* Decorative animated blobs */}
-            <div
-              aria-hidden
-              className="absolute -top-24 -left-24 w-[360px] h-[360px] rounded-full blur-3xl opacity-70"
-              style={{ background: "rgba(33,87,159,0.35)" }}
-            />
-            <div
-              aria-hidden
-              className="absolute -bottom-24 -right-24 w-[420px] h-[420px] rounded-full blur-3xl opacity-60"
-              style={{ background: "rgba(33,87,159,0.28)" }}
-            />
-            <div className="flex flex-col items-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0.5 }}
-                transition={{ duration: 0.8 }}
-                className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-[10%] overflow-hidden ring-2 ring-white/10 shadow-[0_0_50px_rgba(33,87,159,0.35)]"
-              >
-                <Image
-                  src="/logo.png"
-                  alt="Soral Danışmanlık SMMM Logo"
-                  width={200}
-                  height={200}
-                  priority
-                  quality={85}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-
-              {/* Loading bar under logo */}
-              <div className="mt-6 w-[200px] max-w-[70vw]">
-                <div className="h-1.5 w-full rounded-full bg-white/15 overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-white"
-                    initial={{ width: "0%" }}
-                    animate={{ width: ["0%", "100%"] }}
-                    transition={{ duration: 2, ease: "easeOut" }}
-                    onAnimationComplete={() => {
-                      animationCompleted.current = true;
-                      const elapsed = splashStartTime.current
-                        ? Date.now() - splashStartTime.current
-                        : 0;
-                      const minDuration = 2000; // 2 saniye
-
-                      if (elapsed >= minDuration) {
-                        setShowSplash(false);
-                      } else {
-                        const remaining = minDuration - elapsed;
-                        setTimeout(() => {
-                          setShowSplash(false);
-                        }, remaining);
-                      }
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Hero Section */}
       <section
         id="hero"
@@ -381,9 +289,9 @@ export default function Home() {
 
             {/* Right Column - Image or Visual Element */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
               className="relative hidden lg:block"
             >
               <div className="relative">
@@ -414,17 +322,18 @@ export default function Home() {
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="text-2xl md:text-3xl font-bold text-center mb-12"
           >
             {tStats("title")}
           </motion.h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="text-center"
             >
               <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
@@ -435,10 +344,10 @@ export default function Home() {
               </div>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
               className="text-center"
             >
               <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
@@ -450,10 +359,10 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
               className="text-center"
             >
               <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
@@ -474,9 +383,10 @@ export default function Home() {
       >
         <div className="container">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -490,10 +400,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Service Card 1 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
@@ -525,10 +435,10 @@ export default function Home() {
 
             {/* Service Card 2 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
               className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
@@ -560,10 +470,10 @@ export default function Home() {
 
             {/* Service Card 3 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
               className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
@@ -595,10 +505,10 @@ export default function Home() {
 
             {/* Service Card 4 - Profesyonel Web Site Oluşturma */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.15, ease: "easeOut" }}
               className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
@@ -630,10 +540,10 @@ export default function Home() {
 
             {/* Service Card 5 - Hukuk Danışmanlığı */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.2, ease: "easeOut" }}
               className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
@@ -672,10 +582,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
               <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
                 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
               >
                 {tWhyUs("title")}
@@ -692,10 +602,10 @@ export default function Home() {
 
               <div className="flex flex-col gap-6">
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   className="flex items-start group"
                 >
                   <div className="bg-gradient-to-br from-primary to-primary/70 p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform">
@@ -908,9 +818,10 @@ export default function Home() {
       <section className="section bg-gray-50 dark:bg-gray-800">
         <div className="container">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -923,10 +834,10 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
             >
               <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -954,10 +865,10 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
               className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
             >
               <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -985,10 +896,10 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
               className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
             >
               <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -1029,10 +940,10 @@ export default function Home() {
         </div>
         <div className="container relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-4">
               {tContact("title")}
