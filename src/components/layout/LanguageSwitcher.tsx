@@ -30,8 +30,8 @@ const LanguageSwitcher = () => {
         className="flex items-center justify-center gap-2 md:px-3 px-2 py-2 rounded-md bg-gray-800/80 dark:bg-gray-700/80 hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-white border border-gray-600/50 dark:border-gray-500/50 backdrop-blur-sm"
         aria-label="Dil seçimi"
       >
-        <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0">
-          <FlagIcon locale={locale} className="w-full h-full" />
+        <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-gray-600/30 dark:border-gray-500/30">
+          <FlagIcon locale={locale} className="w-full h-full object-cover" />
         </span>
         <span className="hidden md:inline text-sm font-medium">
           {localeNames[locale]}
@@ -72,8 +72,8 @@ const LanguageSwitcher = () => {
                     : "text-gray-700 dark:text-gray-200"
                 }`}
               >
-                <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0">
-                  <FlagIcon locale={loc} className="w-full h-full" />
+                <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-gray-300 dark:border-gray-600">
+                  <FlagIcon locale={loc} className="w-full h-full object-cover" />
                 </span>
                 <span className="hidden md:inline text-sm font-medium">
                   {localeNames[loc]}

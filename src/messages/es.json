@@ -2,13 +2,34 @@
   "navigation": {
     "services": "Servicios",
     "whyUs": "¿Por Qué Nosotros?",
-    "contact": "Contáctanos"
+    "contact": "Contáctanos",
+    "about": "Acerca de"
   },
   "hero": {
-    "title": "Servicios Profesionales de Asesoría Financiera",
-    "subtitle": "Como Soral Consulting, estamos contigo mientras gestionamos los procesos financieros de tu empresa. Agregamos valor a tu negocio con nuestro enfoque de servicio confiable, transparente y experto.",
-    "contactButton": "Contáctanos",
-    "servicesButton": "Nuestros Servicios"
+    "title": "Asesoría Financiera Confiable con Más de 28 Años de Experiencia",
+    "subtitle": "Como Soral Consulting, con más de 28 años de experiencia, gestionamos profesionalmente los procesos financieros de tu empresa. Agregamos valor a tu negocio con nuestro equipo confiable, transparente y experto, siendo tu socio en el crecimiento.",
+    "contactButton": "Consulta Gratuita",
+    "servicesButton": "Explora Nuestros Servicios",
+    "trustBadge": "CPA Certificado"
+  },
+  "stats": {
+    "title": "Nuestro Éxito en Números",
+    "years": {
+      "value": "28+",
+      "label": "Años de Experiencia"
+    },
+    "clients": {
+      "value": "21+",
+      "label": "Clientes Felices"
+    },
+    "projects": {
+      "value": "1000+",
+      "label": "Proyectos Completados"
+    },
+    "expertise": {
+      "value": "100%",
+      "label": "Satisfacción del Cliente"
+    }
   },
   "services": {
     "title": "Nuestros Servicios",
@@ -49,10 +70,30 @@
       "title": "Información Actualizada",
       "description": "Mantenemos tu empresa actualizada siguiendo constantemente los cambios regulatorios."
     },
+    "certified": {
+      "title": "Certificado y Licenciado",
+      "description": "Todos nuestros servicios se proporcionan con licencia CPA. Ofrecemos garantía de cumplimiento legal."
+    },
     "cta": {
       "title": "Consultoría Financiera Confiable",
       "description": "La salud financiera de tu empresa es nuestra prioridad. Estamos contigo con nuestro enfoque de servicio transparente y confiable.",
       "button": "Ponte en Contacto"
+    }
+  },
+  "certifications": {
+    "title": "Certificaciones y Competencias",
+    "subtitle": "Nuestros servicios profesionales cumplen con estándares internacionales y requisitos legales.",
+    "smmm": {
+      "title": "Licencia CPA",
+      "description": "Prestamos servicios con el título de Contador Público Certificado"
+    },
+    "iso": {
+      "title": "Estándares de Calidad",
+      "description": "Calidad de servicio conforme a estándares ISO"
+    },
+    "compliance": {
+      "title": "Cumplimiento Legal",
+      "description": "Seguimos todos los cambios regulatorios"
     }
   },
   "contact": {
@@ -68,4 +109,3 @@
     "copyright": "Todos los derechos reservados."
   }
 }
-

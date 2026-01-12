@@ -2,13 +2,31 @@
   "navigation": {
     "services": "Hizmetlerimiz",
     "whyUs": "Neden Biz?",
-    "contact": "Bize Ulaşın"
+    "contact": "Bize Ulaşın",
+    "about": "Hakkımızda"
   },
   "hero": {
-    "title": "Profesyonel Mali Müşavirlik Hizmetleri",
-    "subtitle": "Soral Danışmanlık olarak işletmenizin finansal süreçlerini yönetirken yanınızdayız. Güvenilir, şeffaf ve uzman hizmet anlayışımızla işinize değer katıyoruz.",
-    "contactButton": "Bize Ulaşın",
-    "servicesButton": "Hizmetlerimiz"
+    "title": "28+ Yıllık Deneyimle Güvenilir Mali Müşavirlik",
+    "subtitle": "Soral Danışmanlık olarak, 28 yılı aşkın deneyimimizle işletmenizin finansal süreçlerini profesyonelce yönetiyoruz. Güvenilir, şeffaf ve uzman ekibimizle işinize değer katıyor, büyümenize ortak oluyoruz.",
+    "contactButton": "Ücretsiz Danışmanlık",
+    "servicesButton": "Hizmetlerimizi Keşfedin",
+    "trustBadge": "SMMM Sertifikalı"
+  },
+  "stats": {
+    "title": "Rakamlarla Başarımız",
+    "years": {
+      "value": "28+",
+      "label": "Yıllık Deneyim"
+    },
+    "clients": {
+      "value": "21+",
+      "label": "Mutlu Müşteri"
+    },
+
+    "expertise": {
+      "value": "%100",
+      "label": "Müşteri Memnuniyeti"
+    }
   },
   "services": {
     "title": "Hizmetlerimiz",
@@ -49,10 +67,30 @@
       "title": "Güncel Bilgi",
       "description": "Mevzuat değişikliklerini sürekli takip ederek, işletmenizi güncel tutuyoruz."
     },
+    "certified": {
+      "title": "Sertifikalı ve Lisanslı",
+      "description": "Tüm hizmetlerimiz SMMM lisansı ile verilmektedir. Yasal uyumluluk garantisi sunuyoruz."
+    },
     "cta": {
       "title": "Güvenilir Mali Danışmanlık",
       "description": "İşletmenizin finansal sağlığı bizim önceliğimizdir. Şeffaf ve güvenilir hizmet anlayışımızla yanınızdayız.",
       "button": "İletişime Geçin"
+    }
+  },
+  "certifications": {
+    "title": "Sertifikalar ve Yetkinlikler",
+    "subtitle": "Profesyonel hizmetlerimiz uluslararası standartlarda ve yasal gerekliliklerle uyumludur.",
+    "smmm": {
+      "title": "SMMM Lisansı",
+      "description": "Serbest Muhasebeci Mali Müşavir unvanı ile hizmet veriyoruz"
+    },
+    "iso": {
+      "title": "Kalite Standartları",
+      "description": "ISO standartlarına uygun hizmet kalitesi"
+    },
+    "compliance": {
+      "title": "Yasal Uyumluluk",
+      "description": "Tüm mevzuat değişikliklerini takip ediyoruz"
     }
   },
   "contact": {
@@ -68,4 +106,3 @@
     "copyright": "Tüm hakları saklıdır."
   }
 }
-

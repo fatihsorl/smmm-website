@@ -8,6 +8,22 @@ const Footer = () => {
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.offsetHeight : (window.innerWidth >= 768 ? 140 : 120);
+      const headerOffset = headerHeight + 20;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <footer className="bg-dark text-white transform-gpu">
       <div className="container py-12 border-t border-gray-800 ios-scroll-fix">
@@ -40,6 +56,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="#hizmetler"
+                  onClick={(e) => handleSmoothScroll(e, "hizmetler")}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   {tNav("services")}
@@ -48,6 +65,7 @@ const Footer = () => {
               <li>
                 <Link
                   href="#neden-biz"
+                  onClick={(e) => handleSmoothScroll(e, "neden-biz")}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   {tNav("whyUs")}

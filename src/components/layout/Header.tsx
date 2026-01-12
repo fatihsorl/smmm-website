@@ -15,11 +15,65 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string,
+    closeMenu: boolean = false
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Scroll işlemini hemen başlat
+    const scrollToElement = () => {
+      const element = document.getElementById(targetId);
+      if (element) {
+        // Header yüksekliğini dinamik olarak al
+        const header = document.querySelector("header");
+        const headerHeight = header
+          ? header.offsetHeight
+          : window.innerWidth >= 768
+          ? 140
+          : 120;
+        const headerOffset = headerHeight + 20; // Ekstra 20px boşluk
+
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: Math.max(0, offsetPosition),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    if (closeMenu) {
+      // Scroll işlemini hemen başlat
+      scrollToElement();
+      // Menüyü scroll başladıktan sonra kapat (kısa gecikme ile)
+      setTimeout(() => {
+        setIsMenuOpen(false);
+      }, 200);
+    } else {
+      scrollToElement();
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 w-full z-[100] glass-effect border-b border-gray-200 dark:border-gray-800">
       <div className="container py-4">
         <div className="flex items-center justify-between">
-          <Link href="#hero" className="flex items-center gap-3 select-none">
+          <Link
+            href="#hero"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+            className="flex items-center gap-3 select-none"
+          >
             <span className="w-10 h-10 md:w-12 md:h-12 rounded-[10%] overflow-hidden ring-1 ring-white/10 shadow-[0_0_20px_rgba(33,87,159,0.25)]">
               <Image
                 src="/logo.png"
@@ -39,17 +93,23 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-6">
             <Link
               href="#hizmetler"
+              onClick={(e) => handleSmoothScroll(e, "hizmetler", false)}
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors"
             >
               {t("services")}
             </Link>
             <Link
               href="#neden-biz"
+              onClick={(e) => handleSmoothScroll(e, "neden-biz", false)}
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors"
             >
               {t("whyUs")}
             </Link>
-            <Link href="#iletisim" className="btn-primary">
+            <Link
+              href="#iletisim"
+              onClick={(e) => handleSmoothScroll(e, "iletisim", false)}
+              className="btn-primary"
+            >
               {t("contact")}
             </Link>
             <LanguageSwitcher />
@@ -115,8 +175,8 @@ const Header = () => {
                 >
                   <Link
                     href="#hizmetler"
+                    onClick={(e) => handleSmoothScroll(e, "hizmetler", true)}
                     className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors block"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     {t("services")}
                   </Link>
@@ -128,8 +188,8 @@ const Header = () => {
                 >
                   <Link
                     href="#neden-biz"
+                    onClick={(e) => handleSmoothScroll(e, "neden-biz", true)}
                     className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors block"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     {t("whyUs")}
                   </Link>
@@ -141,8 +201,8 @@ const Header = () => {
                 >
                   <Link
                     href="#iletisim"
+                    onClick={(e) => handleSmoothScroll(e, "iletisim", true)}
                     className="btn-primary inline-block text-center"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     {t("contact")}
                   </Link>

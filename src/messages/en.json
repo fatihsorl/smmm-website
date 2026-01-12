@@ -2,13 +2,34 @@
   "navigation": {
     "services": "Services",
     "whyUs": "Why Us?",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "about": "About Us"
   },
   "hero": {
-    "title": "Professional Financial Advisory Services",
-    "subtitle": "As Soral Consulting, we are with you while managing your business's financial processes. We add value to your business with our reliable, transparent and expert service approach.",
-    "contactButton": "Contact Us",
-    "servicesButton": "Our Services"
+    "title": "Trusted Financial Advisory with 28+ Years of Experience",
+    "subtitle": "As Soral Consulting, with over 28 years of experience, we professionally manage your business's financial processes. We add value to your business with our reliable, transparent and expert team, partnering in your growth.",
+    "contactButton": "Free Consultation",
+    "servicesButton": "Explore Our Services",
+    "trustBadge": "Certified CPA"
+  },
+  "stats": {
+    "title": "Our Success in Numbers",
+    "years": {
+      "value": "28+",
+      "label": "Years of Experience"
+    },
+    "clients": {
+      "value": "21+",
+      "label": "Happy Clients"
+    },
+    "projects": {
+      "value": "1000+",
+      "label": "Completed Projects"
+    },
+    "expertise": {
+      "value": "100%",
+      "label": "Client Satisfaction"
+    }
   },
   "services": {
     "title": "Our Services",
@@ -49,10 +70,30 @@
       "title": "Up-to-Date Information",
       "description": "We keep your business up to date by constantly following regulatory changes."
     },
+    "certified": {
+      "title": "Certified and Licensed",
+      "description": "All our services are provided with CPA license. We offer legal compliance guarantee."
+    },
     "cta": {
       "title": "Reliable Financial Consulting",
       "description": "The financial health of your business is our priority. We are with you with our transparent and reliable service approach.",
       "button": "Get In Touch"
+    }
+  },
+  "certifications": {
+    "title": "Certifications and Competencies",
+    "subtitle": "Our professional services comply with international standards and legal requirements.",
+    "smmm": {
+      "title": "CPA License",
+      "description": "We provide services with Certified Public Accountant title"
+    },
+    "iso": {
+      "title": "Quality Standards",
+      "description": "Service quality compliant with ISO standards"
+    },
+    "compliance": {
+      "title": "Legal Compliance",
+      "description": "We follow all regulatory changes"
     }
   },
   "contact": {
@@ -68,4 +109,3 @@
     "copyright": "All rights reserved."
   }
 }
-
