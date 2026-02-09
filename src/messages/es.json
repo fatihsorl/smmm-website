@@ -99,13 +99,15 @@
   "contact": {
     "title": "Gestionemos Profesionalmente Tus Procesos Financieros",
     "subtitle": "Contáctanos inmediatamente para soluciones adaptadas a las necesidades de tu empresa.",
-    "freeConsultation": "Obtén Consulta Gratuita"
+    "freeConsultation": "Obtén Consulta Gratuita",
+    "address": "BAĞLARBAŞI MAH. BAĞDAT CAD. ERCAN İŞ MERKEZI  No:350/45 MALTEPE/İSTANBUL"
   },
   "footer": {
     "companyName": "Soral Consulting",
     "description": "Servicios Profesionales de Asesoría Financiera",
     "menu": "Menú",
     "contact": "Contacto",
+    "address": "BAĞLARBAŞI MAH. BAĞDAT CAD. ERCAN İŞ MERKEZI  No:350/45 MALTEPE/İSTANBUL",
     "copyright": "Todos los derechos reservados."
   }
 }

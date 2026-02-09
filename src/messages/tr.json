@@ -96,13 +96,15 @@
   "contact": {
     "title": "Finansal Süreçlerinizi Profesyonelce Yönetelim",
     "subtitle": "İşletmenizin ihtiyaçlarına özel çözümler için hemen iletişime geçin.",
-    "freeConsultation": "Ücretsiz Danışmanlık Alın"
+    "freeConsultation": "Ücretsiz Danışmanlık Alın",
+    "address": "BAĞLARBAŞI MAH. BAĞDAT CAD. ERCAN İŞ MERKEZI  No:350/45 MALTEPE/İSTANBUL"
   },
   "footer": {
     "companyName": "Soral Danışmanlık",
     "description": "Profesyonel Mali Müşavirlik Hizmetleri",
     "menu": "Menü",
     "contact": "İletişim",
+    "address": "BAĞLARBAŞI MAH. BAĞDAT CAD. ERCAN İŞ MERKEZI  No:350/45 MALTEPE/İSTANBUL",
     "copyright": "Tüm hakları saklıdır."
   }
 }
