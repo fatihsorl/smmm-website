@@ -3,6 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { locales } from "@/i18n/config";
+import {
+  getAllServiceSlugs,
+  getServiceContent,
+} from "@/data/service-content";
 import { getServiceBySlug, services } from "@/data/services";
 import { detailPageHref, isFromHomeSection } from "@/lib/navigation";
 
@@ -18,9 +22,9 @@ type ServiceDetailPageProps = {
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
-    services.map((service) => ({
+    getAllServiceSlugs().map((slug) => ({
       locale,
-      slug: service.slug,
+      slug,
     })),
   );
 }
@@ -30,28 +34,29 @@ export async function generateMetadata({
 }: ServiceDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const service = getServiceBySlug(slug);
+  const content = getServiceContent(locale, slug);
 
-  if (!service) {
+  if (!service || !content) {
     return {
       title: "Hizmet Bulunamadı | Soral Danışmanlık",
     };
   }
 
   return {
-    title: `${service.seoTitle} | Soral Danışmanlık`,
-    description: service.seoDescription,
+    title: `${content.seoTitle} | Soral Danışmanlık`,
+    description: content.seoDescription,
     alternates: {
       canonical: `/${locale}/hizmetler/${service.slug}`,
     },
     openGraph: {
-      title: `${service.seoTitle} | Soral Danışmanlık`,
-      description: service.seoDescription,
+      title: `${content.seoTitle} | Soral Danışmanlık`,
+      description: content.seoDescription,
       images: [
         {
           url: service.image,
           width: 1200,
           height: 630,
-          alt: service.title,
+          alt: content.title,
         },
       ],
     },
@@ -66,11 +71,13 @@ export default async function ServiceDetailPage({
   const { from } = await searchParams;
   const fromHome = isFromHomeSection(from);
   const service = getServiceBySlug(slug);
+  const content = getServiceContent(locale, slug);
 
-  if (!service) {
+  if (!service || !content) {
     notFound();
   }
 
+  const tCatalog = await getTranslations({ locale, namespace: "serviceCatalog" });
   const tNav = await getTranslations({ locale, namespace: "navigation" });
 
   return (
@@ -107,7 +114,7 @@ export default async function ServiceDetailPage({
               </span>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight drop-shadow-[0_3px_18px_rgba(0,0,0,0.65)] md:text-3xl">
-              {service.title}
+              {content.title}
             </h1>
           </div>
         </div>
@@ -117,7 +124,7 @@ export default async function ServiceDetailPage({
         <div className="container">
           <details className="group mb-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold text-primary [&::-webkit-details-marker]:hidden">
-              <span>{service.title}</span>
+              <span>{content.title}</span>
               <span
                 aria-hidden
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xl leading-none text-primary transition-transform group-open:rotate-45"
@@ -126,39 +133,51 @@ export default async function ServiceDetailPage({
               </span>
             </summary>
             <nav
-              aria-label="Mobil hizmet detay sayfaları"
+              aria-label={tCatalog("mobileNavLabel")}
               className="mt-4 border-t border-slate-200 pt-4"
             >
               <ul className="space-y-3.5">
-                {services
-                  .filter((serviceItem) => serviceItem.slug !== service.slug)
-                  .map((serviceItem) => (
+                {services.map((serviceItem) => {
+                  const isActive = serviceItem.slug === service.slug;
+                  const itemContent = getServiceContent(
+                    locale,
+                    serviceItem.slug,
+                  );
+
+                  return (
                     <li key={serviceItem.slug}>
                       <Link
                         href={detailPageHref(
                           `/${locale}/hizmetler/${serviceItem.slug}`,
                           fromHome,
                         )}
-                        className="group/link flex items-center justify-between gap-3 text-sm leading-relaxed text-slate-950 transition-colors hover:text-primary"
+                        className={`group/link flex items-center justify-between gap-3 text-sm leading-relaxed transition-colors hover:text-primary ${
+                          isActive
+                            ? "font-bold text-primary"
+                            : "text-slate-950"
+                        }`}
                       >
-                        <span>{serviceItem.title}</span>
-                        <svg
-                          aria-hidden
-                          className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover/link:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.4}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                          />
-                        </svg>
+                        <span>{itemContent?.title ?? serviceItem.slug}</span>
+                        {!isActive && (
+                          <svg
+                            aria-hidden
+                            className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover/link:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.4}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                            />
+                          </svg>
+                        )}
                       </Link>
                     </li>
-                  ))}
+                  );
+                })}
               </ul>
             </nav>
           </details>
@@ -167,14 +186,14 @@ export default async function ServiceDetailPage({
             <div className="max-w-3xl space-y-10">
               <section>
                 <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
-                  {service.title} Nedir?
+                  {tCatalog("whatIsTitle", { title: content.title })}
                 </h2>
                 <p className="text-sm leading-7 text-slate-600 md:text-base">
-                  {service.intro}
+                  {content.intro}
                 </p>
               </section>
 
-              {service.sections.map((section) => (
+              {content.sections.map((section) => (
                 <section
                   key={section.title}
                   className="border-t border-slate-200 pt-8 first:border-t-0 first:pt-0"
@@ -198,12 +217,16 @@ export default async function ServiceDetailPage({
 
             <aside className="hidden lg:sticky lg:top-40 lg:block lg:self-start">
               <nav
-                aria-label="Hizmet detay sayfaları"
+                aria-label={tCatalog("sidebarNavLabel")}
                 className="border-l border-slate-200 pl-5"
               >
                 <ul className="space-y-4">
                   {services.map((serviceItem) => {
                     const isActive = serviceItem.slug === service.slug;
+                    const itemContent = getServiceContent(
+                      locale,
+                      serviceItem.slug,
+                    );
 
                     return (
                       <li key={serviceItem.slug}>
@@ -218,7 +241,9 @@ export default async function ServiceDetailPage({
                               : "text-slate-950"
                           }`}
                         >
-                          <span>{serviceItem.title}</span>
+                          <span>
+                            {itemContent?.title ?? serviceItem.slug}
+                          </span>
                           {!isActive && (
                             <svg
                               aria-hidden

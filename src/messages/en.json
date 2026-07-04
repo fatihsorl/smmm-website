@@ -1,5 +1,6 @@
 {
   "navigation": {
+    "home": "Home",
     "services": "Services",
     "expertise": "Areas of Expertise",
     "contact": "Contact",
@@ -10,7 +11,7 @@
   "hero": {
     "title": "Trusted Financial Advisory with 28+ Years of Experience",
     "subtitle": "As Soral Consulting, with over 28 years of experience, we professionally manage your business's financial processes. We add value to your business with our reliable, transparent and expert team, partnering in your growth.",
-    "contactButton": "Free Consultation",
+    "contactButton": "Contact Us",
     "servicesButton": "Explore Our Services",
     "trustBadge": "Certified CPA"
   },
@@ -60,6 +61,52 @@
     "legal": {
       "title": "Legal Consulting",
       "description": "We provide solution-oriented consulting in contracts, commercial law and compliance processes."
+    }
+  },
+  "serviceCatalog": {
+    "title": "Our Services",
+    "subtitle": "We manage your financial reporting, audit, accounting and advisory processes from a single center with corporate standards.",
+    "detailButton": "View details",
+    "whatIsTitle": "What is {title}?",
+    "sidebarNavLabel": "Services",
+    "mobileNavLabel": "Services",
+    "items": {
+      "sirket-acilisleri": {
+        "title": "Company Formation",
+        "description": "We guide you through opening your company, or we can handle the entire process on your behalf."
+      },
+      "gib-isbirlikleri": {
+        "title": "Tax Authority Procedures",
+        "description": "All procedures required at the Revenue Administration can be carried out on your behalf."
+      },
+      "raporlama-hizmetleri": {
+        "title": "Reporting Services",
+        "description": "We prepare financial reporting infrastructures that enable management to make accurate and timely decisions."
+      },
+      "denetim-hizmetleri": {
+        "title": "Audit Services",
+        "description": "We review your accounting, financial reporting and internal control processes in line with regulations and corporate standards."
+      },
+      "muhasebe-hizmetleri": {
+        "title": "Accounting Services",
+        "description": "We manage your company's accounting organization, legal books and filing processes end to end."
+      },
+      "bordrolama-hizmetleri": {
+        "title": "Payroll Services",
+        "description": "We prepare payroll processes in a regular, traceable and regulation-compliant manner."
+      },
+      "tesvik-takip-hizmetleri": {
+        "title": "Incentive Tracking",
+        "description": "We identify cash and in-kind incentives your business can benefit from and manage the application process."
+      },
+      "vergi-danismanligi": {
+        "title": "Tax Consulting",
+        "description": "We track changes in tax legislation and manage your obligations efficiently while reducing risks."
+      },
+      "finansal-danismanlik": {
+        "title": "Financial Consulting",
+        "description": "We evaluate your financial statements, cash flow and growth decisions based on data."
+      }
     }
   },
   "whyUs": {
@@ -112,13 +159,42 @@
   "contact": {
     "eyebrow": "Contact",
     "title": "Let's Manage Your Financial Processes Professionally",
+    "pageTitle": "Contact us for your financial processes",
     "subtitle": "Contact us immediately for solutions tailored to your business needs.",
     "ctaButton": "Go to Contact",
-    "freeConsultation": "Get Free Consultation",
+    "freeConsultation": "Contact Us",
+    "metadataTitle": "Contact | Soral Consulting",
+    "metadataDescription": "Contact Soral Consulting for financial advisory, accounting, tax consulting, and financial advisory services.",
+    "emailLabel": "Email",
+    "emailDescription": "Write to us for form requests and advisory consultations.",
+    "phoneLabel": "Phone",
+    "phoneDescription": "You can call us during business hours for quick information.",
+    "addressLabel": "Address",
+    "addressDescription": "We recommend scheduling an appointment before visiting our office.",
+    "formTitle": "Contact Form",
+    "formDescription": "When you fill out the form, your message will be sent to info@soraldanismanlik.com.",
     "mapTitle": "Our Office Location",
     "openInMaps": "Open in Google Maps",
     "loadMap": "Show Interactive Map",
-    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
+    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
+    "form": {
+      "nameLabel": "Full Name *",
+      "namePlaceholder": "Your first and last name",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "example@mail.com",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "5xx xxx xx xx",
+      "companyLabel": "Company",
+      "companyPlaceholder": "Your company name",
+      "messageLabel": "Your Message *",
+      "messagePlaceholder": "How can we help you?",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "successMessage": "Your message has been sent successfully. We will get back to you as soon as possible.",
+      "errorMessage": "An error occurred while sending your message.",
+      "validationError": "Full name, email, and message fields are required.",
+      "invalidEmail": "Please enter a valid email address."
+    }
   },
   "footer": {
     "companyName": "Soral Consulting",
@@ -126,7 +202,8 @@
     "menu": "Menu",
     "contact": "Contact",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
-    "copyright": "All rights reserved."
+    "copyright": "All rights reserved.",
+    "siteCredit": "This site was built by Fatih Soral."
   },
   "expertise": {
     "title": "Our Areas of Expertise",

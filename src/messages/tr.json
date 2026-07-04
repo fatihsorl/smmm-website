@@ -1,5 +1,6 @@
 {
   "navigation": {
+    "home": "Ana Sayfa",
     "services": "Hizmetlerimiz",
     "expertise": "Uzmanlık Alanlarımız",
     "contact": "İletişim",
@@ -62,6 +63,52 @@
       "description": "Sözleşme, ticaret hukuku ve uyum süreçlerinde çözüm odaklı danışmanlık sunuyoruz."
     }
   },
+  "serviceCatalog": {
+    "title": "Hizmetlerimiz",
+    "subtitle": "Finansal raporlama, denetim, muhasebe ve danışmanlık süreçlerinizi tek merkezden, kurumsal standartlarla yönetiyoruz.",
+    "detailButton": "Detayları incele",
+    "whatIsTitle": "{title} Nedir?",
+    "sidebarNavLabel": "Hizmetler",
+    "mobileNavLabel": "Hizmetler",
+    "items": {
+      "sirket-acilisleri": {
+        "title": "Şirket Açılışı",
+        "description": "Firmanızı açmanız için isterseniz yol gösteriyor, isterseniz de sizin için bu işlemleri yapıyoruz."
+      },
+      "gib-isbirlikleri": {
+        "title": "GIB İşbirlikleri",
+        "description": "Gelir İdaresi Başkanlığında yapılması gereken tüm işlemler tarafımızca gerçekleştirilebilmektedir."
+      },
+      "raporlama-hizmetleri": {
+        "title": "Raporlama Hizmetleri",
+        "description": "Yönetimin doğru ve hızlı karar almasını sağlayan finansal raporlama altyapıları hazırlıyoruz."
+      },
+      "denetim-hizmetleri": {
+        "title": "Denetim Hizmetleri",
+        "description": "Muhasebe, finansal raporlama ve iç kontrol süreçlerinizi mevzuata ve kurumsal standartlara uygun şekilde inceliyoruz."
+      },
+      "muhasebe-hizmetleri": {
+        "title": "Muhasebe Hizmetleri",
+        "description": "Şirketinizin muhasebe organizasyonunu, yasal defterlerini ve beyan süreçlerini uçtan uca yönetiyoruz."
+      },
+      "bordrolama-hizmetleri": {
+        "title": "Bordrolama Hizmetleri",
+        "description": "Personel bordro süreçlerini düzenli, izlenebilir ve mevzuata uygun şekilde hazırlıyoruz."
+      },
+      "tesvik-takip-hizmetleri": {
+        "title": "Teşvik Takip Hizmetleri",
+        "description": "İşletmenizin yararlanabileceği maddi ve ayni teşvikleri tespit edip başvuru sürecini takip ediyoruz."
+      },
+      "vergi-danismanligi": {
+        "title": "Vergi Danışmanlığı",
+        "description": "Vergi mevzuatındaki değişiklikleri takip ederek yükümlülüklerinizi verimli ve riskleri azaltan bir yapıda yönetiyoruz."
+      },
+      "finansal-danismanlik": {
+        "title": "Finansal Danışmanlık",
+        "description": "Finansal tablolarınızı, nakit akışınızı ve büyüme kararlarınızı veriye dayalı şekilde değerlendiriyoruz."
+      }
+    }
+  },
   "whyUs": {
     "title": "Neden Bizi Seçmelisiniz?",
     "subtitle": "Yılların deneyimi ve uzmanlığı ile işletmenizin finansal süreçlerini güvenle yönetiyoruz. Müşteri memnuniyeti odaklı çalışma anlayışımızla fark yaratıyoruz.",
@@ -112,13 +159,42 @@
   "contact": {
     "eyebrow": "İletişim",
     "title": "Finansal Süreçlerinizi Profesyonelce Yönetelim",
+    "pageTitle": "Finansal süreçleriniz için bizimle iletişime geçin",
     "subtitle": "İşletmenizin ihtiyaçlarına özel çözümler için hemen iletişime geçin.",
     "ctaButton": "İletişime Git",
     "freeConsultation": "Ücretsiz Danışmanlık Alın",
+    "metadataTitle": "İletişim | Soral Danışmanlık",
+    "metadataDescription": "Soral Danışmanlık iletişim sayfası. Mali müşavirlik, muhasebe, vergi danışmanlığı ve finansal danışmanlık hizmetleri için bizimle iletişime geçin.",
+    "emailLabel": "E-posta",
+    "emailDescription": "Form talepleri ve danışmanlık görüşmeleri için bize yazın.",
+    "phoneLabel": "Telefon",
+    "phoneDescription": "Hızlı bilgi almak için mesai saatleri içinde arayabilirsiniz.",
+    "addressLabel": "Adres",
+    "addressDescription": "Ofisimize gelmeden önce randevu oluşturmanızı öneririz.",
+    "formTitle": "İletişim Formu",
+    "formDescription": "Formu doldurduğunuzda mesajınız info@soraldanismanlik.com adresine iletilir.",
     "mapTitle": "Ofis Konumumuz",
     "openInMaps": "Google Maps'te Aç",
     "loadMap": "İnteraktif Haritayı Göster",
-    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
+    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
+    "form": {
+      "nameLabel": "Ad Soyad *",
+      "namePlaceholder": "Adınız ve soyadınız",
+      "emailLabel": "E-posta *",
+      "emailPlaceholder": "ornek@mail.com",
+      "phoneLabel": "Telefon",
+      "phonePlaceholder": "5xx xxx xx xx",
+      "companyLabel": "Firma",
+      "companyPlaceholder": "Firma adınız",
+      "messageLabel": "Mesajınız *",
+      "messagePlaceholder": "Size nasıl yardımcı olabiliriz?",
+      "submit": "Mesaj Gönder",
+      "submitting": "Gönderiliyor...",
+      "successMessage": "Mesajınız başarıyla gönderildi. En kısa sürede size geri dönüş yapacağız.",
+      "errorMessage": "Mesaj gönderilirken bir hata oluştu.",
+      "validationError": "Ad soyad, e-posta ve mesaj alanları zorunludur.",
+      "invalidEmail": "Lütfen geçerli bir e-posta adresi girin."
+    }
   },
   "footer": {
     "companyName": "Soral Danışmanlık",
@@ -126,7 +202,8 @@
     "menu": "Menü",
     "contact": "İletişim",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
-    "copyright": "Tüm hakları saklıdır."
+    "copyright": "Tüm hakları saklıdır.",
+    "siteCredit": "Bu site Fatih Soral tarafından hazırlanmıştır."
   },
   "expertise": {
     "title": "Uzmanlık Alanlarımız",

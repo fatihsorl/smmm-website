@@ -1,5 +1,6 @@
 {
   "navigation": {
+    "home": "Inicio",
     "services": "Servicios",
     "expertise": "Áreas de Especialización",
     "contact": "Contacto",
@@ -10,7 +11,7 @@
   "hero": {
     "title": "Asesoría Financiera Confiable con Más de 28 Años de Experiencia",
     "subtitle": "Como Soral Consulting, con más de 28 años de experiencia, gestionamos profesionalmente los procesos financieros de tu empresa. Agregamos valor a tu negocio con nuestro equipo confiable, transparente y experto, siendo tu socio en el crecimiento.",
-    "contactButton": "Consulta Gratuita",
+    "contactButton": "Contáctenos",
     "servicesButton": "Explora Nuestros Servicios",
     "trustBadge": "CPA Certificado"
   },
@@ -60,6 +61,52 @@
     "legal": {
       "title": "Consultoría Legal",
       "description": "Proporcionamos consultoría orientada a soluciones en contratos, derecho comercial y procesos de cumplimiento."
+    }
+  },
+  "serviceCatalog": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Gestionamos sus procesos de informes financieros, auditoría, contabilidad y consultoría desde un solo centro con estándares corporativos.",
+    "detailButton": "Ver detalles",
+    "whatIsTitle": "¿Qué es {title}?",
+    "sidebarNavLabel": "Servicios",
+    "mobileNavLabel": "Servicios",
+    "items": {
+      "sirket-acilisleri": {
+        "title": "Constitución de Empresa",
+        "description": "Le orientamos para abrir su empresa o realizamos todo el proceso en su nombre."
+      },
+      "gib-isbirlikleri": {
+        "title": "Trámites con la Administración Tributaria",
+        "description": "Todos los trámites necesarios ante la Administración Tributaria pueden realizarse en su nombre."
+      },
+      "raporlama-hizmetleri": {
+        "title": "Servicios de Informes",
+        "description": "Preparamos infraestructuras de informes financieros que permiten a la dirección tomar decisiones correctas y rápidas."
+      },
+      "denetim-hizmetleri": {
+        "title": "Servicios de Auditoría",
+        "description": "Examinamos sus procesos contables, de informes financieros y control interno conforme a la normativa y estándares corporativos."
+      },
+      "muhasebe-hizmetleri": {
+        "title": "Servicios Contables",
+        "description": "Gestionamos de extremo a extremo la organización contable, libros legales y procesos de declaración de su empresa."
+      },
+      "bordrolama-hizmetleri": {
+        "title": "Servicios de Nómina",
+        "description": "Preparamos los procesos de nómina de forma regular, trazable y conforme a la normativa."
+      },
+      "tesvik-takip-hizmetleri": {
+        "title": "Seguimiento de Incentivos",
+        "description": "Identificamos los incentivos monetarios y en especie disponibles para su empresa y gestionamos el proceso de solicitud."
+      },
+      "vergi-danismanligi": {
+        "title": "Asesoría Fiscal",
+        "description": "Seguimos los cambios en la legislación fiscal y gestionamos sus obligaciones de forma eficiente y con menor riesgo."
+      },
+      "finansal-danismanlik": {
+        "title": "Asesoría Financiera",
+        "description": "Evaluamos sus estados financieros, flujo de caja y decisiones de crecimiento basándonos en datos."
+      }
     }
   },
   "whyUs": {
@@ -112,13 +159,42 @@
   "contact": {
     "eyebrow": "Contacto",
     "title": "Gestionemos Profesionalmente Tus Procesos Financieros",
+    "pageTitle": "Contáctenos para sus procesos financieros",
     "subtitle": "Contáctanos inmediatamente para soluciones adaptadas a las necesidades de tu empresa.",
     "ctaButton": "Ir a Contacto",
-    "freeConsultation": "Obtén Consulta Gratuita",
+    "freeConsultation": "Contáctenos",
+    "metadataTitle": "Contacto | Soral Consulting",
+    "metadataDescription": "Página de contacto de Soral Consulting. Contáctenos para servicios de asesoría financiera, contabilidad, consultoría fiscal y asesoría financiera.",
+    "emailLabel": "Correo electrónico",
+    "emailDescription": "Escríbanos para solicitudes del formulario y consultas de asesoría.",
+    "phoneLabel": "Teléfono",
+    "phoneDescription": "Puede llamarnos durante el horario laboral para obtener información rápida.",
+    "addressLabel": "Dirección",
+    "addressDescription": "Recomendamos programar una cita antes de visitar nuestra oficina.",
+    "formTitle": "Formulario de Contacto",
+    "formDescription": "Al completar el formulario, su mensaje se enviará a info@soraldanismanlik.com.",
     "mapTitle": "Ubicación de la Oficina",
     "openInMaps": "Abrir en Google Maps",
     "loadMap": "Mostrar Mapa Interactivo",
-    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
+    "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
+    "form": {
+      "nameLabel": "Nombre completo *",
+      "namePlaceholder": "Su nombre y apellido",
+      "emailLabel": "Correo electrónico *",
+      "emailPlaceholder": "ejemplo@mail.com",
+      "phoneLabel": "Teléfono",
+      "phonePlaceholder": "5xx xxx xx xx",
+      "companyLabel": "Empresa",
+      "companyPlaceholder": "Nombre de su empresa",
+      "messageLabel": "Su mensaje *",
+      "messagePlaceholder": "¿Cómo podemos ayudarle?",
+      "submit": "Enviar mensaje",
+      "submitting": "Enviando...",
+      "successMessage": "Su mensaje se envió correctamente. Nos pondremos en contacto con usted lo antes posible.",
+      "errorMessage": "Se produjo un error al enviar su mensaje.",
+      "validationError": "Los campos de nombre, correo electrónico y mensaje son obligatorios.",
+      "invalidEmail": "Por favor, introduzca una dirección de correo electrónico válida."
+    }
   },
   "footer": {
     "companyName": "Soral Consulting",
@@ -126,7 +202,8 @@
     "menu": "Menú",
     "contact": "Contacto",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
-    "copyright": "Todos los derechos reservados."
+    "copyright": "Todos los derechos reservados.",
+    "siteCredit": "Este sitio fue desarrollado por Fatih Soral."
   },
   "expertise": {
     "title": "Nuestras Áreas de Especialización",

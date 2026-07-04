@@ -110,6 +110,7 @@ const Header = () => {
   const [mobileSection, setMobileSection] = useState<MobileSection>(null);
   const t = useTranslations("navigation");
   const tExpertise = useTranslations("expertise");
+  const tServiceCatalog = useTranslations("serviceCatalog");
   const locale = useLocale();
 
   useEffect(() => {
@@ -233,7 +234,7 @@ const Header = () => {
                     delay={index * 0.03}
                     onClick={() => setOpenDropdown(null)}
                   >
-                    {service.title}
+                    {tServiceCatalog(`items.${service.slug}.title`)}
                   </DesktopDropdownItem>
                 ))}
               </DesktopDropdownMenu>
@@ -366,7 +367,7 @@ const Header = () => {
                           onClick={closeMenu}
                           className="block py-3 text-base text-slate-600 transition-colors hover:text-primary"
                         >
-                          {service.title}
+                          {tServiceCatalog(`items.${service.slug}.title`)}
                         </Link>
                       </motion.li>
                     ))}

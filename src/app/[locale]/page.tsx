@@ -34,6 +34,7 @@ export default function Home() {
   const tWhyUs = useTranslations("whyUs");
   const tContact = useTranslations("contact");
   const tExpertise = useTranslations("expertise");
+  const tServiceCatalog = useTranslations("serviceCatalog");
   const locale = useLocale();
   const [activeHeroBackground, setActiveHeroBackground] = useState(0);
   const heroBackgroundSlides = [
@@ -382,18 +383,17 @@ export default function Home() {
             className="mx-auto mb-14 max-w-3xl text-center"
           >
             <h2 className="text-2xl font-bold tracking-tight text-slate-950 mb-4">
-              Hizmetlerimiz
+              {tServiceCatalog("title")}
             </h2>
             <p className="text-sm text-slate-600 max-w-2xl mx-auto">
-              Finansal raporlama, denetim, muhasebe ve danışmanlık süreçlerinizi
-              tek merkezden, kurumsal standartlarla yönetiyoruz.
+              {tServiceCatalog("subtitle")}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {services.map((service, index) => (
               <motion.article
-                key={service.title}
+                key={service.slug}
                 {...(isDesktop
                   ? {
                       initial: { opacity: 0, y: 14 },
@@ -422,16 +422,16 @@ export default function Home() {
                     <div className="h-px flex-1 bg-slate-200" />
                   </div>
                   <h3 className="mb-2 text-base font-bold text-slate-950">
-                    {service.title}
+                    {tServiceCatalog(`items.${service.slug}.title`)}
                   </h3>
                   <p className="mb-5 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
-                    {service.description}
+                    {tServiceCatalog(`items.${service.slug}.description`)}
                   </p>
                   <Link
                     href={withFromHome(`/${locale}/hizmetler/${service.slug}`)}
                     className="btn-primary mt-auto w-full gap-2 px-5 py-2.5 text-sm"
                   >
-                    Detayları incele
+                    {tServiceCatalog("detailButton")}
                     <svg
                       aria-hidden="true"
                       className="h-4 w-4"

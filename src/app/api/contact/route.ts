@@ -85,14 +85,14 @@ export async function POST(request: Request) {
 
     if (!name || !email || !message) {
       return NextResponse.json(
-        { message: "Ad soyad, e-posta ve mesaj alanları zorunludur." },
+        { code: "VALIDATION_ERROR" },
         { status: 400 },
       );
     }
 
     if (!isValidEmail(email)) {
       return NextResponse.json(
-        { message: "Lütfen geçerli bir e-posta adresi girin." },
+        { code: "INVALID_EMAIL" },
         { status: 400 },
       );
     }

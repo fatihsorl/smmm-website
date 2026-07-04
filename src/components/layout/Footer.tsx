@@ -11,6 +11,7 @@ const Footer = () => {
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
   const tExpertise = useTranslations("expertise");
+  const tServiceCatalog = useTranslations("serviceCatalog");
   const locale = useLocale();
 
   const handleSmoothScroll = (
@@ -93,7 +94,7 @@ const Footer = () => {
                     href={`/${locale}`}
                     className="text-white/70 hover:text-white transition-colors"
                   >
-                    Ana Sayfa
+                    {tNav("home")}
                   </Link>
                 </li>
                 <li>
@@ -154,7 +155,7 @@ const Footer = () => {
                       href={`/${locale}/hizmetler/${service.slug}`}
                       className="text-white/70 hover:text-white transition-colors"
                     >
-                      {service.title}
+                      {tServiceCatalog(`items.${service.slug}.title`)}
                     </Link>
                   </li>
                 ))}
@@ -240,10 +241,15 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-6 text-center text-sm text-white/45">
-          <p>
-            &copy; {currentYear} {t("companyName")} {t("copyright")}
-          </p>
+        <div className="mt-12 border-t border-white/10 pt-6">
+          <div className="flex flex-col items-center gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-center text-white/45 sm:text-left">
+              &copy; {currentYear} {t("companyName")} {t("copyright")}
+            </p>
+            <p className="text-center text-xs text-white/25 sm:text-right">
+              {t("siteCredit")}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

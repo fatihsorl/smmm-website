@@ -4,18 +4,27 @@ import { getTranslations } from "next-intl/server";
 import ContactForm from "@/components/contact/ContactForm";
 import OfficeMap from "@/components/contact/OfficeMap";
 
-export const metadata: Metadata = {
-  title: "İletişim | Soral Danışmanlık",
-  description:
-    "Soral Danışmanlık iletişim sayfası. Mali müşavirlik, muhasebe, vergi danışmanlığı ve finansal danışmanlık hizmetleri için bizimle iletişime geçin.",
+type ContactPageProps = {
+  params: Promise<{ locale: string }>;
 };
 
-const contactItems = [
+export async function generateMetadata({
+  params,
+}: ContactPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const tContact = await getTranslations({ locale, namespace: "contact" });
+
+  return {
+    title: tContact("metadataTitle"),
+    description: tContact("metadataDescription"),
+  };
+}
+
+const contactItemConfig = [
   {
-    title: "E-posta",
+    key: "email" as const,
     value: "info@soraldanismanlik.com",
     href: "mailto:info@soraldanismanlik.com",
-    description: "Form talepleri ve danışmanlık görüşmeleri için bize yazın.",
     icon: (
       <path
         strokeLinecap="round"
@@ -26,11 +35,9 @@ const contactItems = [
     ),
   },
   {
-    title: "Telefon",
+    key: "phone" as const,
     value: "+90 (533) 031 82 28",
     href: "tel:05330318228",
-    description:
-      "Hızlı bilgi almak için mesai saatleri içinde arayabilirsiniz.",
     icon: (
       <path
         strokeLinecap="round"
@@ -41,10 +48,7 @@ const contactItems = [
     ),
   },
   {
-    title: "Adres",
-    value:
-      "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
-    description: "Ofisimize gelmeden önce randevu oluşturmanızı öneririz.",
+    key: "address" as const,
     icon: (
       <>
         <path
@@ -64,13 +68,10 @@ const contactItems = [
   },
 ];
 
-export default async function ContactPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function ContactPage({ params }: ContactPageProps) {
   const { locale } = await params;
-  const tContact = await getTranslations("contact");
+  const tContact = await getTranslations({ locale, namespace: "contact" });
+  const tNav = await getTranslations({ locale, namespace: "navigation" });
 
   return (
     <article className="bg-white">
@@ -106,11 +107,11 @@ export default async function ContactPage({
                 />
               </svg>
               <span className="underline decoration-sky-200/60 underline-offset-4 group-hover:decoration-white">
-                Anasayfaya Dön
+                {tNav("backToHome")}
               </span>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight drop-shadow-[0_3px_18px_rgba(0,0,0,0.65)] md:text-3xl">
-              Finansal süreçleriniz için bizimle iletişime geçin
+              {tContact("pageTitle")}
             </h1>
           </div>
         </div>
@@ -121,51 +122,61 @@ export default async function ContactPage({
           <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr]">
             <div className="space-y-8">
               <div className="space-y-5">
-                {contactItems.map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex gap-4 border-b border-slate-200 pb-5"
-                  >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors">
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        {item.icon}
-                      </svg>
-                    </span>
-                    <div>
-                      <h3 className="mb-1 text-sm font-bold text-slate-950">
-                        {item.title}
-                      </h3>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          className="text-sm leading-relaxed text-slate-700 transition-colors hover:text-primary"
+                {contactItemConfig.map((item) => {
+                  const title =
+                    item.key === "email"
+                      ? tContact("emailLabel")
+                      : item.key === "phone"
+                        ? tContact("phoneLabel")
+                        : tContact("addressLabel");
+                  const value =
+                    item.key === "address" ? tContact("address") : item.value;
+
+                  return (
+                    <div
+                      key={item.key}
+                      className="flex gap-4 border-b border-slate-200 pb-5"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors">
+                        <svg
+                          aria-hidden="true"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-sm leading-relaxed text-slate-700">
-                          {item.value}
-                        </p>
-                      )}
+                          {item.icon}
+                        </svg>
+                      </span>
+                      <div>
+                        <h3 className="mb-1 text-sm font-bold text-slate-950">
+                          {title}
+                        </h3>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            className="text-sm leading-relaxed text-slate-700 transition-colors hover:text-primary"
+                          >
+                            {value}
+                          </a>
+                        ) : (
+                          <p className="text-sm leading-relaxed text-slate-700">
+                            {value}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
             <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm md:p-8">
               <h2 className="mb-2 text-2xl font-bold tracking-tight text-slate-950">
-                İletişim Formu
+                {tContact("formTitle")}
               </h2>
               <p className="mb-6 text-sm leading-relaxed text-slate-600">
-                Formu doldurduğunuzda mesajınız info@soraldanismanlik.com
-                adresine iletilir.
+                {tContact("formDescription")}
               </p>
               <ContactForm />
             </div>
