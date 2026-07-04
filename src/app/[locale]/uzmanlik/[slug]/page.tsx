@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { locales } from "@/i18n/config";
+import ReferenceLogoItem from "@/components/ReferenceLogoItem";
 import {
   expertiseSectors,
   getExpertiseBySlug,
@@ -214,12 +214,9 @@ export default async function ExpertiseDetailPage({
                       key={logo.src}
                       className="flex h-14 w-32 items-center justify-center rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 md:h-16 md:w-36"
                     >
-                      <Image
-                        src={logo.src}
-                        alt={logo.alt}
-                        width={160}
-                        height={64}
-                        className="max-h-full w-auto max-w-full object-contain"
+                      <ReferenceLogoItem
+                        logo={logo}
+                        wrapperClassName="flex h-full w-full items-center justify-center"
                       />
                     </div>
                   ))}

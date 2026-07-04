@@ -7,6 +7,8 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { services } from "@/data/services";
 import { expertiseSectors } from "@/data/expertise";
+import ReferenceLogoItem from "@/components/ReferenceLogoItem";
+import { heroReferenceLogos } from "@/data/references";
 import { WHATSAPP_URL } from "@/data/contact";
 import OfficeMap from "@/components/contact/OfficeMap";
 import { withFromHome } from "@/lib/navigation";
@@ -50,21 +52,6 @@ export default function Home() {
         "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=1800&q=80",
       position: "center",
     },
-  ];
-  const referenceLogos = [
-    { src: "/referans/eurosteel-metal.png", alt: "Eurosteel Metal" },
-    { src: "/referans/remax.jpg", alt: "Remax" },
-    { src: "/referans/aquantis-maritime.webp", alt: "Aquantis Maritime" },
-    { src: "/referans/mg-moto.jpg", alt: "MG Moto" },
-    { src: "/referans/safir-teknoloji.png", alt: "Safir Teknoloji" },
-    { src: "/referans/kablosuz-dünya.png", alt: "Kablosuz Dünya" },
-    { src: "/referans/cicocebali.jpg", alt: "Cicocebali" },
-    { src: "/referans/maveks-marina.png", alt: "Maveks Marina" },
-    { src: "/referans/tr-maritime.avif", alt: "TR Maritime" },
-    { src: "/referans/eurofit-piping.png", alt: "Eurofit Piping" },
-    { src: "/referans/server-denizcilik.png", alt: "Server Denizcilik" },
-    { src: "/referans/borda-ship.jpeg", alt: "Borda Ship" },
-    { src: "/referans/fatih-otomotiv.png", alt: "Fatih Otomotiv" },
   ];
   // Mouse throttling için - sadece desktop'ta çalışsın
   const lastMouseUpdate = useRef(0);
@@ -356,20 +343,22 @@ export default function Home() {
         >
           <div className="w-full overflow-hidden rounded-none bg-white py-4 md:py-5">
             <div className="logo-marquee-track flex w-max items-center gap-1">
-              {[...referenceLogos, ...referenceLogos].map((logo, index) => (
-                <div
-                  key={`${logo.src}-${index}`}
-                  className="flex h-12 w-32 shrink-0 items-center justify-center md:h-14 md:w-36"
-                >
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={140}
-                    height={60}
-                    className="h-16 w-22 object-contain"
-                  />
-                </div>
-              ))}
+              {[...heroReferenceLogos, ...heroReferenceLogos].map(
+                (logo, index) => (
+                  <div
+                    key={`${logo.src}-${index}`}
+                    className="flex h-12 w-32 shrink-0 items-center justify-center md:h-14 md:w-36"
+                  >
+                    <ReferenceLogoItem
+                      logo={logo}
+                      width={140}
+                      height={60}
+                      wrapperClassName="flex h-full w-full items-center justify-center"
+                      imageClassName="h-16 w-22 object-contain"
+                    />
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </motion.div>
