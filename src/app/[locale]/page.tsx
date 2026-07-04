@@ -617,7 +617,7 @@ export default function Home() {
         className="overflow-hidden border-t border-slate-200 bg-white py-10 md:py-8"
       >
         <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
-          <div className="logo-marquee-track flex w-max items-center gap-3">
+          <div className="logo-marquee-track flex w-max items-center gap-6">
             {[...partnerLogos, ...partnerLogos].map((logo, index) => (
               <div
                 key={`${logo.src}-${index}`}
@@ -628,7 +628,7 @@ export default function Home() {
                   alt={logo.alt}
                   width={160}
                   height={64}
-                  className="max-h-full w-auto max-w-full object-contain"
+                  className="max-h-full w-auto max-w-[130px] object-contain"
                 />
               </div>
             ))}
