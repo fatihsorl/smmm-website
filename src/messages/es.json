@@ -139,7 +139,7 @@
     "productionLogosLabel": "Referencias de producción",
     "technologyLogosLabel": "Referencias de software y tecnología",
     "maritime": {
-      "homeTitle": "Marítimo",
+      "homeTitle": "Sector Marítimo",
       "navTitle": "Sector Marítimo",
       "homeDescription": "Asesoría financiera, informes y procesos fiscales para operadores de buques y empresas marítimas.",
       "seoTitle": "Asesoría Financiera Sector Marítimo",
@@ -163,7 +163,7 @@
       "quote": "La experiencia marca la ruta en el mar; la confianza financiera la proporciona la asesoría financiera adecuada."
     },
     "production": {
-      "homeTitle": "Producción",
+      "homeTitle": "Sector Producción",
       "navTitle": "Sector Producción",
       "homeDescription": "Contabilidad de costos, seguimiento de inventarios y planificación financiera para empresas metalúrgicas e industriales.",
       "seoTitle": "Asesoría Financiera Sector Producción",
@@ -188,7 +188,7 @@
       "goal": "Nuestro objetivo no es solo garantizar que las empresas manufactureras cumplan sus obligaciones legales, sino crear una asociación a largo plazo que apoye la toma de decisiones con datos financieros correctos, aumente la eficiencia y contribuya al crecimiento sostenible."
     },
     "technology": {
-      "homeTitle": "Software y Tecnología",
+      "homeTitle": "Sector Software y Tecnología",
       "navTitle": "Sector Software y Tecnología",
       "homeDescription": "Asesoría financiera, nóminas y planificación fiscal para empresas de software, tecnología y servicios digitales.",
       "seoTitle": "Asesoría Financiera Sector Software y Tecnología",

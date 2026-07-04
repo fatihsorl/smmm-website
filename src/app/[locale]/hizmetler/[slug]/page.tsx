@@ -75,18 +75,18 @@ export default async function ServiceDetailPage({
 
   return (
     <article className="bg-white">
-      <section className="relative min-h-[420px] overflow-hidden pt-28 md:pt-36">
+      <section className="relative overflow-hidden pt-8">
         <div
           className="absolute -inset-2 scale-105 bg-cover bg-center blur-[2px]"
           style={{ backgroundImage: `url(${service.image})` }}
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,6,23,0.74)_0%,rgba(2,6,23,0.58)_44%,rgba(2,6,23,0.3)_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,23,0.18)_0%,rgba(2,6,23,0.72)_100%)]" />
-        <div className="container relative z-10 flex min-h-[420px] items-end pb-12 text-white">
+        <div className="container relative z-10 flex min-h-[220px] items-end pb-6 text-white md:min-h-[260px] md:pb-8">
           <div className="max-w-3xl">
             <Link
               href={fromHome ? `/${locale}/#hizmetler` : `/${locale}`}
-              className="group mb-5 inline-flex items-center gap-2 text-sm font-bold text-sky-200 drop-shadow transition-all hover:gap-3 hover:text-white"
+              className="group mb-3 inline-flex items-center gap-2 text-sm font-bold text-sky-200 drop-shadow transition-all hover:gap-3 hover:text-white"
             >
               <svg
                 aria-hidden="true"
@@ -102,7 +102,7 @@ export default async function ServiceDetailPage({
                   d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                 />
               </svg>
-              <span className="underline decoration-sky-200/60 underline-offset-4 group-hover:decoration-white">
+              <span className="underline decoration-sky-200/60 underline-offset-4 group-hover:decoration-white text-[12px] md:text-sm">
                 {fromHome ? tNav("backToServices") : tNav("backToHome")}
               </span>
             </Link>

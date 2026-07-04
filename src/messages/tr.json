@@ -139,7 +139,7 @@
     "productionLogosLabel": "Üretim referansları",
     "technologyLogosLabel": "Yazılım ve teknoloji referansları",
     "maritime": {
-      "homeTitle": "Denizcilik",
+      "homeTitle": "Denizcilik Sektörü",
       "navTitle": "Denizcilik Sektörü",
       "homeDescription": "Gemi işletmeciliği ve denizcilik firmalarına özel mali müşavirlik, raporlama ve vergi süreçleri.",
       "seoTitle": "Denizcilik Sektörü Mali Müşavirlik",
@@ -163,7 +163,7 @@
       "quote": "Denizciliğin rotasını deneyim belirler; finansal güveni ise doğru mali müşavirlik."
     },
     "production": {
-      "homeTitle": "Üretim",
+      "homeTitle": "Üretim Sektörü",
       "navTitle": "Üretim Sektörü",
       "homeDescription": "Metal, imalat ve sanayi firmalarına maliyet muhasebesi, stok takibi ve finansal planlama desteği.",
       "seoTitle": "Üretim Sektörü Mali Müşavirlik",
@@ -188,7 +188,7 @@
       "goal": "Amacımız, üretim yapan işletmelerin yalnızca yasal yükümlülüklerini yerine getirmelerini sağlamak değil; doğru finansal verilerle karar alma süreçlerini destekleyen, verimliliği artıran ve sürdürülebilir büyümeye katkı sağlayan uzun vadeli bir iş ortaklığı oluşturmaktır."
     },
     "technology": {
-      "homeTitle": "Yazılım ve Teknoloji",
+      "homeTitle": "Yazılım ve Teknoloji Sektörü",
       "navTitle": "Yazılım ve Teknoloji Sektörü",
       "homeDescription": "Yazılım, teknoloji ve dijital hizmet şirketlerine özel mali müşavirlik, bordro ve vergi planlaması.",
       "seoTitle": "Yazılım ve Teknoloji Sektörü Mali Müşavirlik",

@@ -142,7 +142,7 @@ export default async function ExpertiseDetailPage({
         <div className="container">
           <details className="group mb-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:hidden">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold text-primary [&::-webkit-details-marker]:hidden">
-              <span>{tExpertise("sidebarNavLabel")}</span>
+              <span>{tExpertise(`${sector.translationKey}.navTitle`)}</span>
               <span
                 aria-hidden
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xl leading-none text-primary transition-transform group-open:rotate-45"
@@ -155,37 +155,45 @@ export default async function ExpertiseDetailPage({
               className="mt-4 border-t border-slate-200 pt-4"
             >
               <ul className="space-y-3.5">
-                {expertiseSectors
-                  .filter((item) => item.slug !== sector.slug)
-                  .map((item) => (
+                {expertiseSectors.map((item) => {
+                  const isActive = item.slug === sector.slug;
+
+                  return (
                     <li key={item.slug}>
                       <Link
                         href={detailPageHref(
                           `/${locale}/uzmanlik/${item.slug}`,
                           fromHome,
                         )}
-                        className="group/link flex items-center justify-between gap-3 text-sm leading-relaxed text-slate-950 transition-colors hover:text-primary"
+                        className={`group/link flex items-center justify-between gap-3 text-sm leading-relaxed transition-colors hover:text-primary ${
+                          isActive
+                            ? "font-bold text-primary"
+                            : "text-slate-950"
+                        }`}
                       >
                         <span>
                           {tExpertise(`${item.translationKey}.navTitle`)}
                         </span>
-                        <svg
-                          aria-hidden
-                          className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover/link:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.4}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                          />
-                        </svg>
+                        {!isActive && (
+                          <svg
+                            aria-hidden
+                            className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover/link:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2.4}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                            />
+                          </svg>
+                        )}
                       </Link>
                     </li>
-                  ))}
+                  );
+                })}
               </ul>
             </nav>
           </details>

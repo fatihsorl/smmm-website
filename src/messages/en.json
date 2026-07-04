@@ -139,7 +139,7 @@
     "productionLogosLabel": "Manufacturing references",
     "technologyLogosLabel": "Software and technology references",
     "maritime": {
-      "homeTitle": "Maritime",
+      "homeTitle": "Maritime Sector",
       "navTitle": "Maritime Sector",
       "homeDescription": "Financial advisory, reporting, and tax processes tailored for ship operators and maritime companies.",
       "seoTitle": "Maritime Sector Financial Advisory",
@@ -163,7 +163,7 @@
       "quote": "Experience sets the course in maritime; financial confidence comes from the right financial advisory."
     },
     "production": {
-      "homeTitle": "Manufacturing",
+      "homeTitle": "Manufacturing Sector",
       "navTitle": "Manufacturing Sector",
       "homeDescription": "Cost accounting, inventory tracking, and financial planning support for metal, production, and industrial firms.",
       "seoTitle": "Manufacturing Sector Financial Advisory",
@@ -188,7 +188,7 @@
       "goal": "Our goal is not only to ensure manufacturing businesses fulfill their legal obligations, but to build a long-term partnership that supports decision-making with accurate financial data, increases efficiency, and contributes to sustainable growth."
     },
     "technology": {
-      "homeTitle": "Software & Technology",
+      "homeTitle": "Software & Technology Sector",
       "navTitle": "Software & Technology Sector",
       "homeDescription": "Financial advisory, payroll, and tax planning tailored for software, technology, and digital service companies.",
       "seoTitle": "Software and Technology Sector Financial Advisory",
