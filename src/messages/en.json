@@ -1,9 +1,11 @@
 {
   "navigation": {
     "services": "Services",
-    "whyUs": "Why Us?",
+    "expertise": "Areas of Expertise",
     "contact": "Contact",
-    "about": "About Us"
+    "about": "About Us",
+    "backToHome": "Back to Home",
+    "backToServices": "Back to Services"
   },
   "hero": {
     "title": "Trusted Financial Advisory with 28+ Years of Experience",
@@ -115,6 +117,7 @@
     "freeConsultation": "Get Free Consultation",
     "mapTitle": "Our Office Location",
     "openInMaps": "Open in Google Maps",
+    "loadMap": "Show Interactive Map",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
   },
   "footer": {
@@ -127,10 +130,20 @@
   },
   "expertise": {
     "title": "Our Areas of Expertise",
-    "subtitle": "We address financial management, accounting, and tax processes in the maritime and manufacturing sectors with sector-specific expertise.",
+    "subtitle": "We address financial management, accounting, and tax processes in the maritime, manufacturing, and software-technology sectors with sector-specific expertise.",
+    "detailButton": "View details",
+    "backToExpertise": "Back to Expertise Areas",
+    "referencesLabel": "Our References",
+    "sidebarNavLabel": "Expertise areas",
     "maritimeLogosLabel": "Maritime references",
     "productionLogosLabel": "Manufacturing references",
+    "technologyLogosLabel": "Software and technology references",
     "maritime": {
+      "homeTitle": "Maritime",
+      "navTitle": "Maritime Sector",
+      "homeDescription": "Financial advisory, reporting, and tax processes tailored for ship operators and maritime companies.",
+      "seoTitle": "Maritime Sector Financial Advisory",
+      "seoDescription": "Sector-specific financial advisory, reporting, payroll, and tax consulting for the maritime industry.",
       "contentTitle": "Financial Advisory and Consulting Specialized for the Maritime Sector",
       "intro1": "International shipping involves sector-specific dynamics in financial management, accounting, tax, and payroll processes. Sound financial management in ship operations and broking affects not only legal compliance but also sustainable growth and competitiveness.",
       "intro2": "Our office provides sector-specific financial advisory and consulting to ship operators, broking companies, and maritime businesses operating in international waters.",
@@ -150,6 +163,11 @@
       "quote": "Experience sets the course in maritime; financial confidence comes from the right financial advisory."
     },
     "production": {
+      "homeTitle": "Manufacturing",
+      "navTitle": "Manufacturing Sector",
+      "homeDescription": "Cost accounting, inventory tracking, and financial planning support for metal, production, and industrial firms.",
+      "seoTitle": "Manufacturing Sector Financial Advisory",
+      "seoDescription": "Sector-specific financial advisory, cost accounting, inventory management, and consulting for manufacturing businesses.",
       "contentTitle": "Financial Advisory and Consulting Specialized for the Manufacturing Sector",
       "intro1": "The manufacturing sector has a dynamic structure requiring high expertise in cost accounting, inventory management, raw material and finished goods tracking, export operations, financial planning, and tax applications. For manufacturing businesses, financial advisory is not only about fulfilling legal obligations but also a strategic management function that increases efficiency and competitiveness.",
       "intro2": "Our office provides sector-specific financial advisory and consulting to manufacturing companies operating in metal, pipe fittings, machinery, production, and industrial fields. We analyze the financial impact of production processes to help businesses make sound financial decisions and support sustainable growth.",
@@ -168,6 +186,30 @@
       ],
       "experience": "With our experience serving many businesses in the manufacturing sector, we closely follow industry needs and work as a trusted solution partner with accurate reporting, effective cost management, and strong financial planning.",
       "goal": "Our goal is not only to ensure manufacturing businesses fulfill their legal obligations, but to build a long-term partnership that supports decision-making with accurate financial data, increases efficiency, and contributes to sustainable growth."
+    },
+    "technology": {
+      "homeTitle": "Software & Technology",
+      "navTitle": "Software & Technology Sector",
+      "homeDescription": "Financial advisory, payroll, and tax planning tailored for software, technology, and digital service companies.",
+      "seoTitle": "Software and Technology Sector Financial Advisory",
+      "seoDescription": "Sector-specific financial advisory, reporting, incentive consulting, and payroll services for technology businesses.",
+      "contentTitle": "Financial Advisory and Consulting Specialized for the Software and Technology Sector",
+      "intro1": "The software and technology sector requires specialized financial management due to project-based revenue, R&D processes, international client portfolios, subscription models, and rapid growth dynamics. Proper financial structuring affects not only compliance but also investment, scaling, and sustainable growth decisions.",
+      "intro2": "Our office provides sector-specific financial advisory and consulting to software development, technology consulting, digital service, and innovation-focused businesses. We strengthen your financial visibility with reporting and planning processes suited to your operational structure.",
+      "servicesIntro": "Our services include:",
+      "services": [
+        "General accounting and financial advisory services",
+        "Project-based revenue-expense tracking and financial reporting",
+        "Management reports, budgeting, and cash flow planning",
+        "Financial consulting for R&D and incentive processes",
+        "Foreign revenue, currency transactions, and exchange rate accounting",
+        "VAT, withholding tax, and tax planning processes",
+        "Payroll, social security, and HR processes",
+        "Financial structuring suited to startup and scale-up models",
+        "Independent audit and investor reporting support"
+      ],
+      "experience": "With our experience serving businesses in the software and technology sector, we offer reliable and scalable financial solutions aligned with the sector's rapidly changing needs.",
+      "goal": "Our goal is to simplify financial processes for technology-focused businesses, support growth decisions with accurate data, and be a trusted long-term financial partner."
     }
   }
 }

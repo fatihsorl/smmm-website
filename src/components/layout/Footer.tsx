@@ -4,11 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { services } from "@/data/services";
+import { expertiseSectors } from "@/data/expertise";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
+  const tExpertise = useTranslations("expertise");
   const locale = useLocale();
 
   const handleSmoothScroll = (
@@ -41,7 +43,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-slate-950 text-white transform-gpu">
       <div className="w-full px-5 py-12 sm:px-8 lg:px-12 xl:px-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_1.2fr_1.25fr]">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.9fr_1.1fr_1.25fr]">
           <div>
             <div className="mb-4 flex items-center gap-3">
               <span className="h-11 w-11 overflow-hidden rounded-xl bg-white ring-1 ring-white/15">
@@ -105,11 +107,11 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href={`/${locale}/#neden-biz`}
-                    onClick={(e) => handleSmoothScroll(e, "neden-biz")}
+                    href={`/${locale}/#uzmanlik`}
+                    onClick={(e) => handleSmoothScroll(e, "uzmanlik")}
                     className="text-white/70 hover:text-white transition-colors"
                   >
-                    {tNav("whyUs")}
+                    {tNav("expertise")}
                   </Link>
                 </li>
                 <li>
@@ -125,7 +127,25 @@ const Footer = () => {
 
             <div>
               <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-white/45 mb-4">
-                Hizmetler
+                {tExpertise("title")}
+              </h3>
+              <ul className="flex flex-col gap-3 text-sm">
+                {expertiseSectors.map((sector) => (
+                  <li key={sector.slug}>
+                    <Link
+                      href={`/${locale}/uzmanlik/${sector.slug}`}
+                      className="text-white/70 hover:text-white transition-colors"
+                    >
+                      {tExpertise(`${sector.translationKey}.navTitle`)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="col-span-2 md:col-span-1">
+              <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-white/45 mb-4">
+                {tNav("services")}
               </h3>
               <ul className="flex flex-col gap-3 text-sm">
                 {services.map((service) => (

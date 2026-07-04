@@ -1,9 +1,11 @@
 {
   "navigation": {
     "services": "Hizmetlerimiz",
-    "whyUs": "Neden Biz?",
+    "expertise": "Uzmanlık Alanlarımız",
     "contact": "İletişim",
-    "about": "Hakkımızda"
+    "about": "Hakkımızda",
+    "backToHome": "Anasayfaya Dön",
+    "backToServices": "Hizmetlere Dön"
   },
   "hero": {
     "title": "28+ Yıllık Deneyimle Güvenilir Mali Müşavirlik Hizmetleri",
@@ -115,6 +117,7 @@
     "freeConsultation": "Ücretsiz Danışmanlık Alın",
     "mapTitle": "Ofis Konumumuz",
     "openInMaps": "Google Maps'te Aç",
+    "loadMap": "İnteraktif Haritayı Göster",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
   },
   "footer": {
@@ -127,10 +130,20 @@
   },
   "expertise": {
     "title": "Uzmanlık Alanlarımız",
-    "subtitle": "Denizcilik ve üretim sektörlerinde finansal yönetim, muhasebe ve vergi süreçlerini sektöre özel ihtiyaçlarla ele alıyoruz.",
+    "subtitle": "Denizcilik, üretim ve yazılım-teknoloji sektörlerinde finansal yönetim, muhasebe ve vergi süreçlerini sektöre özel ihtiyaçlarla ele alıyoruz.",
+    "detailButton": "Detayları incele",
+    "backToExpertise": "Uzmanlık Alanlarına Dön",
+    "referencesLabel": "Referanslarımız",
+    "sidebarNavLabel": "Uzmanlık alanları",
     "maritimeLogosLabel": "Denizcilik referansları",
     "productionLogosLabel": "Üretim referansları",
+    "technologyLogosLabel": "Yazılım ve teknoloji referansları",
     "maritime": {
+      "homeTitle": "Denizcilik",
+      "navTitle": "Denizcilik Sektörü",
+      "homeDescription": "Gemi işletmeciliği ve denizcilik firmalarına özel mali müşavirlik, raporlama ve vergi süreçleri.",
+      "seoTitle": "Denizcilik Sektörü Mali Müşavirlik",
+      "seoDescription": "Denizcilik sektörüne özel mali müşavirlik, finansal raporlama, bordro ve vergi danışmanlığı hizmetleri.",
       "contentTitle": "Denizcilik Sektörüne Özel Mali Müşavirlik ve Finansal Danışmanlık",
       "intro1": "Uluslararası deniz taşımacılığı; finansal yönetim, muhasebe, vergi ve bordro süreçlerinde sektöre özgü dinamikler barındırır. Gemi işletmeciliği ve brokerlik faaliyetlerinde doğru mali yönetim; yasal uyumun yanı sıra sürdürülebilir büyümeyi ve rekabet gücünü doğrudan etkiler.",
       "intro2": "Ofisimiz, uluslararası sularda faaliyet gösteren gemi işletmecileri, brokerlik şirketleri ve denizcilik işletmelerine sektöre özel mali müşavirlik ve finansal danışmanlık sunmaktadır.",
@@ -150,6 +163,11 @@
       "quote": "Denizciliğin rotasını deneyim belirler; finansal güveni ise doğru mali müşavirlik."
     },
     "production": {
+      "homeTitle": "Üretim",
+      "navTitle": "Üretim Sektörü",
+      "homeDescription": "Metal, imalat ve sanayi firmalarına maliyet muhasebesi, stok takibi ve finansal planlama desteği.",
+      "seoTitle": "Üretim Sektörü Mali Müşavirlik",
+      "seoDescription": "Üretim sektörüne özel mali müşavirlik, maliyet muhasebesi, stok yönetimi ve finansal danışmanlık hizmetleri.",
       "contentTitle": "Üretim Sektörüne Özel Mali Müşavirlik ve Finansal Danışmanlık",
       "intro1": "Üretim sektörü, maliyet muhasebesi, stok yönetimi, hammadde ve mamul takibi, ihracat işlemleri, finansal planlama ve vergi uygulamaları bakımından yüksek uzmanlık gerektiren dinamik bir yapıya sahiptir. Bu nedenle üretim yapan işletmeler için mali müşavirlik, yalnızca yasal yükümlülüklerin yerine getirilmesi değil, aynı zamanda işletmenin verimliliğini ve rekabet gücünü artıran stratejik bir yönetim fonksiyonudur.",
       "intro2": "Ofisimiz; metal, boru bağlantı elemanları, makine, imalat ve sanayi alanlarında faaliyet gösteren üretim firmalarına sektöre özel mali müşavirlik ve finansal danışmanlık hizmetleri sunmaktadır. Üretim süreçlerinin finansal etkilerini analiz ederek işletmelerin doğru mali kararlar almasına katkı sağlıyor, sürdürülebilir büyümelerini destekliyoruz.",
@@ -168,6 +186,30 @@
       ],
       "experience": "Üretim sektöründe faaliyet gösteren birçok işletmeye sunduğumuz hizmetlerden edindiğimiz deneyimle, sektörün ihtiyaçlarını yakından takip ediyor; doğru raporlama, etkin maliyet yönetimi ve güçlü finansal planlama anlayışıyla işletmelerimizin güvenilir çözüm ortağı olarak çalışıyoruz.",
       "goal": "Amacımız, üretim yapan işletmelerin yalnızca yasal yükümlülüklerini yerine getirmelerini sağlamak değil; doğru finansal verilerle karar alma süreçlerini destekleyen, verimliliği artıran ve sürdürülebilir büyümeye katkı sağlayan uzun vadeli bir iş ortaklığı oluşturmaktır."
+    },
+    "technology": {
+      "homeTitle": "Yazılım ve Teknoloji",
+      "navTitle": "Yazılım ve Teknoloji Sektörü",
+      "homeDescription": "Yazılım, teknoloji ve dijital hizmet şirketlerine özel mali müşavirlik, bordro ve vergi planlaması.",
+      "seoTitle": "Yazılım ve Teknoloji Sektörü Mali Müşavirlik",
+      "seoDescription": "Yazılım ve teknoloji sektörüne özel mali müşavirlik, finansal raporlama, teşvik danışmanlığı ve bordro hizmetleri.",
+      "contentTitle": "Yazılım ve Teknoloji Sektörüne Özel Mali Müşavirlik ve Finansal Danışmanlık",
+      "intro1": "Yazılım ve teknoloji sektörü; proje bazlı gelir yapısı, Ar-Ge süreçleri, uluslararası müşteri portföyü, abonelik modelleri ve hızlı büyüme dinamikleri nedeniyle finansal yönetim açısından özel bir uzmanlık gerektirir. Doğru mali yapılandırma; yalnızca yasal uyumu değil, yatırım, ölçeklenme ve sürdürülebilir büyüme kararlarını da doğrudan etkiler.",
+      "intro2": "Ofisimiz; yazılım geliştirme, teknoloji danışmanlığı, dijital hizmet ve inovasyon odaklı işletmelere sektöre özel mali müşavirlik ve finansal danışmanlık hizmetleri sunmaktadır. Operasyonel yapınıza uygun raporlama ve planlama süreçleriyle finansal görünürlüğünüzü güçlendiriyoruz.",
+      "servicesIntro": "Hizmetlerimiz kapsamında;",
+      "services": [
+        "Genel muhasebe ve mali müşavirlik hizmetleri",
+        "Proje bazlı gelir-gider takibi ve finansal raporlama",
+        "Yönetim raporları, bütçe ve nakit akışı planlaması",
+        "Ar-Ge ve teşvik süreçlerine yönelik mali danışmanlık",
+        "Yurt dışı gelirler, döviz işlemleri ve kur farkı muhasebesi",
+        "KDV, stopaj ve vergi planlaması süreçleri",
+        "Bordro, SGK ve personel özlük işlemleri",
+        "Startup ve scale-up yapılarına uygun finansal yapılandırma",
+        "Bağımsız denetim ve yatırımcı raporlaması desteği"
+      ],
+      "experience": "Yazılım ve teknoloji sektöründe faaliyet gösteren işletmelere sunduğumuz hizmetlerden edindiğimiz deneyimle, sektörün hızlı değişen ihtiyaçlarına uygun, güvenilir ve ölçeklenebilir mali çözümler sunuyoruz.",
+      "goal": "Amacımız, teknoloji odaklı işletmelerin finansal süreçlerini sadeleştirmek, doğru verilerle büyüme kararları almasını desteklemek ve uzun vadeli güvenilir bir mali çözüm ortağı olmaktır."
     }
   }
 }

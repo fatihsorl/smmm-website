@@ -1,9 +1,11 @@
 {
   "navigation": {
     "services": "Servicios",
-    "whyUs": "¿Por Qué Nosotros?",
+    "expertise": "Áreas de Especialización",
     "contact": "Contacto",
-    "about": "Acerca de"
+    "about": "Acerca de",
+    "backToHome": "Volver al Inicio",
+    "backToServices": "Volver a Servicios"
   },
   "hero": {
     "title": "Asesoría Financiera Confiable con Más de 28 Años de Experiencia",
@@ -115,6 +117,7 @@
     "freeConsultation": "Obtén Consulta Gratuita",
     "mapTitle": "Ubicación de la Oficina",
     "openInMaps": "Abrir en Google Maps",
+    "loadMap": "Mostrar Mapa Interactivo",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
   },
   "footer": {
@@ -127,10 +130,20 @@
   },
   "expertise": {
     "title": "Nuestras Áreas de Especialización",
-    "subtitle": "Abordamos la gestión financiera, contabilidad y procesos fiscales en los sectores marítimo y de producción con un enfoque sectorial.",
+    "subtitle": "Abordamos la gestión financiera, contabilidad y procesos fiscales en los sectores marítimo, de producción y de software-tecnología con un enfoque sectorial.",
+    "detailButton": "Ver detalles",
+    "backToExpertise": "Volver a Áreas de Especialización",
+    "referencesLabel": "Nuestras Referencias",
+    "sidebarNavLabel": "Áreas de especialización",
     "maritimeLogosLabel": "Referencias marítimas",
     "productionLogosLabel": "Referencias de producción",
+    "technologyLogosLabel": "Referencias de software y tecnología",
     "maritime": {
+      "homeTitle": "Marítimo",
+      "navTitle": "Sector Marítimo",
+      "homeDescription": "Asesoría financiera, informes y procesos fiscales para operadores de buques y empresas marítimas.",
+      "seoTitle": "Asesoría Financiera Sector Marítimo",
+      "seoDescription": "Asesoría financiera, informes, nóminas y consultoría fiscal especializada para el sector marítimo.",
       "contentTitle": "Asesoría Financiera y Consultoría Especializada para el Sector Marítimo",
       "intro1": "El transporte marítimo internacional implica dinámicas propias en gestión financiera, contabilidad, impuestos y nóminas. Una gestión financiera adecuada en operaciones de buques y corretaje afecta no solo el cumplimiento legal, sino también el crecimiento sostenible y la competitividad.",
       "intro2": "Nuestra oficina ofrece asesoría financiera y consultoría sectorial a operadores de buques, empresas de corretaje y negocios marítimos que operan en aguas internacionales.",
@@ -150,6 +163,11 @@
       "quote": "La experiencia marca la ruta en el mar; la confianza financiera la proporciona la asesoría financiera adecuada."
     },
     "production": {
+      "homeTitle": "Producción",
+      "navTitle": "Sector Producción",
+      "homeDescription": "Contabilidad de costos, seguimiento de inventarios y planificación financiera para empresas metalúrgicas e industriales.",
+      "seoTitle": "Asesoría Financiera Sector Producción",
+      "seoDescription": "Asesoría financiera, contabilidad de costos, gestión de inventarios y consultoría para el sector de producción.",
       "contentTitle": "Asesoría Financiera y Consultoría Especializada para el Sector de Producción",
       "intro1": "El sector de producción tiene una estructura dinámica que requiere alta especialización en contabilidad de costos, gestión de inventarios, seguimiento de materias primas y productos terminados, operaciones de exportación, planificación financiera y aplicaciones fiscales. Para las empresas manufactureras, la asesoría financiera no solo cumple obligaciones legales, sino que es una función estratégica de gestión que aumenta la eficiencia y la competitividad.",
       "intro2": "Nuestra oficina ofrece asesoría financiera y consultoría sectorial a empresas de producción en metal, accesorios de tubería, maquinaria, fabricación e industria. Analizamos el impacto financiero de los procesos productivos para ayudar a las empresas a tomar decisiones financieras acertadas y apoyar su crecimiento sostenible.",
@@ -168,6 +186,30 @@
       ],
       "experience": "Con la experiencia adquirida al servir a numerosas empresas del sector de producción, seguimos de cerca las necesidades del sector y trabajamos como socio de confianza con informes precisos, gestión eficaz de costos y sólida planificación financiera.",
       "goal": "Nuestro objetivo no es solo garantizar que las empresas manufactureras cumplan sus obligaciones legales, sino crear una asociación a largo plazo que apoye la toma de decisiones con datos financieros correctos, aumente la eficiencia y contribuya al crecimiento sostenible."
+    },
+    "technology": {
+      "homeTitle": "Software y Tecnología",
+      "navTitle": "Sector Software y Tecnología",
+      "homeDescription": "Asesoría financiera, nóminas y planificación fiscal para empresas de software, tecnología y servicios digitales.",
+      "seoTitle": "Asesoría Financiera Sector Software y Tecnología",
+      "seoDescription": "Asesoría financiera, informes, consultoría de incentivos y nóminas para empresas del sector tecnológico.",
+      "contentTitle": "Asesoría Financiera y Consultoría Especializada para el Sector de Software y Tecnología",
+      "intro1": "El sector de software y tecnología requiere una gestión financiera especializada debido a ingresos por proyectos, procesos de I+D, carteras internacionales de clientes, modelos de suscripción y dinámicas de crecimiento rápido. Una estructura financiera adecuada afecta no solo el cumplimiento, sino también las decisiones de inversión, escalado y crecimiento sostenible.",
+      "intro2": "Nuestra oficina ofrece asesoría financiera y consultoría sectorial a empresas de desarrollo de software, consultoría tecnológica, servicios digitales e innovación. Fortalecemos su visibilidad financiera con procesos de informes y planificación adaptados a su estructura operativa.",
+      "servicesIntro": "Nuestros servicios incluyen:",
+      "services": [
+        "Contabilidad general y servicios de asesoría financiera",
+        "Seguimiento de ingresos-gastos por proyecto e informes financieros",
+        "Informes de gestión, presupuestos y planificación de flujo de caja",
+        "Consultoría financiera para procesos de I+D e incentivos",
+        "Ingresos en el extranjero, operaciones en divisas y contabilidad de diferencias cambiarias",
+        "Procesos de IVA, retenciones y planificación fiscal",
+        "Nóminas, seguridad social y procesos de RR. HH.",
+        "Estructuración financiera para modelos startup y scale-up",
+        "Auditoría independiente y apoyo en informes para inversores"
+      ],
+      "experience": "Con nuestra experiencia en empresas del sector de software y tecnología, ofrecemos soluciones financieras fiables y escalables adaptadas a las necesidades cambiantes del sector.",
+      "goal": "Nuestro objetivo es simplificar los procesos financieros de las empresas tecnológicas, apoyar decisiones de crecimiento con datos precisos y ser un socio financiero de confianza a largo plazo."
     }
   }
 }

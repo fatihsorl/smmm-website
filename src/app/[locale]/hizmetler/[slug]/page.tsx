@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { locales } from "@/i18n/config";
 import { getServiceBySlug, services } from "@/data/services";
+import { detailPageHref, isFromHomeSection } from "@/lib/navigation";
 
 type ServiceDetailPageProps = {
   params: Promise<{
     locale: string;
     slug: string;
+  }>;
+  searchParams: Promise<{
+    from?: string | string[];
   }>;
 };
 
@@ -55,13 +60,18 @@ export async function generateMetadata({
 
 export default async function ServiceDetailPage({
   params,
+  searchParams,
 }: ServiceDetailPageProps) {
   const { locale, slug } = await params;
+  const { from } = await searchParams;
+  const fromHome = isFromHomeSection(from);
   const service = getServiceBySlug(slug);
 
   if (!service) {
     notFound();
   }
+
+  const tNav = await getTranslations({ locale, namespace: "navigation" });
 
   return (
     <article className="bg-white">
@@ -75,7 +85,7 @@ export default async function ServiceDetailPage({
         <div className="container relative z-10 flex min-h-[420px] items-end pb-12 text-white">
           <div className="max-w-3xl">
             <Link
-              href={`/${locale}/#hizmetler`}
+              href={fromHome ? `/${locale}/#hizmetler` : `/${locale}`}
               className="group mb-5 inline-flex items-center gap-2 text-sm font-bold text-sky-200 drop-shadow transition-all hover:gap-3 hover:text-white"
             >
               <svg
@@ -93,7 +103,7 @@ export default async function ServiceDetailPage({
                 />
               </svg>
               <span className="underline decoration-sky-200/60 underline-offset-4 group-hover:decoration-white">
-                Hizmetlere Dön
+                {fromHome ? tNav("backToServices") : tNav("backToHome")}
               </span>
             </Link>
             <h1 className="text-2xl font-bold tracking-tight drop-shadow-[0_3px_18px_rgba(0,0,0,0.65)] md:text-3xl">
@@ -125,7 +135,10 @@ export default async function ServiceDetailPage({
                   .map((serviceItem) => (
                     <li key={serviceItem.slug}>
                       <Link
-                        href={`/${locale}/hizmetler/${serviceItem.slug}`}
+                        href={detailPageHref(
+                          `/${locale}/hizmetler/${serviceItem.slug}`,
+                          fromHome,
+                        )}
                         className="group/link flex items-center justify-between gap-3 text-sm leading-relaxed text-slate-950 transition-colors hover:text-primary"
                       >
                         <span>{serviceItem.title}</span>
@@ -195,7 +208,10 @@ export default async function ServiceDetailPage({
                     return (
                       <li key={serviceItem.slug}>
                         <Link
-                          href={`/${locale}/hizmetler/${serviceItem.slug}`}
+                          href={detailPageHref(
+                            `/${locale}/hizmetler/${serviceItem.slug}`,
+                            fromHome,
+                          )}
                           className={`group text-sm flex items-center gap-3 leading-relaxed transition-all hover:text-primary hover:underline max-w-48 justify-between ${
                             isActive
                               ? "font-bold hover:no-underline!"
