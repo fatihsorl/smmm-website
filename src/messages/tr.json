@@ -6,7 +6,7 @@
     "about": "Hakkımızda"
   },
   "hero": {
-    "title": "28+ Yıllık Deneyimle Güvenilir Mali Müşavirlik",
+    "title": "28+ Yıllık Deneyimle Güvenilir Mali Müşavirlik Hizmetleri",
     "subtitle": "Soral Danışmanlık olarak, 28 yılı aşkın deneyimimizle işletmenizin finansal süreçlerini profesyonelce yönetiyoruz. Güvenilir, şeffaf ve uzman ekibimizle işinize değer katıyor, büyümenize ortak oluyoruz.",
     "contactButton": "Bizimle İletişime Geçin",
     "servicesButton": "Hizmetlerimizi Keşfedin",
@@ -124,5 +124,50 @@
     "contact": "İletişim",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
     "copyright": "Tüm hakları saklıdır."
+  },
+  "expertise": {
+    "title": "Uzmanlık Alanlarımız",
+    "subtitle": "Denizcilik ve üretim sektörlerinde finansal yönetim, muhasebe ve vergi süreçlerini sektöre özel ihtiyaçlarla ele alıyoruz.",
+    "maritimeLogosLabel": "Denizcilik referansları",
+    "productionLogosLabel": "Üretim referansları",
+    "maritime": {
+      "contentTitle": "Denizcilik Sektörüne Özel Mali Müşavirlik ve Finansal Danışmanlık",
+      "intro1": "Uluslararası deniz taşımacılığı; finansal yönetim, muhasebe, vergi ve bordro süreçlerinde sektöre özgü dinamikler barındırır. Gemi işletmeciliği ve brokerlik faaliyetlerinde doğru mali yönetim; yasal uyumun yanı sıra sürdürülebilir büyümeyi ve rekabet gücünü doğrudan etkiler.",
+      "intro2": "Ofisimiz, uluslararası sularda faaliyet gösteren gemi işletmecileri, brokerlik şirketleri ve denizcilik işletmelerine sektöre özel mali müşavirlik ve finansal danışmanlık sunmaktadır.",
+      "servicesIntro": "Hizmetlerimiz kapsamında;",
+      "services": [
+        "Mali müşavirlik ve genel muhasebe hizmetleri",
+        "Ulusal ve uluslararası standartlara uygun finansal raporlama",
+        "Yönetim raporları, bütçe ve nakit akışı planlaması",
+        "Döviz bazlı işlemler ve kur farklarının muhasebeleştirilmesi",
+        "Vergi planlaması, beyanname süreçleri ve mevzuata uyum",
+        "Gemi personeli ve ofis çalışanlarına ilişkin bordro, SGK ve özlük işlemleri",
+        "İç kontrol süreçleri, finansal analiz ve yönetsel danışmanlık",
+        "Bağımsız denetim ve finans kuruluşlarına yönelik mali raporlama desteği"
+      ],
+      "approach": "Yaklaşımımız yalnızca yasal yükümlülükleri yerine getirmekle sınırlı değildir. Finansal performansı güçlendiren, riskleri öngören ve stratejik karar alma süreçlerine katkı sağlayan bir danışmanlık anlayışıyla çalışıyoruz.",
+      "experience": "Denizcilik sektöründe faaliyet gösteren çok sayıda şirketle edindiğimiz tecrübe sayesinde güvenilir ve sürdürülebilir çözümler sunuyor; küresel pazardaki yolculuğunuzda güçlü bir mali çözüm ortağı olmayı hedefliyoruz.",
+      "quote": "Denizciliğin rotasını deneyim belirler; finansal güveni ise doğru mali müşavirlik."
+    },
+    "production": {
+      "contentTitle": "Üretim Sektörüne Özel Mali Müşavirlik ve Finansal Danışmanlık",
+      "intro1": "Üretim sektörü, maliyet muhasebesi, stok yönetimi, hammadde ve mamul takibi, ihracat işlemleri, finansal planlama ve vergi uygulamaları bakımından yüksek uzmanlık gerektiren dinamik bir yapıya sahiptir. Bu nedenle üretim yapan işletmeler için mali müşavirlik, yalnızca yasal yükümlülüklerin yerine getirilmesi değil, aynı zamanda işletmenin verimliliğini ve rekabet gücünü artıran stratejik bir yönetim fonksiyonudur.",
+      "intro2": "Ofisimiz; metal, boru bağlantı elemanları, makine, imalat ve sanayi alanlarında faaliyet gösteren üretim firmalarına sektöre özel mali müşavirlik ve finansal danışmanlık hizmetleri sunmaktadır. Üretim süreçlerinin finansal etkilerini analiz ederek işletmelerin doğru mali kararlar almasına katkı sağlıyor, sürdürülebilir büyümelerini destekliyoruz.",
+      "servicesIntro": "Hizmetlerimiz kapsamında;",
+      "services": [
+        "Genel muhasebe ve mali müşavirlik hizmetleri",
+        "Maliyet muhasebesi ve üretim maliyet analizleri",
+        "Hammadde, yarı mamul ve mamul stoklarının muhasebesi",
+        "Finansal tabloların hazırlanması ve yönetim raporlamaları",
+        "Bütçe, nakit akışı ve kârlılık analizleri",
+        "İhracat ve ithalat işlemlerinin muhasebe ve vergi süreçleri",
+        "KDV iade süreçleri ve teşvik uygulamaları",
+        "Bordro, SGK ve personel özlük işlemleri",
+        "Vergi planlaması ve mevzuata uyum",
+        "Bağımsız denetim ve finans kuruluşlarına yönelik mali raporlama desteği"
+      ],
+      "experience": "Üretim sektöründe faaliyet gösteren birçok işletmeye sunduğumuz hizmetlerden edindiğimiz deneyimle, sektörün ihtiyaçlarını yakından takip ediyor; doğru raporlama, etkin maliyet yönetimi ve güçlü finansal planlama anlayışıyla işletmelerimizin güvenilir çözüm ortağı olarak çalışıyoruz.",
+      "goal": "Amacımız, üretim yapan işletmelerin yalnızca yasal yükümlülüklerini yerine getirmelerini sağlamak değil; doğru finansal verilerle karar alma süreçlerini destekleyen, verimliliği artıran ve sürdürülebilir büyümeye katkı sağlayan uzun vadeli bir iş ortaklığı oluşturmaktır."
+    }
   }
 }

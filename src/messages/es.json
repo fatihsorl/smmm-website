@@ -124,5 +124,50 @@
     "contact": "Contacto",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
     "copyright": "Todos los derechos reservados."
+  },
+  "expertise": {
+    "title": "Nuestras Áreas de Especialización",
+    "subtitle": "Abordamos la gestión financiera, contabilidad y procesos fiscales en los sectores marítimo y de producción con un enfoque sectorial.",
+    "maritimeLogosLabel": "Referencias marítimas",
+    "productionLogosLabel": "Referencias de producción",
+    "maritime": {
+      "contentTitle": "Asesoría Financiera y Consultoría Especializada para el Sector Marítimo",
+      "intro1": "El transporte marítimo internacional implica dinámicas propias en gestión financiera, contabilidad, impuestos y nóminas. Una gestión financiera adecuada en operaciones de buques y corretaje afecta no solo el cumplimiento legal, sino también el crecimiento sostenible y la competitividad.",
+      "intro2": "Nuestra oficina ofrece asesoría financiera y consultoría sectorial a operadores de buques, empresas de corretaje y negocios marítimos que operan en aguas internacionales.",
+      "servicesIntro": "Nuestros servicios incluyen:",
+      "services": [
+        "Asesoría financiera y servicios de contabilidad general",
+        "Informes financieros conforme a estándares nacionales e internacionales",
+        "Informes de gestión, presupuestos y planificación de flujo de caja",
+        "Operaciones en divisas y contabilización de diferencias cambiarias",
+        "Planificación fiscal, declaraciones y cumplimiento normativo",
+        "Nóminas, seguridad social y procesos de RR. HH. para tripulación y personal de oficina",
+        "Control interno, análisis financiero y consultoría de gestión",
+        "Auditoría independiente y apoyo en informes financieros para instituciones financieras"
+      ],
+      "approach": "Nuestro enfoque va más allá de cumplir obligaciones legales. Trabajamos con una visión consultiva que fortalece el desempeño financiero, anticipa riesgos y apoya la toma de decisiones estratégicas.",
+      "experience": "Gracias a nuestra experiencia con numerosas empresas del sector marítimo, ofrecemos soluciones fiables y sostenibles y aspiramos a ser un sólido socio financiero en su recorrido en el mercado global.",
+      "quote": "La experiencia marca la ruta en el mar; la confianza financiera la proporciona la asesoría financiera adecuada."
+    },
+    "production": {
+      "contentTitle": "Asesoría Financiera y Consultoría Especializada para el Sector de Producción",
+      "intro1": "El sector de producción tiene una estructura dinámica que requiere alta especialización en contabilidad de costos, gestión de inventarios, seguimiento de materias primas y productos terminados, operaciones de exportación, planificación financiera y aplicaciones fiscales. Para las empresas manufactureras, la asesoría financiera no solo cumple obligaciones legales, sino que es una función estratégica de gestión que aumenta la eficiencia y la competitividad.",
+      "intro2": "Nuestra oficina ofrece asesoría financiera y consultoría sectorial a empresas de producción en metal, accesorios de tubería, maquinaria, fabricación e industria. Analizamos el impacto financiero de los procesos productivos para ayudar a las empresas a tomar decisiones financieras acertadas y apoyar su crecimiento sostenible.",
+      "servicesIntro": "Nuestros servicios incluyen:",
+      "services": [
+        "Contabilidad general y servicios de asesoría financiera",
+        "Contabilidad de costos y análisis de costos de producción",
+        "Contabilidad de inventarios de materias primas, semielaborados y productos terminados",
+        "Preparación de estados financieros e informes de gestión",
+        "Análisis de presupuesto, flujo de caja y rentabilidad",
+        "Procesos contables y fiscales de exportación e importación",
+        "Procesos de devolución de IVA y aplicaciones de incentivos",
+        "Nóminas, seguridad social y procesos de RR. HH.",
+        "Planificación fiscal y cumplimiento normativo",
+        "Auditoría independiente y apoyo en informes financieros para instituciones financieras"
+      ],
+      "experience": "Con la experiencia adquirida al servir a numerosas empresas del sector de producción, seguimos de cerca las necesidades del sector y trabajamos como socio de confianza con informes precisos, gestión eficaz de costos y sólida planificación financiera.",
+      "goal": "Nuestro objetivo no es solo garantizar que las empresas manufactureras cumplan sus obligaciones legales, sino crear una asociación a largo plazo que apoye la toma de decisiones con datos financieros correctos, aumente la eficiencia y contribuya al crecimiento sostenible."
+    }
   }
 }

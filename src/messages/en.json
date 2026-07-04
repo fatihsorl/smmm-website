@@ -124,5 +124,50 @@
     "contact": "Contact",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul",
     "copyright": "All rights reserved."
+  },
+  "expertise": {
+    "title": "Our Areas of Expertise",
+    "subtitle": "We address financial management, accounting, and tax processes in the maritime and manufacturing sectors with sector-specific expertise.",
+    "maritimeLogosLabel": "Maritime references",
+    "productionLogosLabel": "Manufacturing references",
+    "maritime": {
+      "contentTitle": "Financial Advisory and Consulting Specialized for the Maritime Sector",
+      "intro1": "International shipping involves sector-specific dynamics in financial management, accounting, tax, and payroll processes. Sound financial management in ship operations and broking affects not only legal compliance but also sustainable growth and competitiveness.",
+      "intro2": "Our office provides sector-specific financial advisory and consulting to ship operators, broking companies, and maritime businesses operating in international waters.",
+      "servicesIntro": "Our services include:",
+      "services": [
+        "Financial advisory and general accounting services",
+        "Financial reporting in line with national and international standards",
+        "Management reports, budgeting, and cash flow planning",
+        "Foreign currency transactions and exchange rate accounting",
+        "Tax planning, declaration processes, and regulatory compliance",
+        "Payroll, social security, and HR processes for crew and office staff",
+        "Internal control, financial analysis, and management consulting",
+        "Independent audit and financial reporting support for financial institutions"
+      ],
+      "approach": "Our approach goes beyond fulfilling legal obligations. We work with a consulting mindset that strengthens financial performance, anticipates risks, and supports strategic decision-making.",
+      "experience": "Thanks to our experience with numerous companies in the maritime sector, we offer reliable and sustainable solutions and aim to be a strong financial partner on your journey in the global market.",
+      "quote": "Experience sets the course in maritime; financial confidence comes from the right financial advisory."
+    },
+    "production": {
+      "contentTitle": "Financial Advisory and Consulting Specialized for the Manufacturing Sector",
+      "intro1": "The manufacturing sector has a dynamic structure requiring high expertise in cost accounting, inventory management, raw material and finished goods tracking, export operations, financial planning, and tax applications. For manufacturing businesses, financial advisory is not only about fulfilling legal obligations but also a strategic management function that increases efficiency and competitiveness.",
+      "intro2": "Our office provides sector-specific financial advisory and consulting to manufacturing companies operating in metal, pipe fittings, machinery, production, and industrial fields. We analyze the financial impact of production processes to help businesses make sound financial decisions and support sustainable growth.",
+      "servicesIntro": "Our services include:",
+      "services": [
+        "General accounting and financial advisory services",
+        "Cost accounting and production cost analysis",
+        "Accounting for raw materials, semi-finished and finished goods inventory",
+        "Preparation of financial statements and management reporting",
+        "Budget, cash flow, and profitability analysis",
+        "Accounting and tax processes for export and import operations",
+        "VAT refund processes and incentive applications",
+        "Payroll, social security, and HR processes",
+        "Tax planning and regulatory compliance",
+        "Independent audit and financial reporting support for financial institutions"
+      ],
+      "experience": "With our experience serving many businesses in the manufacturing sector, we closely follow industry needs and work as a trusted solution partner with accurate reporting, effective cost management, and strong financial planning.",
+      "goal": "Our goal is not only to ensure manufacturing businesses fulfill their legal obligations, but to build a long-term partnership that supports decision-making with accurate financial data, increases efficiency, and contributes to sustainable growth."
+    }
   }
 }

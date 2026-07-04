@@ -16,6 +16,86 @@ export type Service = {
 
 export const services: Service[] = [
   {
+    slug: "sirket-acilisleri",
+    title: "Şirket Açılışı",
+    description:
+      "Firmanızı açmanız için isterseniz yol gösteriyor, isterseniz de sizin için bu işlemleri yapıyoruz.",
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1800&q=80",
+    details: [
+      "Limited, anonim ve şahıs şirketi kuruluş süreçleri",
+      "Ticaret sicili, vergi dairesi ve SGK işlemleri",
+      "Mükellefiyet açılışı ve faaliyete başlama desteği",
+    ],
+    seoTitle: "Şirket Açılışı | Kuruluş ve Mükellefiyet İşlemleri",
+    seoDescription:
+      "Limited, anonim ve şahıs şirketi kuruluşu, ticaret sicili, vergi dairesi, SGK ve mükellefiyet açılışı için profesyonel danışmanlık ve işlem takibi.",
+    intro:
+      "Şirket açılışı, doğru yapılandırıldığında işletmenizin tüm mali süreçlerinin sağlıklı başlamasını sağlar. Soral Danışmanlık olarak kuruluş aşamasında yol gösteriyor veya tüm resmi işlemleri sizin adınıza yürütüyoruz.",
+    sections: [
+      {
+        title: "Kuruluş Sürecinde Yol Gösterim veya Tam Hizmet",
+        paragraphs: [
+          "Yeni bir şirket kurarken şirket türü seçimi, ortaklık yapısı, sermaye planlaması ve faaliyet konusu gibi kararlar uzun vadeli etkiler taşır. İsterseniz bu adımlarda size rehberlik ediyor, isterseniz kuruluş sürecinin tamamını sizin için yönetiyoruz.",
+          "Her iki modelde de amacımız, şirketinizin mevzuata uygun, eksiksiz ve zamanında faaliyete geçmesini sağlamaktır.",
+        ],
+      },
+      {
+        title: "Resmi Kurum İşlemleri ve Mükellefiyet Açılışı",
+        paragraphs: [
+          "Ticaret sicili tescili, vergi dairesi kaydı, SGK işlemleri ve diğer resmi başvurular doğru belge ve doğru sırayla tamamlanmalıdır. Eksik veya hatalı adımlar kuruluş sürecini uzatabilir.",
+          "Tüm kurum süreçlerini planlı şekilde takip ediyor, mükellefiyet açılışını tamamlayarak şirketinizin operasyonel faaliyetlerine güvenle başlamasına destek oluyoruz.",
+        ],
+      },
+    ],
+    benefits: [
+      "Kuruluş sürecinde zaman kaybını azaltır.",
+      "Resmi işlemlerin eksiksiz tamamlanmasını sağlar.",
+      "Doğru şirket yapısı seçiminde rehberlik sunar.",
+      "Faaliyete başlangıç sürecini kolaylaştırır.",
+    ],
+  },
+  {
+    slug: "gib-isbirlikleri",
+    title: "GIB İşbirlikleri",
+    description:
+      "Gelir İdaresi Başkanlığında yapılması gereken tüm işlemler tarafımızca gerçekleştirilebilmektedir.",
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+    details: [
+      "Vergi dairesi mükellefiyet ve bildirim işlemleri",
+      "Beyanname, tahakkuk ve ödeme süreçlerinin takibi",
+      "GIB portal ve resmi başvuru işlemleri",
+    ],
+    seoTitle: "GIB İşbirlikleri | Gelir İdaresi Başkanlığı İşlem Takibi",
+    seoDescription:
+      "Gelir İdaresi Başkanlığında yapılması gereken mükellefiyet, beyanname, tahakkuk, ödeme ve resmi başvuru işlemleri için profesyonel takip ve danışmanlık.",
+    intro:
+      "Gelir İdaresi Başkanlığı süreçleri, işletmelerin vergi yükümlülüklerini doğru ve zamanında yerine getirmesi açısından kritik öneme sahiptir. Soral Danışmanlık olarak GIB nezdinde yürütülmesi gereken işlemleri sizin adınıza takip ediyor ve tamamlıyoruz.",
+    sections: [
+      {
+        title: "GIB Nezdinde Resmi İşlem Takibi",
+        paragraphs: [
+          "Mükellefiyet işlemleri, adres ve faaliyet değişiklikleri, beyanname süreçleri, tahakkuk ve ödeme takipleri gibi birçok işlem Gelir İdaresi Başkanlığı üzerinden yürütülür. Bu süreçlerin doğru belge ve doğru zamanlama ile tamamlanması gerekir.",
+          "GIB işbirlikleri kapsamında resmi portal işlemlerini, başvuruları ve kurum nezdindeki takip adımlarını sizin adınıza yürütüyoruz.",
+        ],
+      },
+      {
+        title: "Beyan ve Bildirim Süreçlerinde Destek",
+        paragraphs: [
+          "Dönemsel beyannameler, bildirimler ve resmi yazışmaların zamanında tamamlanması işletmeler için hem operasyonel hem de yasal açıdan önemlidir. Eksik veya geciken işlemler ceza ve faiz riski doğurabilir.",
+          "Süreçleri düzenli takip ederek GIB tarafında yapılması gereken işlemlerin kontrollü şekilde ilerlemesini sağlıyoruz.",
+        ],
+      },
+    ],
+    benefits: [
+      "GIB işlemlerinde zaman kaybını azaltır.",
+      "Resmi süreçlerin eksiksiz tamamlanmasına destek olur.",
+      "Beyan ve bildirim takibini düzenli hale getirir.",
+      "Vergi dairesi işlemlerinde profesyonel temsil sağlar.",
+    ],
+  },
+  {
     slug: "raporlama-hizmetleri",
     title: "Raporlama Hizmetleri",
     description:

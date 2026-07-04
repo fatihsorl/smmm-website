@@ -34,7 +34,7 @@ const Footer = () => {
 
     window.scrollTo({
       top: Math.max(0, offsetPosition),
-      behavior: "smooth",
+      behavior: window.innerWidth >= 768 ? "smooth" : "instant",
     });
   };
 

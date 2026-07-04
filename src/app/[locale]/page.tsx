@@ -21,35 +21,111 @@ const partnerLogos = [
   { src: "/partner/partner-turkiye-gov-tr.jpg", alt: "Türkiye.gov.tr" },
 ];
 
-function AnimatedStatValue({ value }: { value: string }) {
-  const parsedValue = value.match(/^([^0-9]*)(\d+)(.*)$/);
-  const prefix = parsedValue?.[1] ?? "";
-  const target = Number(parsedValue?.[2] ?? 0);
-  const suffix = parsedValue?.[3] ?? "";
-  const [displayValue, setDisplayValue] = useState(`${prefix}0${suffix}`);
+const maritimeLogos = [
+  { src: "/referans/server-denizcilik.png", alt: "Server Denizcilik" },
+  { src: "/referans/aquantis-maritime.webp", alt: "Aquantis Maritime" },
+  { src: "/referans/maveks-marina.png", alt: "Maveks Marina" },
+  { src: "/referans/tr-maritime.avif", alt: "TR Maritime" },
+];
 
-  useEffect(() => {
-    const duration = 1800;
-    const startTime = performance.now();
+const productionLogos = [
+  { src: "/referans/eurofit-piping.png", alt: "Eurofit Piping" },
+  { src: "/referans/eurosteel-metal.png", alt: "Eurosteel Metal" },
+];
 
-    const animate = (now: number) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = Math.round(target * easedProgress);
+type ExpertiseBlockProps = {
+  logos: { src: string; alt: string }[];
+  logosLabel: string;
+  contentTitle: string;
+  intro1: string;
+  intro2: string;
+  servicesIntro: string;
+  services: string[];
+  closingParagraphs: string[];
+  quote?: string;
+  className?: string;
+};
 
-      setDisplayValue(`${prefix}${currentValue}${suffix}`);
+function ExpertiseBlock({
+  logos,
+  logosLabel,
+  contentTitle,
+  intro1,
+  intro2,
+  servicesIntro,
+  services,
+  closingParagraphs,
+  quote,
+  className = "",
+}: ExpertiseBlockProps) {
+  return (
+    <div className={className}>
+      <div className="mx-auto max-w-4xl">
+        <div
+          aria-label={logosLabel}
+          className="expertise-logos-static mb-8 flex flex-wrap items-center justify-center gap-4 md:gap-5"
+        >
+          {logos.map((logo) => (
+            <div
+              key={logo.src}
+              className="flex h-16 w-36 items-center justify-center rounded-2xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm md:h-20 md:w-44"
+            >
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                width={160}
+                height={64}
+                className="max-h-full w-auto max-w-full object-contain"
+              />
+            </div>
+          ))}
+        </div>
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-10">
+        <h3 className="mb-5 text-lg font-bold leading-snug text-slate-950 md:text-xl">
+          {contentTitle}
+        </h3>
+        <p className="mb-4 text-sm leading-relaxed text-slate-600">{intro1}</p>
+        <p className="mb-6 text-sm leading-relaxed text-slate-600">{intro2}</p>
 
-    const frame = requestAnimationFrame(animate);
+        <p className="mb-3 text-sm font-bold text-slate-950">{servicesIntro}</p>
+        <ul className="mb-6 grid gap-2.5 md:grid-cols-2">
+          {services.map((service) => (
+            <li
+              key={service}
+              className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600"
+            >
+              <span
+                aria-hidden
+                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+              />
+              {service}
+            </li>
+          ))}
+        </ul>
 
-    return () => cancelAnimationFrame(frame);
-  }, [prefix, suffix, target]);
+        {closingParagraphs.map((paragraph, index) => (
+          <p
+            key={paragraph.slice(0, 32)}
+            className={`text-sm leading-relaxed text-slate-600 ${
+              index === closingParagraphs.length - 1 && !quote
+                ? "mb-0"
+                : "mb-4"
+            } ${index === closingParagraphs.length - 1 && quote ? "mb-8" : ""}`}
+          >
+            {paragraph}
+          </p>
+        ))}
 
-  return <>{displayValue}</>;
+        {quote ? (
+          <blockquote className="border-l-4 border-primary bg-primary/5 px-5 py-4 text-sm font-semibold italic leading-relaxed text-primary md:text-base">
+            &ldquo;{quote}&rdquo;
+          </blockquote>
+        ) : null}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function Home() {
@@ -59,10 +135,9 @@ export default function Home() {
   const tHero = useTranslations("hero");
   const tWhyUs = useTranslations("whyUs");
   const tContact = useTranslations("contact");
-  const tStats = useTranslations("stats");
+  const tExpertise = useTranslations("expertise");
   const locale = useLocale();
   const [activeHeroBackground, setActiveHeroBackground] = useState(0);
-  const [activeMaritimeReference, setActiveMaritimeReference] = useState(0);
   const heroBackgroundSlides = [
     {
       image:
@@ -94,59 +169,8 @@ export default function Home() {
     { src: "/referans/server-denizcilik.png", alt: "Server Denizcilik" },
     { src: "/referans/fatih-otomotiv.png", alt: "Fatih Otomotiv" },
   ];
-  const maritimeReferences = [
-    {
-      name: "Server Denizcilik",
-      logo: "/referans/server-denizcilik.png",
-      image:
-        "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=1600&q=80",
-      sector:
-        "Deniz taşımacılığı ve gemi işletmeciliği alanında faaliyet gösteren yapılar için düzenli finansal takip kritik önem taşır.",
-      support:
-        "Muhasebe kayıtlarının düzenli ilerlemesi, vergi yükümlülüklerinin zamanında takip edilmesi ve raporlama süreçlerinin daha okunabilir hale gelmesi için operasyonlarını kolaylaştırıyoruz. Böylece yönetim tarafında finansal görünürlük artarken, ekiplerin günlük iş yükü azalıyor.",
-    },
-    {
-      name: "Aquantis Maritime",
-      logo: "/referans/aquantis-maritime.webp",
-      image:
-        "https://images.unsplash.com/photo-1773952984178-f91248ce704f?auto=format&fit=crop&w=1600&q=80",
-      sector:
-        "Maritime odaklı şirketlerde farklı para birimleri, operasyon maliyetleri ve sözleşme süreçleri finansal görünürlüğü zorlaştırabilir.",
-      support:
-        "Gelir-gider takibi, dönemsel raporlama ve mevzuata uyum süreçlerini sadeleştirerek yönetimin daha hızlı karar almasına destek oluyoruz. Operasyonel hareketlerin mali karşılığını düzenli takip edilebilir hale getiriyoruz.",
-    },
-    {
-      name: "Maveks Marina",
-      logo: "/referans/maveks-marina.png",
-      image:
-        "https://images.unsplash.com/photo-1770929356190-2bf66b49d18d?auto=format&fit=crop&w=1600&q=80",
-      sector:
-        "Marina işletmelerinde hizmet gelirleri, operasyon giderleri ve personel süreçleri düzenli mali kontrol gerektirir.",
-      support:
-        "Muhasebe, bordro ve finansal raporlama süreçlerini daha sistemli hale getirerek işletmenin mali takibini kolaylaştırıyoruz. Marina operasyonlarında gelir, gider ve personel süreçlerinin düzenli ilerlemesine destek oluyoruz.",
-    },
-    {
-      name: "TR Maritime",
-      logo: "/referans/tr-maritime.avif",
-      image:
-        "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1600&q=80",
-      sector:
-        "Denizcilik sektöründe operasyonel planlama ile finansal kayıtların aynı disiplin içinde takip edilmesi gerekir.",
-      support:
-        "Vergi danışmanlığı, mali kayıt kontrolü ve raporlama süreçlerinde netlik sağlayarak iş yükünü azaltıyoruz. Düzenli kontrol ve anlaşılır raporlarla finansal süreçlerin daha güvenli yönetilmesini sağlıyoruz.",
-    },
-  ];
-  const showPreviousMaritimeReference = () => {
-    setActiveMaritimeReference(
-      (current) =>
-        (current - 1 + maritimeReferences.length) % maritimeReferences.length,
-    );
-  };
-  const showNextMaritimeReference = () => {
-    setActiveMaritimeReference(
-      (current) => (current + 1) % maritimeReferences.length,
-    );
-  };
+  const maritimeServices = tExpertise.raw("maritime.services") as string[];
+  const productionServices = tExpertise.raw("production.services") as string[];
 
   // Mouse throttling için - sadece desktop'ta çalışsın
   const lastMouseUpdate = useRef(0);
@@ -188,7 +212,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkIsDesktop);
   }, []);
 
-  // iOS Safari için viewport height fix
+  // iOS Safari için viewport height fix - sadece orientation değişiminde
   useEffect(() => {
     const setVH = () => {
       const vh = window.innerHeight * 0.01;
@@ -196,11 +220,9 @@ export default function Home() {
     };
 
     setVH();
-    window.addEventListener("resize", setVH, { passive: true });
     window.addEventListener("orientationchange", setVH, { passive: true });
 
     return () => {
-      window.removeEventListener("resize", setVH);
       window.removeEventListener("orientationchange", setVH);
     };
   }, []);
@@ -234,8 +256,12 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="hero"
-        className="relative overflow-hidden bg-slate-950 min-h-[100dvh] md:min-h-[100vh] flex items-center pt-32 pb-32"
-        style={{ minHeight: "calc(var(--vh, 1vh) * 100)" }}
+        className="relative overflow-hidden bg-slate-950 min-h-[100dvh] md:min-h-[100vh] flex flex-col pt-32 pb-24 md:pb-28"
+        style={
+          isDesktop
+            ? { minHeight: "calc(var(--vh, 1vh) * 100)" }
+            : undefined
+        }
         {...(isDesktop && {
           onMouseEnter: () => setIsHoveringHero(true),
           onMouseMove: (e: React.MouseEvent) => {
@@ -279,7 +305,7 @@ export default function Home() {
           ))}
           <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(2,6,23,0.84)_0%,rgba(15,23,42,0.66)_45%,rgba(15,23,42,0.34)_100%)]"></div>
           <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_28%_35%,rgba(59,130,246,0.18),transparent_36%)]"></div>
-          <div className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-white to-transparent"></div>
+          <div className="absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-white to-transparent md:h-28"></div>
         </div>
 
         {/* Mouse-following spotlight cursor - sadece desktop'ta */}
@@ -331,146 +357,85 @@ export default function Home() {
           </>
         )}
 
-        <div className="container relative z-30">
-          <div className="mx-auto max-w-7xl">
-            {/* Left Column - Text Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="max-w-4xl text-center lg:text-left"
-            >
-              <h1 className="max-w-4xl text-2xl font-bold tracking-tight text-white mb-6 leading-tight mx-auto lg:mx-0">
-                {tHero("title")}
-              </h1>
-              <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto lg:mx-0">
-                {tHero("subtitle")}
-              </p>
+        <div className="container relative z-30 flex flex-1 items-center pb-8">
+          <motion.div
+            {...(isDesktop
+              ? {
+                  initial: { opacity: 0, y: 20 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { duration: 0.6, ease: "easeOut" },
+                }
+              : {})}
+            className="max-w-xl text-center lg:text-left"
+          >
+            <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-white mb-6 leading-tight mx-auto lg:mx-0">
+              {tHero("title")}
+            </h1>
+            <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto lg:mx-0">
+              {tHero("subtitle")}
+            </p>
 
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <Link
-                  href="#iletisim"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const element = document.getElementById("iletisim");
-                    if (element) {
-                      const header = document.querySelector("header");
-                      const headerHeight = header
-                        ? header.offsetHeight
-                        : window.innerWidth >= 768
-                          ? 140
-                          : 120;
-                      const headerOffset = headerHeight + 20;
-                      const elementPosition =
-                        element.getBoundingClientRect().top;
-                      const offsetPosition =
-                        elementPosition + window.pageYOffset - headerOffset;
-                      window.scrollTo({
-                        top: Math.max(0, offsetPosition),
-                        behavior: "smooth",
-                      });
-                    }
-                  }}
-                  className="bg-white text-slate-950 text-sm px-6 py-3 rounded-full font-bold shadow-2xl shadow-black/20 transition-all transform hover:-translate-y-1 hover:bg-white/90"
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              <Link
+                href="#iletisim"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById("iletisim");
+                  if (element) {
+                    const header = document.querySelector("header");
+                    const headerHeight = header
+                      ? header.offsetHeight
+                      : window.innerWidth >= 768
+                        ? 140
+                        : 120;
+                    const headerOffset = headerHeight + 20;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition =
+                      elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: Math.max(0, offsetPosition),
+                      behavior:
+                        window.innerWidth >= 768 ? "smooth" : "instant",
+                    });
+                  }
+                }}
+                className="bg-white text-slate-950 text-sm px-6 py-3 rounded-full font-bold shadow-2xl shadow-black/20 transition-all transform hover:-translate-y-1 hover:bg-white/90"
+              >
+                {tHero("contactButton")}
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          {...(isDesktop
+            ? {
+                initial: { opacity: 0, y: 12 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0.45, delay: 0.25, ease: "easeOut" },
+              }
+            : {})}
+          className="absolute bottom-0 left-1/2 z-30 w-screen max-w-[100vw] -translate-x-1/2"
+        >
+          <div className="w-full overflow-hidden rounded-none bg-white py-4 md:py-5">
+            <div className="logo-marquee-track flex w-max items-center gap-1">
+              {[...referenceLogos, ...referenceLogos].map((logo, index) => (
+                <div
+                  key={`${logo.src}-${index}`}
+                  className="flex h-12 w-32 shrink-0 items-center justify-center md:h-14 md:w-36"
                 >
-                  {tHero("contactButton")}
-                </Link>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
-              className="mt-22 overflow-hidden rounded-2xl bg-white md:px-4 md:py-6 px-2 py-4 backdrop-blur-2xl [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)] md:mt-18"
-            >
-              <div className="logo-marquee-track flex w-max items-center gap-1">
-                {[...referenceLogos, ...referenceLogos].map((logo, index) => (
-                  <div
-                    key={`${logo.src}-${index}`}
-                    className="flex md:h-14 h-12 md:w-36 w-32 shrink-0 items-center justify-center"
-                  >
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      width={140}
-                      height={60}
-                      className="h-16 w-22 object-contain"
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="relative z-40 -mt-24 bg-transparent pb-16">
-        <div className="container">
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-sm  bg-white shadow-[0_35px_100px_-55px_rgba(15,23,42,0.45)]">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="grid gap-0 lg:grid-cols-[0.82fr_1.18fr]"
-            >
-              <div className="bg-slate-950 p-6 text-white md:p-8">
-                <div className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-sky-200/70">
-                  Soral Danışmanlık
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={140}
+                    height={60}
+                    className="h-16 w-22 object-contain"
+                  />
                 </div>
-                <h2 className="mb-4 text-2xl font-bold tracking-tight">
-                  {tStats("title")}
-                </h2>
-                <p className="max-w-md text-sm leading-relaxed text-white/65">
-                  {tStats("subtitle")}
-                </p>
-                <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="text-2xl font-bold text-white">
-                    <AnimatedStatValue value={tStats("years.value")} />
-                  </div>
-                  <div className="mt-1 text-sm font-medium text-white/60">
-                    {tStats("years.label")}
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-px bg-slate-200 sm:grid-cols-2">
-                {[
-                  {
-                    value: tStats("taxpayers.value"),
-                    label: tStats("taxpayers.label"),
-                  },
-                  {
-                    value: tStats("companies.value"),
-                    label: tStats("companies.label"),
-                  },
-                  {
-                    value: tStats("customServices.value"),
-                    label: tStats("customServices.label"),
-                  },
-                  {
-                    value: tStats("satisfaction.value"),
-                    label: tStats("satisfaction.label"),
-                  },
-                ].map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="bg-white p-6 transition-colors hover:bg-slate-50 md:p-8"
-                  >
-                    <div className="mb-3 h-1 w-8 rounded-full bg-primary/70" />
-                    <div className="text-2xl font-bold text-slate-950">
-                      <AnimatedStatValue value={metric.value} />
-                    </div>
-                    <div className="mt-2 text-sm font-medium text-slate-500">
-                      {metric.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Services Section */}
@@ -480,10 +445,14 @@ export default function Home() {
       >
         <div className="container">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            {...(isDesktop
+              ? {
+                  initial: { opacity: 0 },
+                  whileInView: { opacity: 1 },
+                  viewport: { once: true, margin: "-100px" },
+                  transition: { duration: 0.3, ease: "easeOut" },
+                }
+              : {})}
             className="mx-auto mb-14 max-w-3xl text-center"
           >
             <h2 className="text-2xl font-bold tracking-tight text-slate-950 mb-4">
@@ -499,15 +468,19 @@ export default function Home() {
             {services.map((service, index) => (
               <motion.article
                 key={service.title}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{
-                  duration: 0.25,
-                  delay: Math.min(index * 0.04, 0.24),
-                  ease: "easeOut",
-                }}
-                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10"
+                {...(isDesktop
+                  ? {
+                      initial: { opacity: 0, y: 14 },
+                      whileInView: { opacity: 1, y: 0 },
+                      viewport: { once: true, margin: "-100px" },
+                      transition: {
+                        duration: 0.25,
+                        delay: Math.min(index * 0.04, 0.24),
+                        ease: "easeOut",
+                      },
+                    }
+                  : {})}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 md:hover:-translate-y-1 md:hover:border-primary/20 md:hover:shadow-xl md:hover:shadow-primary/10"
               >
                 <div
                   className="h-24 bg-cover bg-center"
@@ -515,7 +488,7 @@ export default function Home() {
                 >
                   <div className="h-full w-full bg-gradient-to-br from-slate-950/65 via-slate-950/35 to-primary/20" />
                 </div>
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <div className="mb-3 flex items-center justify-between gap-4">
                     <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-primary">
                       {String(index + 1).padStart(2, "0")}
@@ -525,26 +498,28 @@ export default function Home() {
                   <h3 className="mb-2 text-base font-bold text-slate-950">
                     {service.title}
                   </h3>
-                  <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-slate-600">
+                  <p className="mb-5 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                     {service.description}
                   </p>
-                  <ul className="mb-5 space-y-1.5">
-                    {service.details.slice(0, 2).map((detail) => (
-                      <li
-                        key={detail}
-                        className="flex gap-2.5 text-sm leading-relaxed text-slate-600"
-                      >
-                        <span className="mt-2 h-2 w-2 shrink-0 rounded-full border border-primary/20 bg-primary" />
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
                   <Link
                     href={`/${locale}/hizmetler/${service.slug}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3.5 py-2 text-sm font-bold text-slate-800 transition-all hover:border-primary/30 hover:bg-blue-200"
+                    className="btn-primary mt-auto w-full gap-2 px-5 py-2.5 text-sm"
                   >
                     Detayları incele
-                    <span aria-hidden>→</span>
+                    <svg
+                      aria-hidden="true"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.4}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                      />
+                    </svg>
                   </Link>
                 </div>
               </motion.article>
@@ -553,156 +528,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Maritime Expertise Section */}
+      {/* Expertise Section */}
       <section
-        className="relative overflow-hidden bg-[#f4f9ff]"
-        style={{ minHeight: "calc(100vh - 180px)" }}
+        id="uzmanlik"
+        className="section relative overflow-hidden bg-[#f4f9ff]"
       >
-        <div className="absolute inset-y-0 right-0 hidden w-[60vw] lg:block">
-          {maritimeReferences.map((reference, index) => (
-            <motion.div
-              key={reference.name}
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${reference.image})` }}
-              animate={{
-                opacity: activeMaritimeReference === index ? 1 : 0,
-              }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          ))}
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#f4f9ff_0%,rgba(244,249,255,0.9)_17%,rgba(244,249,255,0.42)_40%,rgba(244,249,255,0)_70%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0)_48%,rgba(15,23,42,0.3)_100%)]" />
-        </div>
+        <div className="pointer-events-none absolute -right-20 top-0 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-20 bottom-0 h-64 w-64 rounded-full bg-sky-200/50 blur-3xl" />
 
         <div className="container relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="relative"
-            style={{ minHeight: "calc(100vh - 180px)" }}
+            {...(isDesktop
+              ? {
+                  initial: { opacity: 0, y: 16 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-100px" },
+                  transition: { duration: 0.35, ease: "easeOut" },
+                }
+              : {})}
+            className="mx-auto mb-14 max-w-3xl text-center"
           >
-            <div className="absolute right-0 top-10 z-30 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={showPreviousMaritimeReference}
-                aria-label="Önceki denizcilik referansı"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/75 text-slate-900 shadow-sm backdrop-blur-md transition-all hover:-translate-x-0.5 hover:bg-white hover:text-primary"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.4}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={showNextMaritimeReference}
-                aria-label="Sonraki denizcilik referansı"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/75 text-slate-900 shadow-sm backdrop-blur-md transition-all hover:translate-x-0.5 hover:bg-white hover:text-primary"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.4}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="grid lg:grid-cols-[0.48fr_0.52fr]"
-              style={{ minHeight: "calc(100vh - 180px)" }}
-            >
-              <div
-                className="relative flex flex-col py-10"
-                style={{ minHeight: "calc(100vh - 180px)" }}
-              >
-                <div>
-                  <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
-                    Uzmanlık Alanımız
-                  </h2>
-                  <p className="max-w-md text-sm leading-relaxed text-slate-600">
-                    Denizcilik sektöründe finansal süreçleri, raporlama düzenini
-                    ve vergi takibini sektöre özel ihtiyaçlarla ele alıyoruz.
-                  </p>
-                </div>
-
-                <div className="flex flex-1 flex-col justify-center py-8">
-                  <motion.div
-                    key={activeMaritimeReference}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                  >
-                    <Image
-                      src={maritimeReferences[activeMaritimeReference].logo}
-                      alt={maritimeReferences[activeMaritimeReference].name}
-                      width={180}
-                      height={72}
-                      className="mb-7 h-14 w-44 object-contain object-left"
-                    />
-                    <h2 className="mb-4 max-w-xl text-2xl font-bold tracking-tight text-slate-950">
-                      {maritimeReferences[activeMaritimeReference].name}
-                    </h2>
-                    <p className="mb-4 max-w-xl text-base leading-relaxed text-slate-700">
-                      {maritimeReferences[activeMaritimeReference].sector}
-                    </p>
-                    <p className="max-w-xl text-base leading-relaxed text-slate-600">
-                      {maritimeReferences[activeMaritimeReference].support}
-                    </p>
-                  </motion.div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  {maritimeReferences.map((reference, index) => (
-                    <button
-                      key={reference.name}
-                      type="button"
-                      onClick={() => setActiveMaritimeReference(index)}
-                      aria-label={`${reference.name} referansı`}
-                      className={`h-3.5 rounded-full transition-all duration-300 ${
-                        activeMaritimeReference === index
-                          ? "w-16 bg-[#21579f]"
-                          : "w-3.5 bg-slate-300 hover:bg-slate-400"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="relative min-h-[320px] overflow-hidden rounded-[1.5rem] lg:hidden">
-                {maritimeReferences.map((reference, index) => (
-                  <motion.div
-                    key={reference.name}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${reference.image})` }}
-                    animate={{
-                      opacity: activeMaritimeReference === index ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  />
-                ))}
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_45%,rgba(255,255,255,0.75)_100%)]" />
-              </div>
-            </div>
+            <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
+              {tExpertise("title")}
+            </h2>
+            <p className="text-sm leading-relaxed text-slate-600">
+              {tExpertise("subtitle")}
+            </p>
           </motion.div>
+
+          <ExpertiseBlock
+            logos={maritimeLogos}
+            logosLabel={tExpertise("maritimeLogosLabel")}
+            contentTitle={tExpertise("maritime.contentTitle")}
+            intro1={tExpertise("maritime.intro1")}
+            intro2={tExpertise("maritime.intro2")}
+            servicesIntro={tExpertise("maritime.servicesIntro")}
+            services={maritimeServices}
+            closingParagraphs={[
+              tExpertise("maritime.approach"),
+              tExpertise("maritime.experience"),
+            ]}
+            quote={tExpertise("maritime.quote")}
+            className="mb-16"
+          />
+
+          <ExpertiseBlock
+            logos={productionLogos}
+            logosLabel={tExpertise("productionLogosLabel")}
+            contentTitle={tExpertise("production.contentTitle")}
+            intro1={tExpertise("production.intro1")}
+            intro2={tExpertise("production.intro2")}
+            servicesIntro={tExpertise("production.servicesIntro")}
+            services={productionServices}
+            closingParagraphs={[
+              tExpertise("production.experience"),
+              tExpertise("production.goal"),
+            ]}
+          />
         </div>
       </section>
 
@@ -710,10 +592,14 @@ export default function Home() {
       <section id="neden-biz" className="section bg-white">
         <div className="container">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            {...(isDesktop
+              ? {
+                  initial: { opacity: 0, y: 16 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-100px" },
+                  transition: { duration: 0.35, ease: "easeOut" },
+                }
+              : {})}
             className="mx-auto max-w-6xl"
           >
             <div className="mb-14 text-center">
@@ -803,10 +689,14 @@ export default function Home() {
 
         <div className="container relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            {...(isDesktop
+              ? {
+                  initial: { opacity: 0, y: 12 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-100px" },
+                  transition: { duration: 0.3, ease: "easeOut" },
+                }
+              : {})}
             className="mx-auto max-w-3xl text-center"
           >
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-primary">

@@ -39,8 +39,8 @@ html {
   scroll-behavior: auto;
 }
 
-/* Smooth scroll - tüm cihazlarda aktif */
-@media (prefers-reduced-motion: no-preference) {
+/* Smooth scroll - sadece masaüstünde */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
   html {
     scroll-behavior: smooth;
   }
@@ -204,6 +204,11 @@ section[id] {
     animation: logo-marquee 32s linear infinite;
   }
 
+  .expertise-logos-static,
+  .expertise-logos-static * {
+    animation: none !important;
+  }
+
   .logo-marquee-track:hover {
     animation-play-state: paused;
   }
@@ -267,9 +272,7 @@ section[id] {
 
     /* iOS Safari viewport fix */
     body {
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      min-height: calc(var(--vh, 1vh) * 100);
+      min-height: 100dvh;
     }
 
     /* iOS Safari scroll bounce fix */
@@ -277,44 +280,7 @@ section[id] {
     body {
       overscroll-behavior: none;
       -webkit-overflow-scrolling: touch;
-    }
-
-    /* Footer scroll fix */
-    footer {
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-    }
-
-    /* Mobil scroll performans optimizasyonu */
-    main {
-      will-change: scroll-position;
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-    }
-
-    /* Framer Motion animasyonları için GPU hızlandırması */
-    [data-framer-component] {
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    /* Scroll sırasında repaint'leri azalt */
-    section {
-      contain: layout style paint;
-    }
-
-    /* Mobilde motion animasyonlarını optimize et */
-    [data-framer-name] {
-      will-change: opacity;
-    }
-
-    /* Mobilde y animasyonlarını devre dışı bırak */
-    @media (max-width: 768px) {
-      [data-framer-name] {
-        transform: none !important;
-      }
+      scroll-behavior: auto;
     }
 
     /* Splash screen için mobil optimizasyonu */

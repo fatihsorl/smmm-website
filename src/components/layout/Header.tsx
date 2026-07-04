@@ -62,7 +62,7 @@ const Header = () => {
 
       window.scrollTo({
         top: Math.max(0, offsetPosition),
-        behavior: "smooth",
+        behavior: window.innerWidth >= 768 ? "smooth" : "instant",
       });
 
       return true;
@@ -104,7 +104,7 @@ const Header = () => {
               e.preventDefault();
               window.scrollTo({
                 top: 0,
-                behavior: "smooth",
+                behavior: window.innerWidth >= 768 ? "smooth" : "instant",
               });
             }}
             className="flex items-center gap-3 select-none"
