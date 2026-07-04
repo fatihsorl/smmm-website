@@ -1,46 +1,76 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
+import { services } from "@/data/services";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
+  const locale = useLocale();
 
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault();
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string,
+  ) => {
     const element = document.getElementById(targetId);
-    if (element) {
-      const header = document.querySelector('header');
-      const headerHeight = header ? header.offsetHeight : (window.innerWidth >= 768 ? 140 : 120);
-      const headerOffset = headerHeight + 20;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({
-        top: Math.max(0, offsetPosition),
-        behavior: "smooth",
-      });
+
+    if (!element) {
+      return;
     }
+
+    e.preventDefault();
+    const header = document.querySelector("header");
+    const headerHeight = header
+      ? header.offsetHeight
+      : window.innerWidth >= 768
+        ? 140
+        : 120;
+    const headerOffset = headerHeight + 20;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: Math.max(0, offsetPosition),
+      behavior: "smooth",
+    });
   };
 
   return (
-    <footer className="bg-dark text-white transform-gpu">
-      <div className="container py-12 border-t border-gray-800 ios-scroll-fix">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="w-full bg-slate-950 text-white transform-gpu">
+      <div className="w-full px-5 py-12 sm:px-8 lg:px-12 xl:px-16">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_1.2fr_1.25fr]">
           <div>
-            <h3 className="text-xl font-bold mb-4">{t("companyName")}</h3>
-            <p className="text-gray-300 mb-4">{t("description")}</p>
-            <div className="flex gap-4">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-11 w-11 overflow-hidden rounded-xl bg-white ring-1 ring-white/15">
+                <Image
+                  src="/logo.png"
+                  alt="Soral Danışmanlık SMMM Logo"
+                  width={44}
+                  height={44}
+                  className="h-full w-full object-cover"
+                />
+              </span>
+              <h3 className="text-base font-bold text-white">
+                {t("companyName")}
+              </h3>
+            </div>
+            <p className="text-sm leading-relaxed text-white/60 mb-5">
+              {t("description")}
+            </p>
+            <div className="flex gap-3">
               <a
                 href="https://www.instagram.com/soraldanismanlik/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/8 text-white ring-1 ring-white/10 transition-colors hover:bg-primary hover:text-white"
+                aria-label="Soral Danışmanlık Instagram"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -50,37 +80,77 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
-            <h3 className="text-xl font-bold mb-4">{t("menu")}</h3>
-            <ul className="flex flex-col gap-2">
-              <li>
-                <Link
-                  href="#hizmetler"
-                  onClick={(e) => handleSmoothScroll(e, "hizmetler")}
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  {tNav("services")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#neden-biz"
-                  onClick={(e) => handleSmoothScroll(e, "neden-biz")}
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  {tNav("whyUs")}
-                </Link>
-              </li>
-            </ul>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-6 md:contents">
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-white/45 mb-4">
+                {t("menu")}
+              </h3>
+              <ul className="flex flex-col gap-3 text-sm">
+                <li>
+                  <Link
+                    href={`/${locale}`}
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    Ana Sayfa
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/#hizmetler`}
+                    onClick={(e) => handleSmoothScroll(e, "hizmetler")}
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    {tNav("services")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/#neden-biz`}
+                    onClick={(e) => handleSmoothScroll(e, "neden-biz")}
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    {tNav("whyUs")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${locale}/iletisim`}
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    {tNav("contact")}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-white/45 mb-4">
+                Hizmetler
+              </h3>
+              <ul className="flex flex-col gap-3 text-sm">
+                {services.map((service) => (
+                  <li key={service.slug}>
+                    <Link
+                      href={`/${locale}/hizmetler/${service.slug}`}
+                      className="text-white/70 hover:text-white transition-colors"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div>
-            <h3 className="text-xl font-bold mb-4">{t("contact")}</h3>
-            <ul className="flex flex-col gap-2 text-gray-300">
+            <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-white/45 mb-4">
+              {t("contact")}
+            </h3>
+            <ul className="flex flex-col gap-3 text-sm text-white/65">
               <li className="flex items-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 mr-2 text-primary"
+                  className="h-5 w-5 mr-3 text-primary shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -102,7 +172,7 @@ const Footer = () => {
               <li className="flex items-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 mr-2 text-primary"
+                  className="h-5 w-5 mr-3 text-primary shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -124,7 +194,7 @@ const Footer = () => {
               <li className="flex items-start">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 mr-2 text-primary flex-shrink-0 mt-1"
+                  className="h-5 w-5 mr-3 text-primary flex-shrink-0 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -142,7 +212,7 @@ const Footer = () => {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span className="hover:text-white transition-colors">
+                <span className="leading-relaxed">
                   {t("address")}
                 </span>
               </li>
@@ -150,7 +220,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <div className="border-t border-white/10 mt-12 pt-6 text-center text-sm text-white/45">
           <p>
             &copy; {currentYear} {t("companyName")} {t("copyright")}
           </p>

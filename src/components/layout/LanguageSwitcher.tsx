@@ -27,10 +27,10 @@ const LanguageSwitcher = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center gap-2 md:px-3 px-2 py-2 rounded-md bg-gray-800/80 dark:bg-gray-700/80 hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-white border border-gray-600/50 dark:border-gray-500/50 backdrop-blur-sm"
+        className="flex items-center justify-center gap-2 md:px-3 px-2 py-2 rounded-full bg-white hover:bg-slate-50 transition-colors text-slate-700 border border-slate-200 shadow-sm backdrop-blur-sm"
         aria-label="Dil seçimi"
       >
-        <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-gray-600/30 dark:border-gray-500/30">
+        <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-slate-200">
           <FlagIcon locale={locale} className="w-full h-full object-cover" />
         </span>
         <span className="hidden md:inline text-sm font-medium">
@@ -60,19 +60,19 @@ const LanguageSwitcher = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50 min-w-[140px]"
+            className="absolute top-full mt-2 right-0 bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200 overflow-hidden z-50 min-w-[140px]"
           >
             {locales.map((loc) => (
               <button
                 key={loc}
                 onClick={() => handleLocaleChange(loc)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors ${
                   loc === locale
-                    ? "bg-primary/10 text-primary dark:bg-primary/20"
-                    : "text-gray-700 dark:text-gray-200"
+                    ? "bg-primary/10 text-primary"
+                    : "text-slate-700"
                 }`}
               >
-                <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-gray-300 dark:border-gray-600">
+                <span className="w-6 h-4 md:w-5 md:h-4 flex-shrink-0 rounded overflow-hidden border border-slate-200">
                   <FlagIcon locale={loc} className="w-full h-full object-cover" />
                 </span>
                 <span className="hidden md:inline text-sm font-medium">

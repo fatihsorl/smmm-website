@@ -1,15 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations("navigation");
+  const locale = useLocale();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 24);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,38 +39,43 @@ const Header = () => {
   const handleSmoothScroll = (
     e: React.MouseEvent<HTMLAnchorElement>,
     targetId: string,
-    closeMenu: boolean = false
+    closeMenu: boolean = false,
   ) => {
+    const scrollToElement = () => {
+      const element = document.getElementById(targetId);
+      if (!element) {
+        return false;
+      }
+
+      // Header yüksekliğini dinamik olarak al
+      const header = document.querySelector("header");
+      const headerHeight = header
+        ? header.offsetHeight
+        : window.innerWidth >= 768
+          ? 140
+          : 120;
+      const headerOffset = headerHeight + 20; // Ekstra 20px boşluk
+
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+
+      return true;
+    };
+
+    if (!scrollToElement()) {
+      return;
+    }
+
     e.preventDefault();
     e.stopPropagation();
 
-    // Scroll işlemini hemen başlat
-    const scrollToElement = () => {
-      const element = document.getElementById(targetId);
-      if (element) {
-        // Header yüksekliğini dinamik olarak al
-        const header = document.querySelector("header");
-        const headerHeight = header
-          ? header.offsetHeight
-          : window.innerWidth >= 768
-          ? 140
-          : 120;
-        const headerOffset = headerHeight + 20; // Ekstra 20px boşluk
-
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: Math.max(0, offsetPosition),
-          behavior: "smooth",
-        });
-      }
-    };
-
     if (closeMenu) {
-      // Scroll işlemini hemen başlat
-      scrollToElement();
       // Menüyü scroll başladıktan sonra kapat (kısa gecikme ile)
       setTimeout(() => {
         setIsMenuOpen(false);
@@ -60,12 +86,21 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 w-full z-[100] glass-effect border-b border-gray-200 dark:border-gray-800">
-      <div className="container py-4">
-        <div className="flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 w-full z-[100] px-0 md:top-14 md:px-6">
+      <div className="mx-auto w-full md:max-w-[1280px]">
+        <div
+          className={`relative z-[101] flex items-center justify-between px-8 py-6 transition-all duration-300 md:rounded-2xl md:px-5 md:py-4 ${
+            isScrolled || isMenuOpen
+              ? "bg-slate-950/30 shadow-2xl shadow-black/10 backdrop-blur-xl"
+              : "bg-transparent md:bg-slate-950/12 md:backdrop-blur-sm"
+          }`}
+        >
           <Link
-            href="#hero"
+            href={`/${locale}`}
             onClick={(e) => {
+              const hero = document.getElementById("hero");
+              if (!hero) return;
+
               e.preventDefault();
               window.scrollTo({
                 top: 0,
@@ -74,7 +109,7 @@ const Header = () => {
             }}
             className="flex items-center gap-3 select-none"
           >
-            <span className="w-10 h-10 md:w-12 md:h-12 rounded-[10%] overflow-hidden ring-1 ring-white/10 shadow-[0_0_20px_rgba(33,87,159,0.25)]">
+            <span className="w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden bg-white ring-1 ring-white/20 shadow-[0_18px_35px_-22px_rgba(255,255,255,0.7)]">
               <Image
                 src="/logo.png"
                 alt="Soral Danışmanlık SMMM Logo"
@@ -84,7 +119,7 @@ const Header = () => {
                 className="w-full h-full object-cover"
               />
             </span>
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-base font-bold tracking-tight text-white">
               Soral Danışmanlık
             </span>
           </Link>
@@ -92,23 +127,22 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link
-              href="#hizmetler"
+              href={`/${locale}/#hizmetler`}
               onClick={(e) => handleSmoothScroll(e, "hizmetler", false)}
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors"
+              className="text-xs font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] hover:text-sky-100 transition-colors"
             >
               {t("services")}
             </Link>
             <Link
-              href="#neden-biz"
+              href={`/${locale}/#neden-biz`}
               onClick={(e) => handleSmoothScroll(e, "neden-biz", false)}
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors"
+              className="text-xs font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] hover:text-sky-100 transition-colors"
             >
               {t("whyUs")}
             </Link>
             <Link
-              href="#iletisim"
-              onClick={(e) => handleSmoothScroll(e, "iletisim", false)}
-              className="btn-primary"
+              href={`/${locale}/iletisim`}
+              className="text-xs font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)] hover:text-sky-100 transition-colors"
             >
               {t("contact")}
             </Link>
@@ -119,7 +153,7 @@ const Header = () => {
           <div className="md:hidden flex items-center gap-3">
             <LanguageSwitcher />
             <button
-              className="text-gray-700 dark:text-gray-300 focus:outline-none"
+              className="rounded-full border border-white/20 bg-white/10 p-2 text-white shadow-sm focus:outline-none"
               onClick={toggleMenu}
             >
               {isMenuOpen ? (
@@ -157,58 +191,100 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-gray-200/20 dark:border-gray-800/20 mt-4"
+            <motion.div
+              key="mobile-menu"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+              className="fixed inset-0 z-[90] bg-white md:hidden"
             >
-              <div className="py-4 flex flex-col gap-4">
+              <nav className="flex h-full flex-col gap-8 px-8 pt-28">
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1, duration: 0.3 }}
+                  transition={{ delay: 0.12, duration: 0.28 }}
                 >
                   <Link
-                    href="#hizmetler"
+                    href={`/${locale}/#hizmetler`}
                     onClick={(e) => handleSmoothScroll(e, "hizmetler", true)}
-                    className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors block"
+                    className="flex w-full items-center justify-between border-b border-slate-200 pb-3 text-xl text-slate-950 transition-colors hover:text-primary"
                   >
                     {t("services")}
+                    <svg
+                      aria-hidden="true"
+                      className="h-5 w-5 shrink-0 text-slate-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </Link>
                 </motion.div>
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15, duration: 0.3 }}
+                  transition={{ delay: 0.18, duration: 0.28 }}
                 >
                   <Link
-                    href="#neden-biz"
+                    href={`/${locale}/#neden-biz`}
                     onClick={(e) => handleSmoothScroll(e, "neden-biz", true)}
-                    className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors block"
+                    className="flex w-full items-center justify-between border-b border-slate-200 pb-3 text-xl text-slate-950 transition-colors hover:text-primary"
                   >
                     {t("whyUs")}
+                    <svg
+                      aria-hidden="true"
+                      className="h-5 w-5 shrink-0 text-slate-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </Link>
                 </motion.div>
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
+                  transition={{ delay: 0.24, duration: 0.28 }}
                 >
                   <Link
-                    href="#iletisim"
-                    onClick={(e) => handleSmoothScroll(e, "iletisim", true)}
-                    className="btn-primary inline-block text-center"
+                    href={`/${locale}/iletisim`}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex w-full items-center justify-between border-b border-slate-200 pb-3 text-xl text-slate-950 transition-colors hover:text-primary"
                   >
                     {t("contact")}
+                    <svg
+                      aria-hidden="true"
+                      className="h-5 w-5 shrink-0 text-slate-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </Link>
                 </motion.div>
-              </div>
-            </motion.nav>
+              </nav>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

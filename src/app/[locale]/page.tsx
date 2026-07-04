@@ -3,29 +3,154 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useSpring,
-} from "framer-motion";
-import { useTranslations } from "next-intl";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
+import { services } from "@/data/services";
+import OfficeMap from "@/components/contact/OfficeMap";
+
+const partnerLogos = [
+  { src: "/partner/partner-turmob-.jpg", alt: "TÜRMOB" },
+  { src: "/partner/partner-gib-.jpg", alt: "Gelir İdaresi Başkanlığı" },
+  { src: "/partner/partner-sgk-.jpg", alt: "SGK" },
+  { src: "/partner/partner-csgb-logo.jpg", alt: "ÇSGB" },
+  { src: "/partner/partner-ito-.jpg", alt: "İstanbul Ticaret Odası" },
+  { src: "/partner/partner-iskur-.jpg", alt: "İŞKUR" },
+  { src: "/partner/partner-tesk-.jpg", alt: "TESK" },
+  { src: "/partner/partner-luca-.jpg", alt: "Luca" },
+  { src: "/partner/partner-ismmmo-logo.jpg", alt: "İSMMMO" },
+  { src: "/partner/partner-turkiye-gov-tr.jpg", alt: "Türkiye.gov.tr" },
+];
+
+function AnimatedStatValue({ value }: { value: string }) {
+  const parsedValue = value.match(/^([^0-9]*)(\d+)(.*)$/);
+  const prefix = parsedValue?.[1] ?? "";
+  const target = Number(parsedValue?.[2] ?? 0);
+  const suffix = parsedValue?.[3] ?? "";
+  const [displayValue, setDisplayValue] = useState(`${prefix}0${suffix}`);
+
+  useEffect(() => {
+    const duration = 1800;
+    const startTime = performance.now();
+
+    const animate = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.round(target * easedProgress);
+
+      setDisplayValue(`${prefix}${currentValue}${suffix}`);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    const frame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frame);
+  }, [prefix, suffix, target]);
+
+  return <>{displayValue}</>;
+}
 
 export default function Home() {
   const [isHoveringHero, setIsHoveringHero] = useState(false);
 
   // Translations
   const tHero = useTranslations("hero");
-  const tServices = useTranslations("services");
   const tWhyUs = useTranslations("whyUs");
   const tContact = useTranslations("contact");
   const tStats = useTranslations("stats");
-  const tCertifications = useTranslations("certifications");
+  const locale = useLocale();
+  const [activeHeroBackground, setActiveHeroBackground] = useState(0);
+  const [activeMaritimeReference, setActiveMaritimeReference] = useState(0);
+  const heroBackgroundSlides = [
+    {
+      image:
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=80",
+      position: "center",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=80",
+      position: "center",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=1800&q=80",
+      position: "center",
+    },
+  ];
+  const referenceLogos = [
+    { src: "/referans/eurosteel-metal.png", alt: "Eurosteel Metal" },
+    { src: "/referans/remax.jpg", alt: "Remax" },
+    { src: "/referans/aquantis-maritime.webp", alt: "Aquantis Maritime" },
+    { src: "/referans/mg-moto.jpg", alt: "MG Moto" },
+    { src: "/referans/safir-teknoloji.png", alt: "Safir Teknoloji" },
+    { src: "/referans/kablosuz-dünya.png", alt: "Kablosuz Dünya" },
+    { src: "/referans/cicocebali.jpg", alt: "Cicocebali" },
+    { src: "/referans/maveks-marina.png", alt: "Maveks Marina" },
+    { src: "/referans/tr-maritime.avif", alt: "TR Maritime" },
+    { src: "/referans/eurofit-piping.png", alt: "Eurofit Piping" },
+    { src: "/referans/server-denizcilik.png", alt: "Server Denizcilik" },
+    { src: "/referans/fatih-otomotiv.png", alt: "Fatih Otomotiv" },
+  ];
+  const maritimeReferences = [
+    {
+      name: "Server Denizcilik",
+      logo: "/referans/server-denizcilik.png",
+      image:
+        "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=1600&q=80",
+      sector:
+        "Deniz taşımacılığı ve gemi işletmeciliği alanında faaliyet gösteren yapılar için düzenli finansal takip kritik önem taşır.",
+      support:
+        "Muhasebe kayıtlarının düzenli ilerlemesi, vergi yükümlülüklerinin zamanında takip edilmesi ve raporlama süreçlerinin daha okunabilir hale gelmesi için operasyonlarını kolaylaştırıyoruz. Böylece yönetim tarafında finansal görünürlük artarken, ekiplerin günlük iş yükü azalıyor.",
+    },
+    {
+      name: "Aquantis Maritime",
+      logo: "/referans/aquantis-maritime.webp",
+      image:
+        "https://images.unsplash.com/photo-1773952984178-f91248ce704f?auto=format&fit=crop&w=1600&q=80",
+      sector:
+        "Maritime odaklı şirketlerde farklı para birimleri, operasyon maliyetleri ve sözleşme süreçleri finansal görünürlüğü zorlaştırabilir.",
+      support:
+        "Gelir-gider takibi, dönemsel raporlama ve mevzuata uyum süreçlerini sadeleştirerek yönetimin daha hızlı karar almasına destek oluyoruz. Operasyonel hareketlerin mali karşılığını düzenli takip edilebilir hale getiriyoruz.",
+    },
+    {
+      name: "Maveks Marina",
+      logo: "/referans/maveks-marina.png",
+      image:
+        "https://images.unsplash.com/photo-1770929356190-2bf66b49d18d?auto=format&fit=crop&w=1600&q=80",
+      sector:
+        "Marina işletmelerinde hizmet gelirleri, operasyon giderleri ve personel süreçleri düzenli mali kontrol gerektirir.",
+      support:
+        "Muhasebe, bordro ve finansal raporlama süreçlerini daha sistemli hale getirerek işletmenin mali takibini kolaylaştırıyoruz. Marina operasyonlarında gelir, gider ve personel süreçlerinin düzenli ilerlemesine destek oluyoruz.",
+    },
+    {
+      name: "TR Maritime",
+      logo: "/referans/tr-maritime.avif",
+      image:
+        "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=1600&q=80",
+      sector:
+        "Denizcilik sektöründe operasyonel planlama ile finansal kayıtların aynı disiplin içinde takip edilmesi gerekir.",
+      support:
+        "Vergi danışmanlığı, mali kayıt kontrolü ve raporlama süreçlerinde netlik sağlayarak iş yükünü azaltıyoruz. Düzenli kontrol ve anlaşılır raporlarla finansal süreçlerin daha güvenli yönetilmesini sağlıyoruz.",
+    },
+  ];
+  const showPreviousMaritimeReference = () => {
+    setActiveMaritimeReference(
+      (current) =>
+        (current - 1 + maritimeReferences.length) % maritimeReferences.length,
+    );
+  };
+  const showNextMaritimeReference = () => {
+    setActiveMaritimeReference(
+      (current) => (current + 1) % maritimeReferences.length,
+    );
+  };
 
   // Mouse throttling için - sadece desktop'ta çalışsın
   const lastMouseUpdate = useRef(0);
   const [isDesktop, setIsDesktop] = useState(false);
-
 
   // Mouse-following background for hero - sadece desktop'ta
   const mouseX = useMotionValue(0);
@@ -36,21 +161,20 @@ export default function Home() {
   // Spring animasyonlarını daha performanslı yap
   const b1x = useSpring(
     useTransform(mouseX, (v) => v * 0.02),
-    { stiffness: 40, damping: 30 }
+    { stiffness: 40, damping: 30 },
   );
   const b1y = useSpring(
     useTransform(mouseY, (v) => v * 0.02),
-    { stiffness: 40, damping: 30 }
+    { stiffness: 40, damping: 30 },
   );
   const b2x = useSpring(
     useTransform(mouseX, (v) => v * -0.015),
-    { stiffness: 40, damping: 30 }
+    { stiffness: 40, damping: 30 },
   );
   const b2y = useSpring(
     useTransform(mouseY, (v) => v * -0.015),
-    { stiffness: 40, damping: 30 }
+    { stiffness: 40, damping: 30 },
   );
-
 
   // Desktop kontrolü ekle
   useEffect(() => {
@@ -81,7 +205,6 @@ export default function Home() {
     };
   }, []);
 
-
   // iOS Safari scroll bounce engellemesi - CSS ile yapılıyor, bu kod kaldırıldı
   // overscroll-behavior: none CSS'de zaten tanımlı
 
@@ -96,12 +219,22 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveHeroBackground(
+        (current) => (current + 1) % heroBackgroundSlides.length,
+      );
+    }, 3000);
+
+    return () => window.clearInterval(interval);
+  }, [heroBackgroundSlides.length]);
+
   return (
     <>
       {/* Hero Section */}
       <section
         id="hero"
-        className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-primary to-slate-800 min-h-[100dvh] md:min-h-[100vh] flex items-center pt-20"
+        className="relative overflow-hidden bg-slate-950 min-h-[100dvh] md:min-h-[100vh] flex items-center pt-32 pb-32"
         style={{ minHeight: "calc(var(--vh, 1vh) * 100)" }}
         {...(isDesktop && {
           onMouseEnter: () => setIsHoveringHero(true),
@@ -131,18 +264,29 @@ export default function Home() {
       >
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-slate-900/60 z-10"></div>
-          {/* Placeholder for hero image - replace with actual image */}
-          <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-10"></div>
-          {/* Fallback gradient if image doesn't exist */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/20 to-slate-900/50"></div>
+          {heroBackgroundSlides.map((slide, index) => (
+            <motion.div
+              key={slide.image}
+              aria-hidden
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${slide.image})`,
+                backgroundPosition: slide.position,
+              }}
+              animate={{ opacity: activeHeroBackground === index ? 0.72 : 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+          ))}
+          <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(2,6,23,0.84)_0%,rgba(15,23,42,0.66)_45%,rgba(15,23,42,0.34)_100%)]"></div>
+          <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_28%_35%,rgba(59,130,246,0.18),transparent_36%)]"></div>
+          <div className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-white to-transparent"></div>
         </div>
 
         {/* Mouse-following spotlight cursor - sadece desktop'ta */}
         {isDesktop && (
           <motion.div
             aria-hidden
-            className="pointer-events-none absolute z-40 rounded-full ring-1 ring-white/20"
+            className="pointer-events-none absolute z-40 rounded-full ring-1 ring-white/15"
             style={{
               width: 64,
               height: 64,
@@ -152,7 +296,7 @@ export default function Home() {
               marginTop: -32,
               opacity: isHoveringHero ? 0.8 : 0,
               background:
-                "radial-gradient(closest-side, rgba(255,255,255,0.12), rgba(33,87,159,0.18), transparent 70%)",
+                "radial-gradient(closest-side, rgba(255,255,255,0.18), rgba(59,130,246,0.18), transparent 70%)",
               filter: "blur(1px)",
             }}
           />
@@ -163,73 +307,47 @@ export default function Home() {
           <>
             <motion.div
               aria-hidden
-              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-3xl opacity-60"
-              style={{ background: "rgba(33,87,159,0.25)", x: b1x, y: b1y }}
+              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-3xl opacity-70"
+              style={{ background: "rgba(59,130,246,0.22)", x: b1x, y: b1y }}
             />
             <motion.div
               aria-hidden
-              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-50"
-              style={{ background: "rgba(33,87,159,0.2)", x: b2x, y: b2y }}
+              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-60"
+              style={{ background: "rgba(255,255,255,0.12)", x: b2x, y: b2y }}
             />
           </>
         ) : (
           <>
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-3xl opacity-40"
-              style={{ background: "rgba(33,87,159,0.2)" }}
+              className="pointer-events-none absolute -top-32 -left-32 w-[320px] h-[320px] rounded-full blur-3xl opacity-50"
+              style={{ background: "rgba(59,130,246,0.22)" }}
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-30"
-              style={{ background: "rgba(33,87,159,0.15)" }}
+              className="pointer-events-none absolute -bottom-40 -right-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-40"
+              style={{ background: "rgba(255,255,255,0.12)" }}
             />
           </>
         )}
 
         <div className="container relative z-30">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="mx-auto max-w-7xl">
             {/* Left Column - Text Content */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-center lg:text-left"
+              className="max-w-4xl text-center lg:text-left"
             >
-              {/* Trust Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-                <span className="text-sm font-medium text-white">
-                  {tHero("trustBadge")}
-                </span>
-              </motion.div>
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
+              <h1 className="max-w-4xl text-2xl font-bold tracking-tight text-white mb-6 leading-tight mx-auto lg:mx-0">
                 {tHero("title")}
               </h1>
-              <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto lg:mx-0">
                 {tHero("subtitle")}
               </p>
 
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                 <Link
                   href="#iletisim"
                   onClick={(e) => {
@@ -240,8 +358,8 @@ export default function Home() {
                       const headerHeight = header
                         ? header.offsetHeight
                         : window.innerWidth >= 768
-                        ? 140
-                        : 120;
+                          ? 140
+                          : 120;
                       const headerOffset = headerHeight + 20;
                       const elementPosition =
                         element.getBoundingClientRect().top;
@@ -253,63 +371,34 @@ export default function Home() {
                       });
                     }
                   }}
-                  className="btn-primary text-lg px-8 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                  className="bg-white text-slate-950 text-sm px-6 py-3 rounded-full font-bold shadow-2xl shadow-black/20 transition-all transform hover:-translate-y-1 hover:bg-white/90"
                 >
                   {tHero("contactButton")}
-                </Link>
-                <Link
-                  href="#hizmetler"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const element = document.getElementById("hizmetler");
-                    if (element) {
-                      const header = document.querySelector("header");
-                      const headerHeight = header
-                        ? header.offsetHeight
-                        : window.innerWidth >= 768
-                        ? 140
-                        : 120;
-                      const headerOffset = headerHeight + 20;
-                      const elementPosition =
-                        element.getBoundingClientRect().top;
-                      const offsetPosition =
-                        elementPosition + window.pageYOffset - headerOffset;
-                      window.scrollTo({
-                        top: Math.max(0, offsetPosition),
-                        behavior: "smooth",
-                      });
-                    }
-                  }}
-                  className="btn-secondary text-lg px-8 py-4 rounded-lg font-semibold border-2 hover:bg-white hover:text-primary transition-all"
-                >
-                  {tHero("servicesButton")}
                 </Link>
               </div>
             </motion.div>
 
-            {/* Right Column - Image or Visual Element */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-              className="relative hidden lg:block"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
+              className="mt-22 overflow-hidden rounded-2xl bg-white md:px-4 md:py-6 px-2 py-4 backdrop-blur-2xl [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)] md:mt-18"
             >
-              <div className="relative">
-                <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                  {/* Gradient overlay for better text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-slate-900/20 z-10"></div>
-                  <Image
-                    src="/hero-img.png"
-                    alt="Soral Danışmanlık - Profesyonel Mali Müşavirlik"
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 1024px) 0vw, 50vw"
-                  />
-                </div>
-                {/* Decorative elements */}
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/30 rounded-full blur-2xl"></div>
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-slate-700/30 rounded-full blur-2xl"></div>
+              <div className="logo-marquee-track flex w-max items-center gap-1">
+                {[...referenceLogos, ...referenceLogos].map((logo, index) => (
+                  <div
+                    key={`${logo.src}-${index}`}
+                    className="flex md:h-14 h-12 md:w-36 w-32 shrink-0 items-center justify-center"
+                  >
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={140}
+                      height={60}
+                      className="h-16 w-22 object-contain"
+                    />
+                  </div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -317,59 +406,67 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 md:py-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <section className="relative z-40 -mt-24 bg-transparent pb-16">
         <div className="container">
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-2xl md:text-3xl font-bold text-center mb-12"
-          >
-            {tStats("title")}
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-sm  bg-white shadow-[0_35px_100px_-55px_rgba(15,23,42,0.45)]">
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="text-center"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="grid gap-0 lg:grid-cols-[0.82fr_1.18fr]"
             >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
-                {tStats("years.value")}
+              <div className="bg-slate-950 p-6 text-white md:p-8">
+                <div className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-sky-200/70">
+                  Soral Danışmanlık
+                </div>
+                <h2 className="mb-4 text-2xl font-bold tracking-tight">
+                  {tStats("title")}
+                </h2>
+                <p className="max-w-md text-sm leading-relaxed text-white/65">
+                  {tStats("subtitle")}
+                </p>
+                <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="text-2xl font-bold text-white">
+                    <AnimatedStatValue value={tStats("years.value")} />
+                  </div>
+                  <div className="mt-1 text-sm font-medium text-white/60">
+                    {tStats("years.label")}
+                  </div>
+                </div>
               </div>
-              <div className="text-sm md:text-base text-gray-600 dark:text-gray-400">
-                {tStats("years.label")}
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
-              className="text-center"
-            >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
-                {tStats("clients.value")}
-              </div>
-              <div className="text-sm md:text-base text-gray-600 dark:text-gray-400">
-                {tStats("clients.label")}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
-              className="text-center"
-            >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-2">
-                {tStats("expertise.value")}
-              </div>
-              <div className="text-sm md:text-base text-gray-600 dark:text-gray-400">
-                {tStats("expertise.label")}
+              <div className="grid grid-cols-1 gap-px bg-slate-200 sm:grid-cols-2">
+                {[
+                  {
+                    value: tStats("taxpayers.value"),
+                    label: tStats("taxpayers.label"),
+                  },
+                  {
+                    value: tStats("companies.value"),
+                    label: tStats("companies.label"),
+                  },
+                  {
+                    value: tStats("customServices.value"),
+                    label: tStats("customServices.label"),
+                  },
+                  {
+                    value: tStats("satisfaction.value"),
+                    label: tStats("satisfaction.label"),
+                  },
+                ].map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="bg-white p-6 transition-colors hover:bg-slate-50 md:p-8"
+                  >
+                    <div className="mb-3 h-1 w-8 rounded-full bg-primary/70" />
+                    <div className="text-2xl font-bold text-slate-950">
+                      <AnimatedStatValue value={metric.value} />
+                    </div>
+                    <div className="mt-2 text-sm font-medium text-slate-500">
+                      {metric.label}
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -379,7 +476,7 @@ export default function Home() {
       {/* Services Section */}
       <section
         id="hizmetler"
-        className="section bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800"
+        className="section bg-[linear-gradient(180deg,#ffffff_0%,#eef5ff_100%)]"
       >
         <div className="container">
           <motion.div
@@ -387,544 +484,310 @@ export default function Home() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-center mb-16"
+            className="mx-auto mb-14 max-w-3xl text-center"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              {tServices("title")}
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950 mb-4">
+              Hizmetlerimiz
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {tServices("subtitle")}
+            <p className="text-sm text-slate-600 max-w-2xl mx-auto">
+              Finansal raporlama, denetim, muhasebe ve danışmanlık süreçlerinizi
+              tek merkezden, kurumsal standartlarla yönetiyoruz.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {/* Service Card 1 */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                    />
-                  </svg>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service, index) => (
+              <motion.article
+                key={service.title}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{
+                  duration: 0.25,
+                  delay: Math.min(index * 0.04, 0.24),
+                  ease: "easeOut",
+                }}
+                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/10"
+              >
+                <div
+                  className="h-24 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${service.image})` }}
+                >
+                  <div className="h-full w-full bg-gradient-to-br from-slate-950/65 via-slate-950/35 to-primary/20" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {tServices("accounting.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {tServices("accounting.description")}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Service Card 2 */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
-              className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                <div className="p-5">
+                  <div className="mb-3 flex items-center justify-between gap-4">
+                    <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <div className="h-px flex-1 bg-slate-200" />
+                  </div>
+                  <h3 className="mb-2 text-base font-bold text-slate-950">
+                    {service.title}
+                  </h3>
+                  <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-slate-600">
+                    {service.description}
+                  </p>
+                  <ul className="mb-5 space-y-1.5">
+                    {service.details.slice(0, 2).map((detail) => (
+                      <li
+                        key={detail}
+                        className="flex gap-2.5 text-sm leading-relaxed text-slate-600"
+                      >
+                        <span className="mt-2 h-2 w-2 shrink-0 rounded-full border border-primary/20 bg-primary" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href={`/${locale}/hizmetler/${service.slug}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3.5 py-2 text-sm font-bold text-slate-800 transition-all hover:border-primary/30 hover:bg-blue-200"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"
-                    />
-                  </svg>
+                    Detayları incele
+                    <span aria-hidden>→</span>
+                  </Link>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {tServices("tax.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {tServices("tax.description")}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Service Card 3 */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
-              className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {tServices("financial.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {tServices("financial.description")}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Service Card 4 - Profesyonel Web Site Oluşturma */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.15, ease: "easeOut" }}
-              className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {tServices("website.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {tServices("website.description")}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Service Card 5 - Hukuk Danışmanlığı */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.2, ease: "easeOut" }}
-              className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {tServices("legal.title")}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {tServices("legal.description")}
-                </p>
-              </div>
-            </motion.div>
+              </motion.article>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* Maritime Expertise Section */}
+      <section
+        className="relative overflow-hidden bg-[#f4f9ff]"
+        style={{ minHeight: "calc(100vh - 180px)" }}
+      >
+        <div className="absolute inset-y-0 right-0 hidden w-[60vw] lg:block">
+          {maritimeReferences.map((reference, index) => (
+            <motion.div
+              key={reference.name}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${reference.image})` }}
+              animate={{
+                opacity: activeMaritimeReference === index ? 1 : 0,
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          ))}
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#f4f9ff_0%,rgba(244,249,255,0.9)_17%,rgba(244,249,255,0.42)_40%,rgba(244,249,255,0)_70%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0)_48%,rgba(15,23,42,0.3)_100%)]" />
+        </div>
+
+        <div className="container relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="relative"
+            style={{ minHeight: "calc(100vh - 180px)" }}
+          >
+            <div className="absolute right-0 top-10 z-30 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={showPreviousMaritimeReference}
+                aria-label="Önceki denizcilik referansı"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/75 text-slate-900 shadow-sm backdrop-blur-md transition-all hover:-translate-x-0.5 hover:bg-white hover:text-primary"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.4}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={showNextMaritimeReference}
+                aria-label="Sonraki denizcilik referansı"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/75 text-slate-900 shadow-sm backdrop-blur-md transition-all hover:translate-x-0.5 hover:bg-white hover:text-primary"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.4}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              className="grid lg:grid-cols-[0.48fr_0.52fr]"
+              style={{ minHeight: "calc(100vh - 180px)" }}
+            >
+              <div
+                className="relative flex flex-col py-10"
+                style={{ minHeight: "calc(100vh - 180px)" }}
+              >
+                <div>
+                  <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
+                    Uzmanlık Alanımız
+                  </h2>
+                  <p className="max-w-md text-sm leading-relaxed text-slate-600">
+                    Denizcilik sektöründe finansal süreçleri, raporlama düzenini
+                    ve vergi takibini sektöre özel ihtiyaçlarla ele alıyoruz.
+                  </p>
+                </div>
+
+                <div className="flex flex-1 flex-col justify-center py-8">
+                  <motion.div
+                    key={activeMaritimeReference}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  >
+                    <Image
+                      src={maritimeReferences[activeMaritimeReference].logo}
+                      alt={maritimeReferences[activeMaritimeReference].name}
+                      width={180}
+                      height={72}
+                      className="mb-7 h-14 w-44 object-contain object-left"
+                    />
+                    <h2 className="mb-4 max-w-xl text-2xl font-bold tracking-tight text-slate-950">
+                      {maritimeReferences[activeMaritimeReference].name}
+                    </h2>
+                    <p className="mb-4 max-w-xl text-base leading-relaxed text-slate-700">
+                      {maritimeReferences[activeMaritimeReference].sector}
+                    </p>
+                    <p className="max-w-xl text-base leading-relaxed text-slate-600">
+                      {maritimeReferences[activeMaritimeReference].support}
+                    </p>
+                  </motion.div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {maritimeReferences.map((reference, index) => (
+                    <button
+                      key={reference.name}
+                      type="button"
+                      onClick={() => setActiveMaritimeReference(index)}
+                      aria-label={`${reference.name} referansı`}
+                      className={`h-3.5 rounded-full transition-all duration-300 ${
+                        activeMaritimeReference === index
+                          ? "w-16 bg-[#21579f]"
+                          : "w-3.5 bg-slate-300 hover:bg-slate-400"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="relative min-h-[320px] overflow-hidden rounded-[1.5rem] lg:hidden">
+                {maritimeReferences.map((reference, index) => (
+                  <motion.div
+                    key={reference.name}
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${reference.image})` }}
+                    animate={{
+                      opacity: activeMaritimeReference === index ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
+                ))}
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_45%,rgba(255,255,255,0.75)_100%)]" />
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <section id="neden-biz" className="section bg-white dark:bg-gray-900">
+      <section id="neden-biz" className="section bg-white">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            <div>
-              <motion.h2
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
-              >
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="mx-auto max-w-6xl"
+          >
+            <div className="mb-14 text-center">
+              <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
                 {tWhyUs("title")}
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed"
-              >
+              </h2>
+              <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600">
                 {tWhyUs("subtitle")}
-              </motion.p>
-
-              <div className="flex flex-col gap-6">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="flex items-start group"
-                >
-                  <div className="bg-gradient-to-br from-primary to-primary/70 p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                      {tWhyUs("expertTeam.title")}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {tWhyUs("expertTeam.description")}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                  className="flex items-start group"
-                >
-                  <div className="bg-gradient-to-br from-primary to-primary/70 p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                      {tWhyUs("personalizedService.title")}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {tWhyUs("personalizedService.description")}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                  className="flex items-start group"
-                >
-                  <div className="bg-gradient-to-br from-primary to-primary/70 p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                      {tWhyUs("upToDate.title")}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {tWhyUs("upToDate.description")}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-                  className="flex items-start group"
-                >
-                  <div className="bg-gradient-to-br from-primary to-primary/70 p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                      {tWhyUs("certified.title")}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {tWhyUs("certified.description")}
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
+              </p>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative mt-8 lg:mt-0"
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* Placeholder for professional image */}
-                <div className="aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] bg-gradient-to-br from-primary via-primary/90 to-slate-800 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-6 sm:p-8 text-white w-full">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-10 w-10 sm:h-12 sm:w-12 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                          />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 px-2">
-                        {tWhyUs("cta.title")}
-                      </h3>
-                      <p className="mb-4 sm:mb-6 text-white/90 text-sm sm:text-base px-2">
-                        {tWhyUs("cta.description")}
-                      </p>
-                      <Link
-                        href="#iletisim"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const element = document.getElementById("iletisim");
-                          if (element) {
-                            const header = document.querySelector("header");
-                            const headerHeight = header
-                              ? header.offsetHeight
-                              : window.innerWidth >= 768
-                              ? 140
-                              : 120;
-                            const headerOffset = headerHeight + 20;
-                            const elementPosition =
-                              element.getBoundingClientRect().top;
-                            const offsetPosition =
-                              elementPosition +
-                              window.pageYOffset -
-                              headerOffset;
-                            window.scrollTo({
-                              top: Math.max(0, offsetPosition),
-                              behavior: "smooth",
-                            });
-                          }
-                        }}
-                        className="inline-block bg-white text-slate-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base hover:bg-gray-50 hover:text-primary transition-all transform hover:scale-105 active:scale-95 shadow-lg"
-                      >
-                        {tWhyUs("cta.button")}
-                      </Link>
-                    </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  title: tWhyUs("expertTeam.title"),
+                  description: tWhyUs("expertTeam.description"),
+                },
+                {
+                  title: tWhyUs("personalizedService.title"),
+                  description: tWhyUs("personalizedService.description"),
+                },
+                {
+                  title: tWhyUs("upToDate.title"),
+                  description: tWhyUs("upToDate.description"),
+                },
+                {
+                  title: tWhyUs("certified.title"),
+                  description: tWhyUs("certified.description"),
+                },
+              ].map((item, index) => (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm"
+                >
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="text-sm font-bold text-primary">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="h-px flex-1 bg-slate-200" />
                   </div>
-                  {/* Uncomment when you have the image */}
-                  {/* <Image
-                    src="/images/why-us.jpg"
-                    alt="Neden Biz"
-                    fill
-                    className="object-cover"
-                  /> */}
+                  <h3 className="mb-2 text-base font-bold text-slate-950">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    {item.description}
+                  </p>
                 </div>
-              </div>
-            </motion.div>
-          </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Certifications Section */}
-      <section className="section bg-gray-50 dark:bg-gray-800">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              {tCertifications("title")}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {tCertifications("subtitle")}
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                  />
-                </svg>
+      {/* Partner Logos Marquee */}
+      <section
+        aria-label="Kurumsal iş ortakları"
+        className="overflow-hidden border-t border-slate-200 bg-white py-10 md:py-8"
+      >
+        <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]">
+          <div className="logo-marquee-track flex w-max items-center gap-3">
+            {[...partnerLogos, ...partnerLogos].map((logo, index) => (
+              <div
+                key={`${logo.src}-${index}`}
+                className="flex h-14 w-36 shrink-0 items-center justify-center md:h-16 md:w-40"
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={160}
+                  height={64}
+                  className="max-h-full w-auto max-w-full object-contain"
+                />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                {tCertifications("smmm.title")}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {tCertifications("smmm.description")}
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.05, ease: "easeOut" }}
-              className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                {tCertifications("iso.title")}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {tCertifications("iso.description")}
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
-              className="bg-white dark:bg-gray-900 p-8 rounded-2xl text-center border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow"
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
-                {tCertifications("compliance.title")}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {tCertifications("compliance.description")}
-              </p>
-            </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -932,70 +795,63 @@ export default function Home() {
       {/* Contact CTA Section */}
       <section
         id="iletisim"
-        className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-primary via-primary/95 to-slate-800 relative overflow-hidden"
+        className="section relative overflow-hidden bg-[linear-gradient(180deg,#eef5ff_0%,#ffffff_50%,#f4f8ff_100%)]"
       >
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 sm:w-96 sm:h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div className="container relative z-10 text-center">
+        <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-16 bottom-0 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
+
+        <div className="container relative z-10">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
+            className="mx-auto max-w-3xl text-center"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-4">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-primary">
+              {tContact("eyebrow")}
+            </p>
+            <div className="mx-auto mb-6 flex items-center justify-center gap-3">
+              <span className="h-px w-12 bg-primary/25" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="h-px w-12 bg-primary/25" />
+            </div>
+            <h2 className="mb-4 text-2xl font-bold tracking-tight text-slate-950">
               {tContact("title")}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-slate-600">
               {tContact("subtitle")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center px-4">
-              <Link
-                href="tel:05330318228"
-                className="bg-white text-slate-900 px-6 sm:px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-50 hover:text-primary transition-all transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-3 shadow-2xl hover:shadow-3xl min-w-[280px] sm:min-w-0"
+            <Link
+              href={`/${locale}/iletisim`}
+              className="btn-primary px-8 py-3.5 text-sm"
+            >
+              {tContact("ctaButton")}
+              <svg
+                aria-hidden="true"
+                className="ml-2 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.4}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-slate-900 group-hover:text-primary transition-colors"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                {tContact("freeConsultation")}
-              </Link>
-              <Link
-                href="mailto:info@soraldanismanlik.com"
-                className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 hover:border-white/50 transition-all transform hover:scale-105 active:scale-95 inline-flex items-center justify-center gap-3 min-w-[280px] sm:min-w-0"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                E-posta Gönder
-              </Link>
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </Link>
           </motion.div>
         </div>
       </section>
+
+      <OfficeMap
+        locale={locale}
+        title={tContact("mapTitle")}
+        openInMapsLabel={tContact("openInMaps")}
+      />
     </>
   );
 }

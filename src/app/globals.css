@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f9ff;
+  --foreground: #102033;
   --primary: #21579f;
   --secondary: #22579f;
   --dark: #000000;
@@ -10,8 +10,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #f6f9ff;
+    --foreground: #102033;
     --primary: #21579f;
     --secondary: #22579f;
     --dark: #000000;
@@ -99,7 +99,7 @@ section[id] {
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: 9999px;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 200ms;
@@ -107,13 +107,13 @@ section[id] {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 18px 35px -18px rgba(33, 87, 159, 0.65);
   }
 
   .btn-primary:hover {
     opacity: 0.95;
     transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 22px 45px -18px rgba(33, 87, 159, 0.8);
   }
 
   .btn-primary:active {
@@ -128,7 +128,7 @@ section[id] {
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: 9999px;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 200ms;
@@ -142,7 +142,9 @@ section[id] {
     background-color: var(--primary);
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .btn-secondary:active {
@@ -150,8 +152,8 @@ section[id] {
   }
 
   .section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: calc(4rem + 20px);
+    padding-bottom: calc(4rem + 20px);
   }
 
   @media (min-width: 768px) {
@@ -169,13 +171,14 @@ section[id] {
   }
 
   .glass-effect {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.35);
   }
 
   @media (prefers-color-scheme: dark) {
     .glass-effect {
-      background-color: rgba(0, 0, 0, 0.85);
+      background-color: rgba(255, 255, 255, 0.82);
     }
   }
 
@@ -197,6 +200,24 @@ section[id] {
     will-change: transform, opacity;
   }
 
+  .logo-marquee-track {
+    animation: logo-marquee 32s linear infinite;
+  }
+
+  .logo-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes logo-marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   /* iOS Safari scroll optimizasyonu */
   .ios-scroll-fix {
     -webkit-overflow-scrolling: touch;
@@ -207,7 +228,6 @@ section[id] {
   /* Fixed header için özel stil */
   header[class*="fixed"] {
     position: fixed !important;
-    top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
@@ -317,6 +337,5 @@ section[id] {
       -webkit-transform: translateZ(0) !important;
       will-change: transform !important;
     }
-
   }
 }

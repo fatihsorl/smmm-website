@@ -2,30 +2,38 @@
   "navigation": {
     "services": "Hizmetlerimiz",
     "whyUs": "Neden Biz?",
-    "contact": "Bize Ulaşın",
+    "contact": "İletişim",
     "about": "Hakkımızda"
   },
   "hero": {
     "title": "28+ Yıllık Deneyimle Güvenilir Mali Müşavirlik",
     "subtitle": "Soral Danışmanlık olarak, 28 yılı aşkın deneyimimizle işletmenizin finansal süreçlerini profesyonelce yönetiyoruz. Güvenilir, şeffaf ve uzman ekibimizle işinize değer katıyor, büyümenize ortak oluyoruz.",
-    "contactButton": "Ücretsiz Danışmanlık",
+    "contactButton": "Bizimle İletişime Geçin",
     "servicesButton": "Hizmetlerimizi Keşfedin",
     "trustBadge": "SMMM Sertifikalı"
   },
   "stats": {
     "title": "Rakamlarla Başarımız",
+    "subtitle": "Kurumsal mali müşavirlik, şirket kuruluşu ve sürdürülebilir finansal danışmanlık süreçlerinde ölçülebilir deneyim.",
     "years": {
       "value": "28+",
       "label": "Yıllık Deneyim"
     },
-    "clients": {
-      "value": "21+",
-      "label": "Mutlu Müşteri"
+    "taxpayers": {
+      "value": "30+",
+      "label": "Mükellef"
     },
-
-    "expertise": {
-      "value": "%100",
-      "label": "Müşteri Memnuniyeti"
+    "companies": {
+      "value": "100+",
+      "label": "Firma Açılışı"
+    },
+    "customServices": {
+      "value": "20+",
+      "label": "Özelleştirilmiş Hizmet"
+    },
+    "satisfaction": {
+      "value": "100%",
+      "label": "Memnuniyet"
     }
   },
   "services": {
@@ -79,24 +87,34 @@
   },
   "certifications": {
     "title": "Sertifikalar ve Yetkinlikler",
-    "subtitle": "Profesyonel hizmetlerimiz uluslararası standartlarda ve yasal gerekliliklerle uyumludur.",
+    "subtitle": "Ruhsatlı SMMM unvanı, meslek odası üyelikleri ve resmi kurum süreçlerine hakim ekibimizle güvenilir mali müşavirlik sunuyoruz.",
+    "imageBadge": "SMMM Sertifikalı",
+    "highlights": {
+      "experience": "28+ yıllık SMMM deneyimi",
+      "institutions": "TÜRMOB ve İSMMMO iş birlikleri",
+      "regulation": "Güncel mevzuat ve beyanname takibi"
+    },
     "smmm": {
       "title": "SMMM Lisansı",
-      "description": "Serbest Muhasebeci Mali Müşavir unvanı ile hizmet veriyoruz"
+      "description": "TÜRMOB nezdinde ruhsatlı Serbest Muhasebeci Mali Müşavir unvanıyla denetim, beyanname ve mali danışmanlık hizmeti veriyoruz."
     },
     "iso": {
-      "title": "Kalite Standartları",
-      "description": "ISO standartlarına uygun hizmet kalitesi"
+      "title": "Mesleki Standartlar",
+      "description": "Mali kayıt, raporlama ve iç kontrol süreçlerinde meslek etiği ve kalite standartlarına uygun çalışıyoruz."
     },
     "compliance": {
       "title": "Yasal Uyumluluk",
-      "description": "Tüm mevzuat değişikliklerini takip ediyoruz"
+      "description": "Gelir İdaresi, SGK ve ilgili mevzuattaki değişiklikleri düzenli takip ederek mükelleflerimizi bilgilendiriyoruz."
     }
   },
   "contact": {
+    "eyebrow": "İletişim",
     "title": "Finansal Süreçlerinizi Profesyonelce Yönetelim",
     "subtitle": "İşletmenizin ihtiyaçlarına özel çözümler için hemen iletişime geçin.",
+    "ctaButton": "İletişime Git",
     "freeConsultation": "Ücretsiz Danışmanlık Alın",
+    "mapTitle": "Ofis Konumumuz",
+    "openInMaps": "Google Maps'te Aç",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
   },
   "footer": {

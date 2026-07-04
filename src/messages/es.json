@@ -2,7 +2,7 @@
   "navigation": {
     "services": "Servicios",
     "whyUs": "¿Por Qué Nosotros?",
-    "contact": "Contáctanos",
+    "contact": "Contacto",
     "about": "Acerca de"
   },
   "hero": {
@@ -14,21 +14,26 @@
   },
   "stats": {
     "title": "Nuestro Éxito en Números",
+    "subtitle": "Experiencia medible en contabilidad corporativa, constitución de empresas y asesoría financiera sostenible.",
     "years": {
       "value": "28+",
       "label": "Años de Experiencia"
     },
-    "clients": {
-      "value": "21+",
-      "label": "Clientes Felices"
+    "taxpayers": {
+      "value": "30+",
+      "label": "Contribuyentes"
     },
-    "projects": {
-      "value": "1000+",
-      "label": "Proyectos Completados"
+    "companies": {
+      "value": "100+",
+      "label": "Aperturas de Empresas"
     },
-    "expertise": {
+    "customServices": {
+      "value": "20+",
+      "label": "Servicios Personalizados"
+    },
+    "satisfaction": {
       "value": "100%",
-      "label": "Satisfacción del Cliente"
+      "label": "Satisfacción"
     }
   },
   "services": {
@@ -82,24 +87,34 @@
   },
   "certifications": {
     "title": "Certificaciones y Competencias",
-    "subtitle": "Nuestros servicios profesionales cumplen con estándares internacionales y requisitos legales.",
+    "subtitle": "Ofrecemos asesoría financiera confiable con título CPA licenciado, membresías en cámaras profesionales y un equipo con experiencia en procesos institucionales oficiales.",
+    "imageBadge": "CPA Certificado",
+    "highlights": {
+      "experience": "28+ años de experiencia CPA",
+      "institutions": "Colaboraciones con TÜRMOB e İSMMMO",
+      "regulation": "Seguimiento actualizado de legislación y declaraciones"
+    },
     "smmm": {
       "title": "Licencia CPA",
-      "description": "Prestamos servicios con el título de Contador Público Certificado"
+      "description": "Prestamos servicios de auditoría, declaraciones fiscales y asesoría financiera como Contador Público Certificado bajo TÜRMOB."
     },
     "iso": {
-      "title": "Estándares de Calidad",
-      "description": "Calidad de servicio conforme a estándares ISO"
+      "title": "Estándares Profesionales",
+      "description": "Trabajamos conforme a la ética profesional y estándares de calidad en registros financieros, informes y procesos de control interno."
     },
     "compliance": {
       "title": "Cumplimiento Legal",
-      "description": "Seguimos todos los cambios regulatorios"
+      "description": "Monitoreamos regularmente los cambios en la autoridad fiscal, seguridad social y legislación relacionada para mantener informados a nuestros clientes."
     }
   },
   "contact": {
+    "eyebrow": "Contacto",
     "title": "Gestionemos Profesionalmente Tus Procesos Financieros",
     "subtitle": "Contáctanos inmediatamente para soluciones adaptadas a las necesidades de tu empresa.",
+    "ctaButton": "Ir a Contacto",
     "freeConsultation": "Obtén Consulta Gratuita",
+    "mapTitle": "Ubicación de la Oficina",
+    "openInMaps": "Abrir en Google Maps",
     "address": "Bağlarbaşı Mah. Bağdat Cad. Ercan İş Merkezi No:350/45 Maltepe/İstanbul"
   },
   "footer": {
