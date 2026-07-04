@@ -60,15 +60,19 @@ function ExpertiseBlock({
 }: ExpertiseBlockProps) {
   return (
     <div className={className}>
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-10">
+        <h3 className="mb-5 text-lg font-bold leading-snug text-slate-950 md:text-xl">
+          {contentTitle}
+        </h3>
+
         <div
           aria-label={logosLabel}
-          className="expertise-logos-static mb-8 flex flex-wrap items-center justify-center gap-4 md:gap-5"
+          className="expertise-logos-static mb-6 flex flex-wrap items-center justify-center gap-3 md:mb-8 md:gap-4"
         >
           {logos.map((logo) => (
             <div
               key={logo.src}
-              className="flex h-16 w-36 items-center justify-center rounded-2xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm md:h-20 md:w-44"
+              className="flex h-14 w-32 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 md:h-16 md:w-36"
             >
               <Image
                 src={logo.src}
@@ -81,10 +85,6 @@ function ExpertiseBlock({
           ))}
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-10">
-        <h3 className="mb-5 text-lg font-bold leading-snug text-slate-950 md:text-xl">
-          {contentTitle}
-        </h3>
         <p className="mb-4 text-sm leading-relaxed text-slate-600">{intro1}</p>
         <p className="mb-6 text-sm leading-relaxed text-slate-600">{intro2}</p>
 
@@ -122,7 +122,6 @@ function ExpertiseBlock({
             &ldquo;{quote}&rdquo;
           </blockquote>
         ) : null}
-        </div>
       </div>
     </div>
   );
@@ -569,7 +568,11 @@ export default function Home() {
               tExpertise("maritime.experience"),
             ]}
             quote={tExpertise("maritime.quote")}
-            className="mb-16"
+          />
+
+          <div
+            aria-hidden
+            className="mx-auto my-14 max-w-4xl border-t border-slate-200"
           />
 
           <ExpertiseBlock
