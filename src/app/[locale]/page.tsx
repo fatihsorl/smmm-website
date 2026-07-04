@@ -138,7 +138,8 @@ export default function Home() {
           : 120;
       const headerOffset = headerHeight + 20;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
 
       window.scrollTo({
         top: Math.max(0, offsetPosition),
@@ -181,9 +182,7 @@ export default function Home() {
         id="hero"
         className="relative overflow-hidden bg-slate-950 min-h-[100dvh] md:min-h-[100vh] flex flex-col pt-32 pb-24 md:pb-28"
         style={
-          isDesktop
-            ? { minHeight: "calc(var(--vh, 1vh) * 100)" }
-            : undefined
+          isDesktop ? { minHeight: "calc(var(--vh, 1vh) * 100)" } : undefined
         }
         {...(isDesktop && {
           onMouseEnter: () => setIsHoveringHero(true),
@@ -291,10 +290,10 @@ export default function Home() {
               : {})}
             className="max-w-xl text-center lg:text-left"
           >
-            <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-white mb-6 leading-tight mx-auto lg:mx-0">
+            <h1 className="max-w-4xl md:text-4xl text-2xl font-bold tracking-tight text-white mb-6 leading-tight mx-auto lg:mx-0">
               {tHero("title")}
             </h1>
-            <p className="text-sm md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto lg:mx-0">
+            <p className="text-[12px] md:text-base text-white/70 mb-8 leading-relaxed max-w-3xl mx-auto lg:mx-0">
               {tHero("subtitle")}
             </p>
 
@@ -317,8 +316,7 @@ export default function Home() {
                       elementPosition + window.pageYOffset - headerOffset;
                     window.scrollTo({
                       top: Math.max(0, offsetPosition),
-                      behavior:
-                        window.innerWidth >= 768 ? "smooth" : "instant",
+                      behavior: window.innerWidth >= 768 ? "smooth" : "instant",
                     });
                   }
                 }}
