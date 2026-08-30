@@ -119,7 +119,44 @@ async function readApiJson<T>(response: Response): Promise<T> {
   }
 }
 
-const EXTRACT_BATCH_SIZE = 1;
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+type ExtractPayload = {
+  rows?: InvoiceRow[];
+  errors?: Array<{ filename: string; message: string }>;
+  message?: string;
+};
+
+async function postExtract(files: File[]) {
+  let lastError = new Error("Okuma isteği başarısız.");
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const formData = new FormData();
+      for (const file of files) {
+        formData.append("files", file);
+      }
+      const response = await fetch("/api/admin/extract", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await readApiJson<ExtractPayload>(response);
+      if (!response.ok) {
+        throw new Error(data.message ?? "Okuma başarısız.");
+      }
+      if (data.errors?.length && !(data.rows?.length)) {
+        throw new Error(data.errors[0].message);
+      }
+      return data;
+    } catch (error) {
+      lastError =
+        error instanceof Error ? error : new Error("Bağlantı koptu. Tekrar deneniyor.");
+      await sleep(900 * (attempt + 1));
+    }
+  }
+  throw lastError;
+}
 
 function syncAmounts(row: InvoiceRow): InvoiceRow {
   if (row.tutarKdvHaric === null || row.kdvOrani === null) {
@@ -148,11 +185,12 @@ export default function AdminApp() {
   const [files, setFiles] = useState<LocalFile[]>([]);
   const [rows, setRows] = useState<InvoiceRow[]>([]);
   const [extracting, setExtracting] = useState(false);
-  const [extractLabel, setExtractLabel] = useState("Faturalar okunuyor");
   const [exporting, setExporting] = useState(false);
   const [status, setStatus] = useState("");
   const [statusTone, setStatusTone] = useState<"info" | "ok" | "err">("info");
   const [dragOver, setDragOver] = useState(false);
+  const [failedFiles, setFailedFiles] = useState<File[]>([]);
+  const [scanProgress, setScanProgress] = useState({ current: 0, total: 0 });
 
   const refreshSession = useCallback(async () => {
     const response = await fetch("/api/admin/session", { cache: "no-store" });
@@ -252,6 +290,66 @@ export default function AdminApp() {
     });
   }
 
+  async function readOnePage(file: File, pageNo: number, total: number) {
+    let lastError = "Okuma başarısız.";
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
+      setScanProgress({ current: pageNo, total });
+      setStatus(
+        attempt === 1
+          ? `${pageNo} / ${total} sayfa taranıyor...`
+          : `${pageNo} / ${total} sayfa tekrar taranıyor (${attempt}/5)...`,
+      );
+      try {
+        const data = await postExtract([file]);
+        if (data.rows?.length) {
+          return { rows: data.rows, error: "" };
+        }
+        lastError = data.errors?.[0]?.message || data.message || "Boş yanıt.";
+      } catch (error) {
+        lastError =
+          error instanceof Error && error.message
+            ? error.message
+            : "Bağlantı hatası.";
+      }
+      await sleep(1200 * attempt);
+    }
+    return { rows: [] as InvoiceRow[], error: lastError };
+  }
+
+  async function runExtract(source: File[], append: boolean) {
+    const collected: InvoiceRow[] = append ? [...rows] : [];
+    let queue = [...source];
+    let lastFailMessage = "";
+
+    for (let pass = 1; pass <= 2 && queue.length > 0; pass += 1) {
+      const nextQueue: File[] = [];
+      for (let index = 0; index < queue.length; index += 1) {
+        const file = queue[index];
+        const pageNo = index + 1;
+        const result = await readOnePage(file, pageNo, queue.length);
+        if (result.rows.length) {
+          collected.push(...result.rows);
+          setRows([...collected]);
+        } else {
+          nextQueue.push(file);
+          lastFailMessage = result.error;
+        }
+      }
+      queue = nextQueue;
+    }
+
+    setFailedFiles(queue);
+    if (queue.length) {
+      setStatusTone("err");
+      setStatus(
+        `${collected.length} satır okundu. ${queue.length} sayfa hâlâ eksik. ${lastFailMessage}`,
+      );
+    } else {
+      setStatusTone("ok");
+      setStatus(`${collected.length} satır hazır. İndirmeden önce kontrol edin.`);
+    }
+  }
+
   async function handleExtract() {
     if (files.length === 0) {
       setStatusTone("err");
@@ -260,9 +358,10 @@ export default function AdminApp() {
     }
 
     setExtracting(true);
-    setExtractLabel("PDF ve görseller hazırlanıyor");
+    setScanProgress({ current: 0, total: 0 });
     setStatusTone("info");
-    setStatus("Faturalar okunuyor...");
+    setStatus("Resimler taranıyor...");
+    setFailedFiles([]);
     try {
       const { prepareUploadFiles } = await import("@/lib/pdf-pages");
       const prepared = await prepareUploadFiles(files.map((item) => item.file));
@@ -276,57 +375,36 @@ export default function AdminApp() {
       for (const file of prepared) {
         compressed.push(await compressImage(file));
       }
-
-      const collected: InvoiceRow[] = [];
-      const failed: Array<{ filename: string; message: string }> = [];
-
-      for (let index = 0; index < compressed.length; index += EXTRACT_BATCH_SIZE) {
-        const chunk = compressed.slice(index, index + EXTRACT_BATCH_SIZE);
-        const done = Math.min(index + chunk.length, compressed.length);
-        setExtractLabel(`Yapay zeka okuyor (${done}/${compressed.length})`);
-        setStatus(`Sayfa ${done}/${compressed.length} işleniyor...`);
-
-        const formData = new FormData();
-        for (const file of chunk) {
-          formData.append("files", file);
-        }
-
-        const response = await fetch("/api/admin/extract", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await readApiJson<{
-          rows?: InvoiceRow[];
-          errors?: Array<{ filename: string; message: string }>;
-          message?: string;
-        }>(response);
-
-        if (!response.ok) {
-          throw new Error(data.message ?? "Okuma başarısız.");
-        }
-
-        collected.push(...(data.rows ?? []));
-        failed.push(...(data.errors ?? []));
-        setRows([...collected]);
-      }
-
-      if (failed.length) {
-        setStatusTone("err");
-        setStatus(
-          `${collected.length} satır okundu. ${failed.length} dosya hata verdi. ${failed[0].message}`,
-        );
-      } else {
-        setStatusTone("ok");
-        setStatus(
-          `${collected.length} satır hazır. İndirmeden önce kontrol edin.`,
-        );
-      }
+      setScanProgress({ current: 0, total: compressed.length });
+      await runExtract(compressed, false);
     } catch (error) {
       setStatusTone("err");
       setStatus(
         error instanceof Error && error.message
           ? error.message
           : "Okuma sırasında bağlantı hatası oluştu.",
+      );
+    } finally {
+      setExtracting(false);
+    }
+  }
+
+  async function handleRetryFailed() {
+    if (failedFiles.length === 0) {
+      return;
+    }
+    setExtracting(true);
+    setScanProgress({ current: 0, total: failedFiles.length });
+    setStatusTone("info");
+    setStatus("Resimler taranıyor...");
+    try {
+      await runExtract(failedFiles, true);
+    } catch (error) {
+      setStatusTone("err");
+      setStatus(
+        error instanceof Error && error.message
+          ? error.message
+          : "Tekrar deneme başarısız.",
       );
     } finally {
       setExtracting(false);
@@ -522,15 +600,31 @@ export default function AdminApp() {
               <Spinner className="h-7 w-7" />
             </div>
             <h2 className="mt-4 text-lg font-semibold">
-              {extracting ? extractLabel : "Excel hazırlanıyor"}
+              {extracting ? "Resimler taranıyor" : "Excel hazırlanıyor"}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
               {extracting
-                ? "Bir fotoğrafta birden fazla fiş varsa 30–60 saniye sürebilir. Sayfayı kapatmayın."
+                ? scanProgress.total > 0
+                  ? `${scanProgress.current} / ${scanProgress.total} sayfa`
+                  : "Sayfalar hazırlanıyor..."
                 : "GİB şablonu dolduruluyor."}
             </p>
             <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full w-1/2 animate-pulse rounded-full bg-[#21579f]" />
+              <div
+                className="h-full rounded-full bg-[#21579f] transition-all duration-500"
+                style={{
+                  width: extracting
+                    ? `${Math.max(
+                        6,
+                        scanProgress.total
+                          ? Math.round(
+                              (scanProgress.current / scanProgress.total) * 100,
+                            )
+                          : 8,
+                      )}%`
+                    : "50%",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -660,6 +754,16 @@ export default function AdminApp() {
               {extracting ? <Spinner /> : null}
               {extracting ? "Okunuyor" : "Faturaları oku"}
             </button>
+            {failedFiles.length > 0 ? (
+              <button
+                type="button"
+                onClick={() => void handleRetryFailed()}
+                disabled={extracting}
+                className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+              >
+                Eksik {failedFiles.length} sayfayı tekrar dene
+              </button>
+            ) : null}
             <button
               type="button"
               onClick={() => void handleExport()}

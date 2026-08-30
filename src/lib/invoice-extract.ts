@@ -288,11 +288,13 @@ async function extractWithGemini(file: UploadedInvoice): Promise<InvoiceRow[]> {
     throw new Error("GEMINI_API_KEY tanımlı değil.");
   }
 
+  const envModel = process.env.GEMINI_MODEL?.trim();
+  const staleModel = envModel && /1\.5|2\.0|2\.5/.test(envModel);
   const models = [
-    process.env.GEMINI_MODEL,
+    staleModel ? undefined : envModel,
+    "gemini-3.5-flash-lite",
     "gemini-3.5-flash",
     "gemini-3.6-flash",
-    "gemini-3.5-flash-lite",
   ].filter(
     (model, index, list): model is string =>
       Boolean(model) && list.indexOf(model) === index,
@@ -318,6 +320,7 @@ async function extractWithGemini(file: UploadedInvoice): Promise<InvoiceRow[]> {
   ]);
 
   let lastError = "Gemini yanıt vermedi.";
+  let timedOut = false;
 
   for (const attempt of attempts.slice(0, 4)) {
     let response: Response;
@@ -343,12 +346,17 @@ async function extractWithGemini(file: UploadedInvoice): Promise<InvoiceRow[]> {
             ],
             generationConfig: attempt.generationConfig,
           }),
-          signal: AbortSignal.timeout(40000),
+          signal: AbortSignal.timeout(28000),
         },
       );
     } catch {
       lastError = `Gemini (${attempt.model}) zaman aşımı veya bağlantı hatası.`;
-      break;
+      if (timedOut) {
+        break;
+      }
+      timedOut = true;
+      await sleep(700);
+      continue;
     }
 
     const raw = await response.text();
