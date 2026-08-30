@@ -2,8 +2,7 @@ import { getDocument, GlobalWorkerOptions, version } from "pdfjs-dist";
 import { isPdfFile } from "@/lib/upload-files";
 
 const MAX_PAGES = 20;
-const MAX_EDGE = 1600;
-const VERCEL_SAFE_BYTES = Math.floor(3.8 * 1024 * 1024);
+const MAX_EDGE = 1200;
 
 function ensureWorker() {
   if (GlobalWorkerOptions.workerSrc) {
@@ -14,7 +13,7 @@ function ensureWorker() {
 
 async function canvasToJpeg(canvas: HTMLCanvasElement) {
   const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg", 0.85),
+    canvas.toBlob(resolve, "image/jpeg", 0.72),
   );
   return blob;
 }
@@ -31,7 +30,7 @@ export async function pdfToJpegPages(file: File): Promise<File[]> {
     const page = await doc.getPage(index);
     const baseViewport = page.getViewport({ scale: 1 });
     const scale = Math.min(
-      2,
+      1.4,
       MAX_EDGE / Math.max(baseViewport.width, baseViewport.height),
     );
     const viewport = page.getViewport({ scale });
@@ -63,18 +62,7 @@ export async function prepareUploadFiles(files: File[]) {
       prepared.push(file);
       continue;
     }
-
-    const pdf =
-      file.type === "application/pdf"
-        ? file
-        : new File([file], file.name, { type: "application/pdf" });
-
-    if (pdf.size <= VERCEL_SAFE_BYTES) {
-      prepared.push(pdf);
-      continue;
-    }
-
-    prepared.push(...(await pdfToJpegPages(pdf)));
+    prepared.push(...(await pdfToJpegPages(file)));
   }
 
   return prepared.slice(0, MAX_PAGES);

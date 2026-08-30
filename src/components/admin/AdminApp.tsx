@@ -81,7 +81,7 @@ async function compressImage(file: File) {
   }
 
   const bitmap = await createImageBitmap(file);
-  const maxEdge = 1600;
+  const maxEdge = 1400;
   const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(bitmap.width * scale));
@@ -92,7 +92,7 @@ async function compressImage(file: File) {
   }
   ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg", 0.82),
+    canvas.toBlob(resolve, "image/jpeg", 0.76),
   );
   if (!blob) {
     return file;
@@ -101,6 +101,25 @@ async function compressImage(file: File) {
     type: "image/jpeg",
   });
 }
+
+async function readApiJson<T>(response: Response): Promise<T> {
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    if (response.status === 413) {
+      throw new Error("Dosya çok büyük. Daha az sayfalı PDF yükleyin.");
+    }
+    if (response.status === 504 || response.status === 524 || response.status >= 500) {
+      throw new Error(
+        "Sunucu süresi doldu. PDF sayfa sayfa okunacak şekilde güncellendi; tekrar deneyin.",
+      );
+    }
+    throw new Error("Sunucu beklenmeyen yanıt verdi. Biraz sonra tekrar deneyin.");
+  }
+}
+
+const EXTRACT_BATCH_SIZE = 2;
 
 function syncAmounts(row: InvoiceRow): InvoiceRow {
   if (row.tutarKdvHaric === null || row.kdvOrani === null) {
@@ -241,11 +260,10 @@ export default function AdminApp() {
     }
 
     setExtracting(true);
-    setExtractLabel("Dosyalar hazırlanıyor");
+    setExtractLabel("PDF ve görseller hazırlanıyor");
     setStatusTone("info");
     setStatus("Faturalar okunuyor...");
     try {
-      const formData = new FormData();
       const { prepareUploadFiles } = await import("@/lib/pdf-pages");
       const prepared = await prepareUploadFiles(files.map((item) => item.file));
       if (prepared.length === 0) {
@@ -253,39 +271,54 @@ export default function AdminApp() {
         setStatus("PDF sayfaları okunamadı. Dosyayı görsel olarak yüklemeyi deneyin.");
         return;
       }
+
+      const compressed: File[] = [];
       for (const file of prepared) {
-        formData.append("files", await compressImage(file));
-      }
-      setExtractLabel("Yapay zeka fişleri okuyor");
-
-      const response = await fetch("/api/admin/extract", {
-        method: "POST",
-        body: formData,
-      });
-      const data = (await response.json()) as {
-        rows?: InvoiceRow[];
-        errors?: Array<{ filename: string; message: string }>;
-        message?: string;
-      };
-
-      if (!response.ok) {
-        setStatusTone("err");
-        setStatus(data.message ?? "Okuma başarısız.");
-        return;
+        compressed.push(await compressImage(file));
       }
 
-      setRows(data.rows ?? []);
-      if (data.errors?.length) {
+      const collected: InvoiceRow[] = [];
+      const failed: string[] = [];
+
+      for (let index = 0; index < compressed.length; index += EXTRACT_BATCH_SIZE) {
+        const chunk = compressed.slice(index, index + EXTRACT_BATCH_SIZE);
+        const done = Math.min(index + chunk.length, compressed.length);
+        setExtractLabel(`Yapay zeka okuyor (${done}/${compressed.length})`);
+        setStatus(`Sayfa ${done}/${compressed.length} işleniyor...`);
+
+        const formData = new FormData();
+        for (const file of chunk) {
+          formData.append("files", file);
+        }
+
+        const response = await fetch("/api/admin/extract", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await readApiJson<{
+          rows?: InvoiceRow[];
+          errors?: Array<{ filename: string; message: string }>;
+          message?: string;
+        }>(response);
+
+        if (!response.ok) {
+          throw new Error(data.message ?? "Okuma başarısız.");
+        }
+
+        collected.push(...(data.rows ?? []));
+        failed.push(...(data.errors?.map((item) => item.filename) ?? []));
+        setRows([...collected]);
+      }
+
+      if (failed.length) {
         setStatusTone("err");
         setStatus(
-          `${data.rows?.length ?? 0} satır okundu. ${data.errors.length} görsel hata verdi: ${data.errors
-            .map((item) => item.filename)
-            .join(", ")}`,
+          `${collected.length} satır okundu. ${failed.length} dosya hata verdi: ${failed.join(", ")}`,
         );
       } else {
         setStatusTone("ok");
         setStatus(
-          `${data.rows?.length ?? 0} satır hazır. İndirmeden önce kontrol edin.`,
+          `${collected.length} satır hazır. İndirmeden önce kontrol edin.`,
         );
       }
     } catch (error) {

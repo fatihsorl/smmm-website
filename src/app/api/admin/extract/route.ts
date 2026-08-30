@@ -3,7 +3,7 @@ import { isAdminRequest, isAllowedOrigin } from "@/lib/admin-auth";
 import { extractInvoiceBatch, type UploadedInvoice } from "@/lib/invoice-extract";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 const ALLOWED_TYPES = new Set([
   "image/jpeg",
