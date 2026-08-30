@@ -175,6 +175,44 @@ function syncAmounts(row: InvoiceRow): InvoiceRow {
   };
 }
 
+function rowWarnings(row: InvoiceRow) {
+  const warnings: string[] = [];
+  if (row.notes) {
+    warnings.push(row.notes);
+  }
+  if (!row.fisNo.trim()) {
+    warnings.push("Fiş no boş");
+  }
+  if (!row.tcknVkn.trim()) {
+    warnings.push("VKN / TCKN boş");
+  }
+  if (row.tutarKdvHaric === null) {
+    warnings.push("Matrah boş");
+  }
+  if (
+    row.tutarKdvHaric !== null &&
+    row.kdvOrani !== null &&
+    row.kdvDahilToplam !== null
+  ) {
+    const expected =
+      Math.round(row.tutarKdvHaric * (1 + row.kdvOrani / 100) * 100) / 100;
+    if (Math.abs(expected - row.kdvDahilToplam) > 0.05) {
+      warnings.push("KDV tutarı yuvarlama farkı içerebilir");
+    }
+  }
+  if (row.confidence > 0 && row.confidence < 0.55) {
+    warnings.push("Düşük okuma güveni");
+  }
+  return [...new Set(warnings)];
+}
+
+function scrollToInvoiceRow(id: string) {
+  document.getElementById(`invoice-row-${id}`)?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+}
+
 export default function AdminApp() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [session, setSession] = useState<SessionState | null>(null);
@@ -219,6 +257,14 @@ export default function AdminApp() {
       { net: 0, vat: 0, gross: 0 },
     );
   }, [rows]);
+
+  const warningRows = useMemo(
+    () =>
+      rows
+        .map((row, index) => ({ row, index, warnings: rowWarnings(row) }))
+        .filter((item) => item.warnings.length > 0),
+    [rows],
+  );
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -811,29 +857,68 @@ export default function AdminApp() {
               ))}
             </div>
 
+            {warningRows.length > 0 ? (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
+                <p className="text-sm font-medium text-amber-900">
+                  {warningRows.length} satırda uyarı — tıklayınca o satıra iner
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {warningRows.map((item) => (
+                    <button
+                      key={item.row.id}
+                      type="button"
+                      onClick={() => scrollToInvoiceRow(item.row.id)}
+                      className="rounded-lg bg-white px-2.5 py-1 text-xs font-medium text-[#21579f] shadow-sm ring-1 ring-amber-200 hover:bg-amber-100"
+                      title={item.warnings.join(" · ")}
+                    >
+                      {item.index + 1}. {item.row.soyadiUnvan || item.row.fisNo || "Satır"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             <section className="mt-4 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
               <div className="overflow-x-auto">
-                <table className="min-w-[1100px] w-full text-left text-sm">
+                <table className="w-full min-w-[1280px] table-auto text-left text-sm">
                   <thead className="bg-[#0f2a4d] text-white">
                     <tr>
-                      <th className="px-3 py-3 font-medium">Tarih</th>
-                      <th className="px-3 py-3 font-medium">Fiş No</th>
-                      <th className="px-3 py-3 font-medium">VKN / TCKN</th>
-                      <th className="px-3 py-3 font-medium">Unvan</th>
-                      <th className="px-3 py-3 font-medium">KDV %</th>
-                      <th className="px-3 py-3 font-medium">Matrah</th>
-                      <th className="px-3 py-3 font-medium">KDV Dahil</th>
-                      <th className="px-3 py-3 font-medium">Gider alt türü</th>
-                      <th className="px-3 py-3 font-medium">Açıklama</th>
-                      <th className="px-3 py-3 font-medium"></th>
+                      <th className="whitespace-nowrap px-2 py-3 font-medium">Uyarı</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Tarih</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Fiş No</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">VKN / TCKN</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Unvan</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">KDV %</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Matrah</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">KDV Dahil</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Gider alt türü</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Açıklama</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.map((row) => (
+                    {rows.map((row) => {
+                      const warnings = rowWarnings(row);
+                      return (
                       <tr
                         key={row.id}
-                        className="border-t border-slate-100 align-top even:bg-slate-50/60"
+                        id={`invoice-row-${row.id}`}
+                        className={`scroll-mt-28 border-t border-slate-100 align-top even:bg-slate-50/60 ${
+                          warnings.length ? "bg-amber-50/70 even:bg-amber-50/80" : ""
+                        }`}
                       >
+                        <td className="px-2 py-2">
+                          {warnings.length ? (
+                            <span
+                              className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white"
+                              title={warnings.join(" · ")}
+                            >
+                              !
+                            </span>
+                          ) : (
+                            <span className="inline-block h-7 w-7" />
+                          )}
+                        </td>
                         <td className="px-3 py-2">
                           <input
                             type="date"
@@ -935,7 +1020,7 @@ export default function AdminApp() {
                                 giderKayitTuru: alt?.ust ?? row.giderKayitTuru,
                               });
                             }}
-                            className={`${fieldClass} max-w-56`}
+                            className={`${fieldClass} max-w-56 whitespace-nowrap`}
                           >
                             {GIDER_KAYIT_ALT_TURLERI.filter(
                               (item) =>
@@ -976,7 +1061,8 @@ export default function AdminApp() {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

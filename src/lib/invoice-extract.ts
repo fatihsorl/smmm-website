@@ -15,6 +15,8 @@ Kurallar:
 - Sadece gördüğün bilgileri yaz. Uydurma.
 - Bir fotoğrafta veya PDF'te birden fazla fiş / fatura varsa HER BELGE için ayrı satır üret. Hiçbirini atlama.
 - PDF ise TÜM sayfaları oku. Sayfa atlama. Her sayfadaki her belge ayrı satır olsun.
+- Sayfadaki fişleri tek tek say. Kaç ayrı fiş / fatura görüyorsan o kadar satır üret. Küçük, soluk, kesik veya köşedeki fişleri de yaz.
+- Aynı satıcı / benzer tutar olsa bile fiziksel olarak ayrı fiş ise ayrı satır üret. Birleştirme.
 - Tarihleri YYYY-MM-DD formatında ver.
 - Tutarları nokta ondalıklı sayı olarak ver (ör. 1250.50). Binlik ayırıcı kullanma.
 - VKN 10 haneli, TCKN 11 haneli olmalı. Boşluk ve nokta olmadan. "VD 0012797224" gibi yazımlarda yalnızca rakamı al.
