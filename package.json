@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "country-flag-icons": "^1.6.4",
+    "exceljs": "^4.4.0",
     "framer-motion": "12.23.22",
     "next": "15.3.8",
     "next-intl": "^4.3.9",

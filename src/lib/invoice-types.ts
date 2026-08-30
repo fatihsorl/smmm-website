@@ -1,0 +1,41 @@
+export type InvoiceRow = {
+  id: string;
+  sourceFile: string;
+  deftereKayitTarihi: string;
+  belgeTarihi: string;
+  fisNo: string;
+  tcknVkn: string;
+  soyadiUnvan: string;
+  adiUnvanDevami: string;
+  vergiDairesi: string;
+  adres: string;
+  alisTuru: string;
+  giderKayitTuru: string;
+  giderKayitAltTuru: string;
+  kdvSizIslem: string;
+  kdvOrani: number | null;
+  faaliyetKodu: string;
+  tutarKdvHaric: number | null;
+  kdvTutari: number | null;
+  kdvDahilToplam: number | null;
+  gercekDeger: string;
+  donemsellikIlkesi: string;
+  stopaj: string;
+  stopajTutari: number | null;
+  kdvTevkifati: string;
+  sorumluKdv: string;
+  kdvTevkifatMatrah: number | null;
+  sabitKiymetKodu: string;
+  sabitKiymetAdi: string;
+  plakaNo: string;
+  finansalKiralama: string;
+  odemeTuru: string;
+  aciklama: string;
+  confidence: number;
+  notes: string;
+};
+
+export type ExtractedDocument = {
+  documentType: "okc_fisi" | "e_arsiv" | "e_fatura" | "unknown";
+  rows: InvoiceRow[];
+};
