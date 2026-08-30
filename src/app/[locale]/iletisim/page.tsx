@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import ContactForm from "@/components/contact/ContactForm";
 import OfficeMap from "@/components/contact/OfficeMap";
+import { buildPageMetadata } from "@/lib/seo";
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
@@ -13,11 +14,15 @@ export async function generateMetadata({
 }: ContactPageProps): Promise<Metadata> {
   const { locale } = await params;
   const tContact = await getTranslations({ locale, namespace: "contact" });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: "/iletisim",
     title: tContact("metadataTitle"),
     description: tContact("metadataDescription"),
-  };
+    siteName: tSeo("siteName"),
+  });
 }
 
 const contactItemConfig = [

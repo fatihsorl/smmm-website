@@ -10,6 +10,7 @@ import {
   type ExpertiseSector,
 } from "@/data/expertise";
 import { detailPageHref, isFromHomeSection } from "@/lib/navigation";
+import { buildPageMetadata } from "@/lib/seo";
 
 type ExpertiseDetailPageProps = {
   params: Promise<{
@@ -53,26 +54,21 @@ export async function generateMetadata({
     locale,
     namespace: `expertise.${sector.translationKey}`,
   });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
 
-  return {
-    title: `${t("seoTitle")} | Soral Danışmanlık`,
+  return buildPageMetadata({
+    locale,
+    path: `/uzmanlik/${sector.slug}`,
+    title: `${t("seoTitle")} | ${tSeo("siteName")}`,
     description: t("seoDescription"),
-    alternates: {
-      canonical: `/${locale}/uzmanlik/${sector.slug}`,
+    siteName: tSeo("siteName"),
+    image: {
+      url: sector.image,
+      width: 1200,
+      height: 630,
+      alt: t("homeTitle"),
     },
-    openGraph: {
-      title: `${t("seoTitle")} | Soral Danışmanlık`,
-      description: t("seoDescription"),
-      images: [
-        {
-          url: sector.image,
-          width: 1200,
-          height: 630,
-          alt: t("homeTitle"),
-        },
-      ],
-    },
-  };
+  });
 }
 
 export default async function ExpertiseDetailPage({

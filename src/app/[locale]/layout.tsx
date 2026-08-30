@@ -3,23 +3,39 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import LocalBusinessJsonLd from "@/components/seo/LocalBusinessJsonLd";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { locales, type Locale } from "@/i18n/config";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  title: "Soral Danışmanlık - Serbest Muhasebeci Mali Müşavir",
-  description: "Soral Danışmanlık - Profesyonel Mali Müşavirlik Hizmetleri",
-  other: {
-    "scroll-behavior": "manual",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: tSeo("defaultTitle"),
+    description: tSeo("defaultDescription"),
+    openGraph: {
+      siteName: tSeo("siteName"),
+      type: "website",
+    },
+    other: {
+      "scroll-behavior": "manual",
+    },
+  };
+}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -123,6 +139,7 @@ export default async function LocaleLayout({
           content="/favicon/ms-icon-144x144.png"
         />
         <meta name="theme-color" content="#ffffff" />
+        <LocalBusinessJsonLd locale={locale} />
         <script
           dangerouslySetInnerHTML={{
             __html: `

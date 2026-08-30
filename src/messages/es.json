@@ -8,6 +8,13 @@
     "backToHome": "Volver al Inicio",
     "backToServices": "Volver a Servicios"
   },
+  "seo": {
+    "siteName": "Soral Consulting",
+    "defaultTitle": "Soral Consulting - Contador Público Certificado",
+    "defaultDescription": "Soral Consulting - Servicios profesionales de asesoría financiera, contabilidad, consultoría fiscal y asesoría financiera. Estambul, Turquía.",
+    "homeTitle": "Asesoría Financiera Confiable con Más de 28 Años de Experiencia | Soral Consulting",
+    "homeDescription": "Como Soral Consulting, con más de 28 años de experiencia, gestionamos profesionalmente los procesos financieros de su empresa. Contabilidad, asesoría fiscal y consultoría financiera."
+  },
   "hero": {
     "title": "Asesoría Financiera Confiable con Más de 28 Años de Experiencia",
     "subtitle": "Como Soral Consulting, con más de 28 años de experiencia, gestionamos profesionalmente los procesos financieros de tu empresa. Agregamos valor a tu negocio con nuestro equipo confiable, transparente y experto, siendo tu socio en el crecimiento.",

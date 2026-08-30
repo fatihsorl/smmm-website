@@ -9,6 +9,7 @@ import {
 } from "@/data/service-content";
 import { getServiceBySlug, services } from "@/data/services";
 import { detailPageHref, isFromHomeSection } from "@/lib/navigation";
+import { buildPageMetadata } from "@/lib/seo";
 
 type ServiceDetailPageProps = {
   params: Promise<{
@@ -36,31 +37,27 @@ export async function generateMetadata({
   const service = getServiceBySlug(slug);
   const content = getServiceContent(locale, slug);
 
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+
   if (!service || !content) {
     return {
       title: "Hizmet Bulunamadı | Soral Danışmanlık",
     };
   }
 
-  return {
-    title: `${content.seoTitle} | Soral Danışmanlık`,
+  return buildPageMetadata({
+    locale,
+    path: `/hizmetler/${service.slug}`,
+    title: `${content.seoTitle} | ${tSeo("siteName")}`,
     description: content.seoDescription,
-    alternates: {
-      canonical: `/${locale}/hizmetler/${service.slug}`,
+    siteName: tSeo("siteName"),
+    image: {
+      url: service.image,
+      width: 1200,
+      height: 630,
+      alt: content.title,
     },
-    openGraph: {
-      title: `${content.seoTitle} | Soral Danışmanlık`,
-      description: content.seoDescription,
-      images: [
-        {
-          url: service.image,
-          width: 1200,
-          height: 630,
-          alt: content.title,
-        },
-      ],
-    },
-  };
+  });
 }
 
 export default async function ServiceDetailPage({

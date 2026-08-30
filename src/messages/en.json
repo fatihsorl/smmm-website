@@ -8,6 +8,13 @@
     "backToHome": "Back to Home",
     "backToServices": "Back to Services"
   },
+  "seo": {
+    "siteName": "Soral Consulting",
+    "defaultTitle": "Soral Consulting - Certified Public Accountant",
+    "defaultDescription": "Soral Consulting - Professional financial advisory, accounting, tax consulting and financial advisory services. Istanbul, Turkey.",
+    "homeTitle": "Trusted Financial Advisory with 28+ Years of Experience | Soral Consulting",
+    "homeDescription": "As Soral Consulting, with over 28 years of experience, we professionally manage your business's financial processes. Accounting, tax advisory and financial consulting."
+  },
   "hero": {
     "title": "Trusted Financial Advisory with 28+ Years of Experience",
     "subtitle": "As Soral Consulting, with over 28 years of experience, we professionally manage your business's financial processes. We add value to your business with our reliable, transparent and expert team, partnering in your growth.",
