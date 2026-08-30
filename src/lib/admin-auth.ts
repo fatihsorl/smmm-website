@@ -10,7 +10,7 @@ function getSecret() {
 }
 
 export function isAdminConfigured() {
-  return Boolean(process.env.ADMIN_PASSWORD);
+  return Boolean(process.env.ADMIN_PASSWORD?.trim());
 }
 
 export function hasVisionProvider() {
@@ -31,11 +31,12 @@ function safeEqual(a: string, b: string) {
 }
 
 export function verifyPassword(password: string) {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) {
+  const expected = process.env.ADMIN_PASSWORD?.trim();
+  const given = password.trim();
+  if (!expected || !given) {
     return false;
   }
-  return safeEqual(password, expected);
+  return safeEqual(given, expected);
 }
 
 export function createSessionToken() {
