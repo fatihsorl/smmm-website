@@ -9,11 +9,12 @@ import {
 import type { InvoiceRow } from "@/lib/invoice-types";
 
 const EXTRACT_PROMPT = `Sen Türkiye'de mali müşavirler için fatura / ÖKC (yazar kasa) fişi okuyan bir asistanısın.
-Görüntüdeki belgeden GİB İşletme Defteri "ÖKC Fişi Gider" Excel satırlarını çıkar.
+Görüntüdeki veya PDF'teki belgeden GİB İşletme Defteri "ÖKC Fişi Gider" Excel satırlarını çıkar.
 
 Kurallar:
 - Sadece gördüğün bilgileri yaz. Uydurma.
-- Bir fotoğrafta birden fazla fiş / fatura varsa HER BELGE için ayrı satır üret. Hiçbirini atlama.
+- Bir fotoğrafta veya PDF'te birden fazla fiş / fatura varsa HER BELGE için ayrı satır üret. Hiçbirini atlama.
+- PDF ise TÜM sayfaları oku. Sayfa atlama. Her sayfadaki her belge ayrı satır olsun.
 - Tarihleri YYYY-MM-DD formatında ver.
 - Tutarları nokta ondalıklı sayı olarak ver (ör. 1250.50). Binlik ayırıcı kullanma.
 - VKN 10 haneli, TCKN 11 haneli olmalı. Boşluk ve nokta olmadan. "VD 0012797224" gibi yazımlarda yalnızca rakamı al.
@@ -386,10 +387,14 @@ async function extractWithOpenAI(file: UploadedInvoice): Promise<InvoiceRow[]> {
 }
 
 export async function extractInvoiceRows(file: UploadedInvoice): Promise<InvoiceRow[]> {
+  const isPdf = file.mimeType === "application/pdf";
   if (process.env.GEMINI_API_KEY) {
     return extractWithGemini(file);
   }
   if (process.env.OPENAI_API_KEY) {
+    if (isPdf) {
+      throw new Error("PDF okuma için GEMINI_API_KEY gerekir.");
+    }
     return extractWithOpenAI(file);
   }
   throw new Error("Görüntü okuma için GEMINI_API_KEY veya OPENAI_API_KEY tanımlayın.");

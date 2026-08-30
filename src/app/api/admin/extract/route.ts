@@ -12,6 +12,7 @@ const ALLOWED_TYPES = new Set([
   "image/webp",
   "image/heic",
   "image/heif",
+  "application/pdf",
 ]);
 
 const MAX_FILES = 20;
@@ -24,6 +25,7 @@ function mimeFromName(filename: string, fallback: string) {
   if (ext === "webp") return "image/webp";
   if (ext === "heic") return "image/heic";
   if (ext === "heif") return "image/heif";
+  if (ext === "pdf") return "application/pdf";
   return fallback;
 }
 
@@ -39,7 +41,7 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const files = formData.getAll("files");
   if (files.length === 0) {
-    return NextResponse.json({ message: "Fatura görseli yükleyin." }, { status: 400 });
+    return NextResponse.json({ message: "Fatura görseli veya PDF yükleyin." }, { status: 400 });
   }
   if (files.length > MAX_FILES) {
     return NextResponse.json(
@@ -57,13 +59,13 @@ export async function POST(request: Request) {
     const mimeType = mimeFromName(entry.name, entry.type);
     if (!ALLOWED_TYPES.has(mimeType)) {
       return NextResponse.json(
-        { message: `${entry.name} desteklenmiyor. JPG, PNG, WEBP veya HEIC kullanın.` },
+        { message: `${entry.name} desteklenmiyor. JPG, PNG, WEBP, HEIC veya PDF kullanın.` },
         { status: 400 },
       );
     }
     if (entry.size > MAX_FILE_BYTES) {
       return NextResponse.json(
-        { message: `${entry.name} çok büyük. Görselleri 12 MB altında tutun.` },
+        { message: `${entry.name} çok büyük. Dosyayı 12 MB altında tutun.` },
         { status: 400 },
       );
     }
@@ -75,7 +77,7 @@ export async function POST(request: Request) {
   }
 
   if (uploaded.length === 0) {
-    return NextResponse.json({ message: "Geçerli görsel bulunamadı." }, { status: 400 });
+    return NextResponse.json({ message: "Geçerli dosya bulunamadı." }, { status: 400 });
   }
 
   try {

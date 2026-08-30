@@ -7,6 +7,7 @@ import {
   KDV_ORANLARI,
 } from "@/data/okc-lookups";
 import type { InvoiceRow } from "@/lib/invoice-types";
+import { isPdfFile } from "@/lib/upload-files";
 
 type SessionState = {
   authenticated: boolean;
@@ -71,6 +72,7 @@ function BrandMark({ light = false }: { light?: boolean }) {
 
 async function compressImage(file: File) {
   if (
+    isPdfFile(file) ||
     !file.type.startsWith("image/") ||
     file.type.includes("heic") ||
     file.type.includes("heif")
@@ -196,6 +198,7 @@ export default function AdminApp() {
   function addFiles(list: FileList | File[]) {
     const incoming = Array.from(list).filter(
       (file) =>
+        isPdfFile(file) ||
         file.type.startsWith("image/") ||
         /\.(jpe?g|png|webp|heic|heif)$/i.test(file.name),
     );
@@ -233,18 +236,25 @@ export default function AdminApp() {
   async function handleExtract() {
     if (files.length === 0) {
       setStatusTone("err");
-      setStatus("Önce fatura görselleri ekleyin.");
+      setStatus("Önce fiş, fatura görseli veya PDF ekleyin.");
       return;
     }
 
     setExtracting(true);
-    setExtractLabel("Görseller hazırlanıyor");
+    setExtractLabel("Dosyalar hazırlanıyor");
     setStatusTone("info");
     setStatus("Faturalar okunuyor...");
     try {
       const formData = new FormData();
-      for (const item of files) {
-        formData.append("files", await compressImage(item.file));
+      const { prepareUploadFiles } = await import("@/lib/pdf-pages");
+      const prepared = await prepareUploadFiles(files.map((item) => item.file));
+      if (prepared.length === 0) {
+        setStatusTone("err");
+        setStatus("PDF sayfaları okunamadı. Dosyayı görsel olarak yüklemeyi deneyin.");
+        return;
+      }
+      for (const file of prepared) {
+        formData.append("files", await compressImage(file));
       }
       setExtractLabel("Yapay zeka fişleri okuyor");
 
@@ -278,9 +288,13 @@ export default function AdminApp() {
           `${data.rows?.length ?? 0} satır hazır. İndirmeden önce kontrol edin.`,
         );
       }
-    } catch {
+    } catch (error) {
       setStatusTone("err");
-      setStatus("Okuma sırasında bağlantı hatası oluştu.");
+      setStatus(
+        error instanceof Error && error.message
+          ? error.message
+          : "Okuma sırasında bağlantı hatası oluştu.",
+      );
     } finally {
       setExtracting(false);
     }
@@ -535,10 +549,10 @@ export default function AdminApp() {
         >
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-lg font-medium">Fiş / fatura görselleri</h2>
+              <h2 className="text-lg font-medium">Fiş / fatura dosyaları</h2>
               <p className="mt-1 text-sm text-slate-500">
-                JPG, PNG veya WEBP. Bir fotoğrafta birden fazla fiş olabilir. En
-                fazla 20 görsel.
+                JPG, PNG, WEBP veya PDF. PDF içinde birden fazla fatura olabilir.
+                En fazla 20 dosya.
               </p>
             </div>
             <button
@@ -546,12 +560,12 @@ export default function AdminApp() {
               onClick={() => inputRef.current?.click()}
               className="rounded-xl bg-[#21579f] px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-[#21579f]/20 hover:bg-[#1a4785]"
             >
-              Görsel seç
+              Dosya seç
             </button>
             <input
               ref={inputRef}
               type="file"
-              accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf,.pdf"
               multiple
               hidden
               onChange={(event) => {
@@ -570,12 +584,20 @@ export default function AdminApp() {
                   key={item.id}
                   className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.previewUrl}
-                    alt={item.file.name}
-                    className="h-28 w-full object-cover"
-                  />
+                  {isPdfFile(item.file) ? (
+                    <div className="flex h-28 w-full flex-col items-center justify-center bg-[#0f2a4d] text-white">
+                      <span className="rounded bg-white/15 px-2 py-0.5 text-[10px] font-semibold tracking-wider">
+                        PDF
+                      </span>
+                    </div>
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.previewUrl}
+                      alt={item.file.name}
+                      className="h-28 w-full object-cover"
+                    />
+                  )}
                   <button
                     type="button"
                     onClick={() => removeFile(item.id)}
@@ -591,7 +613,7 @@ export default function AdminApp() {
             </ul>
           ) : (
             <div className="mt-6 rounded-2xl bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
-              Fotoğrafları buraya sürükleyin veya görsel seçin.
+              Fotoğraf veya PDF sürükleyin, ya da dosya seçin.
             </div>
           )}
 
