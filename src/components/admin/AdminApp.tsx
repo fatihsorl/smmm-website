@@ -677,7 +677,7 @@ export default function AdminApp() {
       )}
 
       <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
+        <div className="mx-auto flex w-full items-center justify-between gap-3 px-4 py-3 lg:px-20">
           <BrandMark />
           <button
             type="button"
@@ -689,7 +689,7 @@ export default function AdminApp() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
+      <main className="mx-auto w-full px-4 py-8 lg:px-20">
         <div className="mb-6 mt-6">
           <h1 className="text-2xl font-semibold tracking-tight">
             ÖKC / fatura aktarımı
@@ -872,6 +872,9 @@ export default function AdminApp() {
                       title={item.warnings.join(" · ")}
                     >
                       {item.index + 1}. {item.row.soyadiUnvan || item.row.fisNo || "Satır"}
+                      <span className="mt-0.5 block font-normal text-amber-800">
+                        {item.warnings[0]}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -880,7 +883,7 @@ export default function AdminApp() {
 
             <section className="mt-4 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[1280px] table-auto text-left text-sm">
+                <table className="w-full min-w-[1400px] table-auto text-left text-sm">
                   <thead className="bg-[#0f2a4d] text-white">
                     <tr>
                       <th className="whitespace-nowrap px-2 py-3 font-medium">Uyarı</th>
@@ -907,14 +910,16 @@ export default function AdminApp() {
                           warnings.length ? "bg-amber-50/70 even:bg-amber-50/80" : ""
                         }`}
                       >
-                        <td className="px-2 py-2">
+                        <td className="min-w-[12rem] px-2 py-2">
                           {warnings.length ? (
-                            <span
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white"
-                              title={warnings.join(" · ")}
-                            >
-                              !
-                            </span>
+                            <div>
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white">
+                                !
+                              </span>
+                              <p className="mt-1 max-w-[11rem] text-xs leading-snug text-amber-800">
+                                {warnings.join(" · ")}
+                              </p>
+                            </div>
                           ) : (
                             <span className="inline-block h-7 w-7" />
                           )}
@@ -958,15 +963,10 @@ export default function AdminApp() {
                                 soyadiUnvan: event.target.value,
                               })
                             }
-                            className={`${fieldClass} w-44`}
+                            className={`${fieldClass} min-w-52`}
                           />
-                          {row.notes ? (
-                            <p className="mt-1 text-xs text-amber-700">
-                              {row.notes}
-                            </p>
-                          ) : null}
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="min-w-[5.5rem] px-3 py-2">
                           <select
                             value={row.kdvOrani ?? ""}
                             onChange={(event) =>
@@ -977,7 +977,7 @@ export default function AdminApp() {
                                     : Number(event.target.value),
                               })
                             }
-                            className={fieldClass}
+                            className="min-w-[5.25rem] w-[5.25rem] rounded-lg border border-slate-200 bg-white px-2 py-1.5 pr-7 text-sm outline-none transition focus:border-[#21579f] focus:ring-2 focus:ring-[#21579f]/20"
                           >
                             <option value="">—</option>
                             {KDV_ORANLARI.map((rate) => (
