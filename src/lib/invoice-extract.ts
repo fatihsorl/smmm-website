@@ -239,8 +239,31 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
 function parseJsonPayload(text: string): ModelResponse {
   const trimmed = text.trim();
   const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/);
-  const raw = fenced ? fenced[1] : trimmed;
-  return JSON.parse(raw) as ModelResponse;
+  const raw = (fenced ? fenced[1] : trimmed).trim();
+  try {
+    return JSON.parse(raw) as ModelResponse;
+  } catch {
+    const start = raw.indexOf("{");
+    const end = raw.lastIndexOf("}");
+    if (start >= 0 && end > start) {
+      return JSON.parse(raw.slice(start, end + 1)) as ModelResponse;
+    }
+    throw new Error("Model geçersiz JSON döndü.");
+  }
+}
+
+function candidateText(raw: string) {
+  const data = JSON.parse(raw) as {
+    candidates?: Array<{
+      finishReason?: string;
+      content?: { parts?: Array<{ text?: string }> };
+    }>;
+  };
+  const candidate = data.candidates?.[0];
+  const text =
+    candidate?.content?.parts?.map((part) => part.text ?? "").join("").trim() ??
+    "";
+  return { text, finishReason: candidate?.finishReason ?? "" };
 }
 
 function geminiErrorMessage(status: number, body: string) {
@@ -268,19 +291,39 @@ async function extractWithGemini(file: UploadedInvoice): Promise<InvoiceRow[]> {
   const models = [
     process.env.GEMINI_MODEL,
     "gemini-3.5-flash",
-    "gemini-2.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
   ].filter(
     (model, index, list): model is string =>
       Boolean(model) && list.indexOf(model) === index,
   );
 
+  const attempts: Array<{
+    model: string;
+    generationConfig: Record<string, unknown>;
+  }> = models.flatMap((model) => [
+    {
+      model,
+      generationConfig: {
+        responseMimeType: "application/json",
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    },
+    {
+      model,
+      generationConfig: {
+        responseMimeType: "application/json",
+      },
+    },
+  ]);
+
   let lastError = "Gemini yanıt vermedi.";
 
-  for (const model of models) {
+  for (const attempt of attempts.slice(0, 4)) {
     let response: Response;
     try {
       response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${attempt.model}:generateContent?key=${key}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -298,43 +341,42 @@ async function extractWithGemini(file: UploadedInvoice): Promise<InvoiceRow[]> {
                 ],
               },
             ],
-            generationConfig: {
-              temperature: 0.1,
-              responseMimeType: "application/json",
-            },
+            generationConfig: attempt.generationConfig,
           }),
-          signal: AbortSignal.timeout(25000),
+          signal: AbortSignal.timeout(40000),
         },
       );
     } catch {
-      lastError = `Gemini (${model}) zaman aşımı veya bağlantı hatası.`;
-      continue;
+      lastError = `Gemini (${attempt.model}) zaman aşımı veya bağlantı hatası.`;
+      break;
     }
 
     const raw = await response.text();
 
     if (response.status === 503 || response.status === 429) {
-      lastError = `Gemini (${model}): ${geminiErrorMessage(response.status, raw)}`;
-      await sleep(800);
+      lastError = `Gemini (${attempt.model}): ${geminiErrorMessage(response.status, raw)}`;
+      await sleep(600);
       continue;
     }
 
     if (!response.ok) {
-      lastError = `Gemini (${model}): ${geminiErrorMessage(response.status, raw)}`;
+      lastError = `Gemini (${attempt.model}): ${geminiErrorMessage(response.status, raw)}`;
       continue;
     }
 
-    const data = JSON.parse(raw) as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
-    };
-    const text =
-      data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("") ?? "";
-    if (!text) {
-      lastError = `Gemini (${model}) boş yanıt döndü.`;
-      continue;
+    try {
+      const { text, finishReason } = candidateText(raw);
+      if (!text) {
+        lastError = `Gemini (${attempt.model}) boş yanıt${finishReason ? ` (${finishReason})` : ""}.`;
+        continue;
+      }
+      return toInvoiceRows(file.filename, parseJsonPayload(text));
+    } catch (error) {
+      lastError =
+        error instanceof Error
+          ? `Gemini (${attempt.model}): ${error.message}`
+          : `Gemini (${attempt.model}) yanıtı işlenemedi.`;
     }
-
-    return toInvoiceRows(file.filename, parseJsonPayload(text));
   }
 
   throw new Error(lastError);
@@ -406,7 +448,7 @@ export async function extractInvoiceBatch(files: UploadedInvoice[]) {
   const results: InvoiceRow[] = [];
   const errors: Array<{ filename: string; message: string }> = [];
   let index = 0;
-  const concurrency = Math.min(2, files.length);
+  const concurrency = 1;
 
   async function worker() {
     while (index < files.length) {

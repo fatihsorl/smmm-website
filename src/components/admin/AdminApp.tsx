@@ -119,7 +119,7 @@ async function readApiJson<T>(response: Response): Promise<T> {
   }
 }
 
-const EXTRACT_BATCH_SIZE = 2;
+const EXTRACT_BATCH_SIZE = 1;
 
 function syncAmounts(row: InvoiceRow): InvoiceRow {
   if (row.tutarKdvHaric === null || row.kdvOrani === null) {
@@ -278,7 +278,7 @@ export default function AdminApp() {
       }
 
       const collected: InvoiceRow[] = [];
-      const failed: string[] = [];
+      const failed: Array<{ filename: string; message: string }> = [];
 
       for (let index = 0; index < compressed.length; index += EXTRACT_BATCH_SIZE) {
         const chunk = compressed.slice(index, index + EXTRACT_BATCH_SIZE);
@@ -306,14 +306,14 @@ export default function AdminApp() {
         }
 
         collected.push(...(data.rows ?? []));
-        failed.push(...(data.errors?.map((item) => item.filename) ?? []));
+        failed.push(...(data.errors ?? []));
         setRows([...collected]);
       }
 
       if (failed.length) {
         setStatusTone("err");
         setStatus(
-          `${collected.length} satır okundu. ${failed.length} dosya hata verdi: ${failed.join(", ")}`,
+          `${collected.length} satır okundu. ${failed.length} dosya hata verdi. ${failed[0].message}`,
         );
       } else {
         setStatusTone("ok");

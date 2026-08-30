@@ -41,6 +41,8 @@ export async function pdfToJpegPages(file: File): Promise<File[]> {
     if (!ctx) {
       continue;
     }
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     await page.render({ canvas, canvasContext: ctx, viewport }).promise;
     const blob = await canvasToJpeg(canvas);
     if (!blob) {
