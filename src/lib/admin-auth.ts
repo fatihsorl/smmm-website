@@ -31,12 +31,16 @@ function safeEqual(a: string, b: string) {
 }
 
 export function verifyPassword(password: string) {
-  const expected = process.env.ADMIN_PASSWORD?.trim();
   const given = password.trim();
-  if (!expected || !given) {
+  if (!given) {
     return false;
   }
-  return safeEqual(given, expected);
+
+  const candidates = [process.env.ADMIN_PASSWORD, process.env.ADMIN_TEST_PASSWORD]
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value));
+
+  return candidates.some((expected) => safeEqual(given, expected));
 }
 
 export function createSessionToken() {
