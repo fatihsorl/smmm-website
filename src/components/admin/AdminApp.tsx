@@ -8,12 +8,24 @@ import {
 } from "@/data/okc-lookups";
 import type { InvoiceRow } from "@/lib/invoice-types";
 import { isPdfFile } from "@/lib/upload-files";
+import InvoiceCompareView from "@/components/admin/InvoiceCompareView";
 
 type SessionState = {
   authenticated: boolean;
   configured: boolean;
   visionReady: boolean;
 };
+
+type AdminView = "upload" | "compare";
+
+const NAV_ITEMS: Array<{
+  key: AdminView;
+  label: string;
+  icon: (props: { className?: string }) => React.ReactElement;
+}> = [
+  { key: "upload", label: "Fatura Yükle", icon: UploadIcon },
+  { key: "compare", label: "Fatura Karşılaştır", icon: CompareIcon },
+];
 
 type LocalFile = {
   id: string;
@@ -47,6 +59,37 @@ function Spinner({ className = "h-5 w-5" }: { className?: string }) {
         fill="currentColor"
         d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"
       />
+    </svg>
+  );
+}
+
+function UploadIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 15V4" />
+      <path d="M7.5 8.5 12 4l4.5 4.5" />
+      <path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3" />
+    </svg>
+  );
+}
+
+function CompareIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M8 3v14" />
+      <path d="M4.5 13.5 8 17l3.5-3.5" />
+      <path d="M16 21V7" />
+      <path d="M19.5 10.5 16 7l-3.5 3.5" />
+    </svg>
+  );
+}
+
+function LogoutIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+      <path d="M16 17l5-5-5-5" />
+      <path d="M21 12H9" />
     </svg>
   );
 }
@@ -229,6 +272,7 @@ export default function AdminApp() {
   const [dragOver, setDragOver] = useState(false);
   const [failedFiles, setFailedFiles] = useState<File[]>([]);
   const [scanProgress, setScanProgress] = useState({ current: 0, total: 0 });
+  const [activeView, setActiveView] = useState<AdminView>("upload");
 
   const refreshSession = useCallback(async () => {
     const response = await fetch("/api/admin/session", { cache: "no-store" });
@@ -638,7 +682,7 @@ export default function AdminApp() {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen lg:flex">
       {(extracting || exporting) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f2a4d]/55 backdrop-blur-sm">
           <div className="mx-4 w-full max-w-sm rounded-3xl bg-white p-8 text-center shadow-2xl">
@@ -676,20 +720,78 @@ export default function AdminApp() {
         </div>
       )}
 
-      <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex w-full items-center justify-between gap-3 px-4 py-3 lg:px-20">
-          <BrandMark />
+      <aside className="hidden w-64 shrink-0 flex-col bg-[#0f2a4d] lg:sticky lg:top-0 lg:flex lg:h-screen">
+        <div className="px-6 py-6">
+          <BrandMark light />
+        </div>
+        <nav className="flex-1 space-y-1 px-4">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const active = activeView === item.key;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setActiveView(item.key)}
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${
+                  active
+                    ? "bg-white text-[#0f2a4d] shadow-lg shadow-black/10"
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
+        <div className="px-4 py-6">
           <button
             type="button"
             onClick={() => void handleLogout()}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+            className="flex w-full items-center gap-3 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-medium text-white/70 transition hover:bg-white/10 hover:text-white"
           >
+            <LogoutIcon className="h-5 w-5" />
             Çıkış
           </button>
         </div>
-      </header>
+      </aside>
 
-      <main className="mx-auto w-full px-4 py-8 lg:px-20">
+      <div className="min-w-0 flex-1">
+        <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 backdrop-blur lg:hidden">
+          <div className="flex w-full items-center justify-between gap-3 px-4 py-3">
+            <BrandMark />
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+            >
+              Çıkış
+            </button>
+          </div>
+          <nav className="flex gap-2 overflow-x-auto border-t border-slate-100 px-4 py-2">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setActiveView(item.key)}
+                className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                  activeView === item.key
+                    ? "bg-[#21579f] text-white"
+                    : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </header>
+
+        <main className="min-w-0 px-4 py-8 lg:px-10">
+        {activeView === "compare" ? <InvoiceCompareView /> : null}
+        {activeView === "upload" ? (
+          <>
         <div className="mb-6 mt-6">
           <h1 className="text-2xl font-semibold tracking-tight">
             ÖKC / fatura aktarımı
@@ -1069,7 +1171,10 @@ export default function AdminApp() {
             </section>
           </>
         ) : null}
-      </main>
+          </>
+        ) : null}
+        </main>
+      </div>
     </div>
   );
 }
