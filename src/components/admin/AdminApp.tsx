@@ -24,7 +24,7 @@ const NAV_ITEMS: Array<{
   icon: (props: { className?: string }) => React.ReactElement;
 }> = [
   { key: "upload", label: "Fatura Yükle", icon: UploadIcon },
-  { key: "compare", label: "Fatura Karşılaştır", icon: CompareIcon },
+  { key: "compare", label: "Excel Karşılaştır", icon: CompareIcon },
 ];
 
 type LocalFile = {
