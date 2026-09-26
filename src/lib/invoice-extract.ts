@@ -197,7 +197,7 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
       tcknVkn: normalizeTaxId(row.tcknVkn),
       soyadiUnvan: (row.soyadiUnvan ?? "").toString().trim(),
       adiUnvanDevami: (row.adiUnvanDevami ?? "").toString().trim(),
-      vergiDairesi: vergiDairesiMatch.kod ?? vergiDairesiRaw,
+      vergiDairesi: vergiDairesiMatch.kod ?? "",
       adres: (row.adres ?? "").toString().trim(),
       alisTuru: DEFAULT_ALIS_TURU,
       giderKayitTuru: DEFAULT_GIDER_KAYIT_TURU,
