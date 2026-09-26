@@ -23,7 +23,9 @@ Kurallar:
 - Şirket unvanlarını ikiye böl: adiUnvanDevami alanına sondaki ticari unvan ekini ("A.Ş.", "LTD. ŞTİ.", "ANONİM ŞİRKETİ", "LİMİTED ŞİRKETİ") VE onunla birlikte gelen genel iş kolu kelimelerini ("TİCARET", "SANAYİ", "PAZARLAMA", "İNŞAAT", "GIDA", "TEKSTİL" vb.) yaz. soyadiUnvan alanına markanın kendine özgü/asıl adını yaz.
   Örnek: "MİGROS TİCARET A.Ş." -> soyadiUnvan: "MİGROS", adiUnvanDevami: "TİCARET A.Ş.".
   Örnek: "BİM BİRLEŞİK MAĞAZALAR A.Ş." -> soyadiUnvan: "BİM BİRLEŞİK MAĞAZALAR", adiUnvanDevami: "A.Ş." ("BİRLEŞİK MAĞAZALAR" markanın kendi adının parçasıdır, genel iş kolu kelimesi değildir, bu yüzden ayrılmaz).
-  Şahıs isimlerinde (ör. "Ahmet Yılmaz") bölme yapma, tamamını soyadiUnvan alanına yaz, adiUnvanDevami boş kalsın.
+  Şahıs isimlerinde SOYADINI (genelde son kelime) soyadiUnvan alanına, ADINI (genelde ilk kelime/kelimeler) adiUnvanDevami alanına yaz.
+  Örnek: "Asım Başaran" -> soyadiUnvan: "Başaran", adiUnvanDevami: "Asım".
+  Örnek: "Ali Veli Yılmaz" -> soyadiUnvan: "Yılmaz", adiUnvanDevami: "Ali Veli".
 - Bir belgede birden fazla KDV oranı varsa HER ORAN için ayrı satır üret (aynı fiş no / tarih / VKN).
 - kdvOrani yalnızca 0, 1, 10 veya 20 olabilir.
 - tutarKdvHaric KDV hariç matrahtır. Belgede sadece KDV dahil toplam varsa: matrah = toplam / (1 + kdvOrani/100).
