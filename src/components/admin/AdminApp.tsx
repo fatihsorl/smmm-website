@@ -226,8 +226,8 @@ function rowWarnings(row: InvoiceRow) {
   if (!row.fisNo.trim()) {
     warnings.push("Fiş no boş");
   }
-  if (!row.tcknVkn.trim()) {
-    warnings.push("VKN / TCKN boş");
+  if (!row.tcknVkn.trim() || row.tcknVkn.trim() === "1111111111") {
+    warnings.push("VKN / TCKN okunamadı, 1111111111 yazıldı");
   }
   if (!/^\d{6}$/.test(row.vergiDairesi.trim())) {
     warnings.push("Vergi dairesi kodu eksik/hatalı");

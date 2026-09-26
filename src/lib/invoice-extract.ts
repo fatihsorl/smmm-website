@@ -128,12 +128,14 @@ function normalizeDate(value: string | undefined) {
   return "";
 }
 
+const UNKNOWN_TAX_ID = "1111111111";
+
 function normalizeTaxId(value: string | undefined) {
   const digits = (value ?? "").replace(/\D/g, "");
   if (digits.length === 10 || digits.length === 11) {
     return digits;
   }
-  return digits;
+  return UNKNOWN_TAX_ID;
 }
 
 function normalizeVatRate(value: number | string | undefined): number | null {
