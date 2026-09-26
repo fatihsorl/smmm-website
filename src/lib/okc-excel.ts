@@ -32,6 +32,13 @@ function round2(value: number) {
   return Math.round(value * 100) / 100;
 }
 
+function amountText(value: number | null | undefined) {
+  if (value === null || value === undefined || !Number.isFinite(value)) {
+    return null;
+  }
+  return round2(value).toFixed(2).replace(".", ",");
+}
+
 function vatAmount(row: InvoiceRow) {
   if (row.kdvTutari !== null && row.kdvTutari !== undefined) {
     return row.kdvTutari;
@@ -84,6 +91,7 @@ export async function buildOkcWorkbook(rows: InvoiceRow[]) {
     excelRow.getCell(5).value = emptyToBlank(row.soyadiUnvan);
     excelRow.getCell(6).value = emptyToBlank(row.adiUnvanDevami);
     excelRow.getCell(7).value = emptyToBlank(row.vergiDairesi);
+    excelRow.getCell(7).numFmt = "@";
     excelRow.getCell(8).value = emptyToBlank(row.adres);
     excelRow.getCell(9).value = emptyToBlank(row.alisTuru);
     excelRow.getCell(10).value = emptyToBlank(row.giderKayitTuru);
@@ -91,17 +99,19 @@ export async function buildOkcWorkbook(rows: InvoiceRow[]) {
     excelRow.getCell(12).value = emptyToBlank(row.kdvSizIslem || "Yoktur");
     excelRow.getCell(13).value = row.kdvOrani;
     excelRow.getCell(14).value = emptyToBlank(row.faaliyetKodu);
-    excelRow.getCell(15).value = row.tutarKdvHaric;
-    excelRow.getCell(15).numFmt = "#,##0.00";
-    excelRow.getCell(16).value = receiptTotal(row);
-    excelRow.getCell(16).numFmt = "#,##0.00";
-    excelRow.getCell(17).value = emptyToBlank(row.donemsellikIlkesi || "Yoktur");
+    excelRow.getCell(15).value = amountText(row.tutarKdvHaric);
+    excelRow.getCell(15).numFmt = "@";
+    excelRow.getCell(16).value = amountText(receiptTotal(row));
+    excelRow.getCell(16).numFmt = "@";
+    excelRow.getCell(17).value = "Yoktur";
     excelRow.getCell(18).value = emptyToBlank(row.stopaj);
-    excelRow.getCell(19).value = row.stopajTutari;
-    excelRow.getCell(20).value = vatAmount(row);
-    excelRow.getCell(20).numFmt = "#,##0.00";
+    excelRow.getCell(19).value = amountText(row.stopajTutari);
+    excelRow.getCell(19).numFmt = "@";
+    excelRow.getCell(20).value = amountText(vatAmount(row));
+    excelRow.getCell(20).numFmt = "@";
     excelRow.getCell(21).value = emptyToBlank(row.sorumluKdv);
-    excelRow.getCell(22).value = row.kdvTevkifatMatrah;
+    excelRow.getCell(22).value = amountText(row.kdvTevkifatMatrah);
+    excelRow.getCell(22).numFmt = "@";
     excelRow.getCell(23).value = emptyToBlank(row.sabitKiymetKodu);
     excelRow.getCell(24).value = emptyToBlank(row.sabitKiymetAdi);
     excelRow.getCell(25).value = emptyToBlank(row.plakaNo);

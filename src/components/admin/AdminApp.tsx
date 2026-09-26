@@ -229,6 +229,9 @@ function rowWarnings(row: InvoiceRow) {
   if (!row.tcknVkn.trim()) {
     warnings.push("VKN / TCKN boş");
   }
+  if (!/^\d{6}$/.test(row.vergiDairesi.trim())) {
+    warnings.push("Vergi dairesi kodu eksik/hatalı");
+  }
   if (row.tutarKdvHaric === null) {
     warnings.push("Matrah boş");
   }
@@ -993,6 +996,7 @@ export default function AdminApp() {
                       <th className="whitespace-nowrap px-3 py-3 font-medium">Fiş No</th>
                       <th className="whitespace-nowrap px-3 py-3 font-medium">VKN / TCKN</th>
                       <th className="whitespace-nowrap px-3 py-3 font-medium">Unvan</th>
+                      <th className="whitespace-nowrap px-3 py-3 font-medium">Vergi D.</th>
                       <th className="whitespace-nowrap px-3 py-3 font-medium">KDV %</th>
                       <th className="whitespace-nowrap px-3 py-3 font-medium">Matrah</th>
                       <th className="whitespace-nowrap px-3 py-3 font-medium">KDV Dahil</th>
@@ -1066,6 +1070,18 @@ export default function AdminApp() {
                               })
                             }
                             className={`${fieldClass} min-w-52`}
+                          />
+                        </td>
+                        <td className="px-3 py-2">
+                          <input
+                            value={row.vergiDairesi}
+                            onChange={(event) =>
+                              updateRow(row.id, {
+                                vergiDairesi: event.target.value,
+                              })
+                            }
+                            placeholder="Kod"
+                            className={`${fieldClass} w-24`}
                           />
                         </td>
                         <td className="min-w-[5.5rem] px-3 py-2">

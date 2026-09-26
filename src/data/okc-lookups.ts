@@ -45,4 +45,4 @@ export const KDV_ORANLARI = [0, 1, 10, 20] as const;
 
 export const DEFAULT_ALIS_TURU = "1";
 export const DEFAULT_GIDER_KAYIT_TURU = "4";
-export const DEFAULT_GIDER_ALT_TURU = "162";
+export const DEFAULT_GIDER_ALT_TURU = "89";

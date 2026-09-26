@@ -3,10 +3,10 @@ import {
   DEFAULT_ALIS_TURU,
   DEFAULT_GIDER_ALT_TURU,
   DEFAULT_GIDER_KAYIT_TURU,
-  GIDER_KAYIT_ALT_TURLERI,
   KDV_ORANLARI,
 } from "@/data/okc-lookups";
 import type { InvoiceRow } from "@/lib/invoice-types";
+import { resolveVergiDairesiKodu } from "@/lib/vergi-dairesi";
 
 const EXTRACT_PROMPT = `Sen Türkiye'de mali müşavirler için fatura / ÖKC (yazar kasa) fişi okuyan bir asistanısın.
 Görüntüdeki veya PDF'teki belgeden GİB İşletme Defteri "ÖKC Fişi Gider" Excel satırlarını çıkar.
@@ -24,12 +24,7 @@ Kurallar:
 - Bir belgede birden fazla KDV oranı varsa HER ORAN için ayrı satır üret (aynı fiş no / tarih / VKN).
 - kdvOrani yalnızca 0, 1, 10 veya 20 olabilir.
 - tutarKdvHaric KDV hariç matrahtır. Belgede sadece KDV dahil toplam varsa: matrah = toplam / (1 + kdvOrani/100).
-- kdvSizIslem: KDV 0 ise "Var", aksi halde "Yoktur".
-- Gider alt tür kodunu belgenin içeriğine göre seç:
-  89 ofis (çay, kahve, temizlik malzemesi), 90 gıda/market, 95 kırtasiye, 97 kafe/restoran/iş yemeği,
-  112 kısa ulaşım, 113 akaryakıt, 114 araç bakım, 189 seyahat/ulaşım, 191 otopark,
-  194 dışarıdan hizmet (elektrik, su, internet, danışmanlık), 228 sarf malzeme,
-  324 HGS/OGS/otoyol, 162 diğer GVK 40/1, 186 mal alışı.
+- vergiDairesiKodu alanına belgede yazan vergi dairesi adını AYNEN yaz (ör. "Kadıköy Vergi Dairesi", "Üsküdar V.D."). Kod numarası uydurma, biz adını koddan eşleştireceğiz.
 - ÖKC / perakende satış fişi için aciklama: "ÖKC Fişi" + kısa satıcı adı.
 - e-Arşiv / e-Fatura için aciklama: "Fatura" + fatura no veya satıcı.
 - Güvenin düşükse notes alanına neyin şüpheli olduğunu yaz.
@@ -51,8 +46,6 @@ Yalnızca JSON döndür:
       "tutarKdvHaric": 0,
       "kdvTutari": 0,
       "kdvDahilToplam": 0,
-      "giderKayitTuru": "4",
-      "giderKayitAltTuru": "162",
       "plakaNo": "",
       "aciklama": "",
       "confidence": 0.0,
@@ -73,8 +66,6 @@ type ModelRow = {
   tutarKdvHaric?: number | string;
   kdvTutari?: number | string;
   kdvDahilToplam?: number | string;
-  giderKayitTuru?: string;
-  giderKayitAltTuru?: string | number;
   plakaNo?: string;
   aciklama?: string;
   confidence?: number;
@@ -154,18 +145,6 @@ function normalizeVatRate(value: number | string | undefined): number | null {
   return (KDV_ORANLARI as readonly number[]).includes(rate) ? rate : null;
 }
 
-function normalizeAltTur(value: string | number | undefined, ust: string) {
-  const kod = String(value ?? "").trim();
-  const match = GIDER_KAYIT_ALT_TURLERI.find((item) => item.kod === kod);
-  if (match) {
-    return match.kod;
-  }
-  const fallback = GIDER_KAYIT_ALT_TURLERI.find(
-    (item) => item.ust === ust && item.kod === DEFAULT_GIDER_ALT_TURU,
-  );
-  return fallback?.kod ?? DEFAULT_GIDER_ALT_TURU;
-}
-
 function round2(value: number) {
   return Math.round(value * 100) / 100;
 }
@@ -175,13 +154,6 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
   const today = todayIso();
 
   return sourceRows.map((row) => {
-    const giderKayitTuru =
-      row.giderKayitTuru === "1" ||
-      row.giderKayitTuru === "4" ||
-      row.giderKayitTuru === "5" ||
-      row.giderKayitTuru === "13"
-        ? row.giderKayitTuru
-        : DEFAULT_GIDER_KAYIT_TURU;
     const kdvOrani = normalizeVatRate(row.kdvOrani);
     let tutarKdvHaric = parseNumber(row.tutarKdvHaric);
     let kdvDahilToplam = parseNumber(row.kdvDahilToplam);
@@ -199,6 +171,16 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
 
     const belgeTarihi = normalizeDate(row.belgeTarihi) || today;
 
+    const vergiDairesiRaw = (row.vergiDairesiKodu ?? "").toString().trim();
+    const vergiDairesiMatch = resolveVergiDairesiKodu(vergiDairesiRaw);
+    const notes: string[] = [];
+    if ((row.notes ?? "").toString().trim()) {
+      notes.push((row.notes ?? "").toString().trim());
+    }
+    if (vergiDairesiRaw && !vergiDairesiMatch.kod) {
+      notes.push(`Vergi dairesi kodu bulunamadı: "${vergiDairesiRaw}" - lütfen kodu elle girin.`);
+    }
+
     return {
       id: randomUUID(),
       sourceFile,
@@ -208,12 +190,12 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
       tcknVkn: normalizeTaxId(row.tcknVkn),
       soyadiUnvan: (row.soyadiUnvan ?? "").toString().trim(),
       adiUnvanDevami: (row.adiUnvanDevami ?? "").toString().trim(),
-      vergiDairesi: (row.vergiDairesiKodu ?? "").toString().trim(),
+      vergiDairesi: vergiDairesiMatch.kod ?? vergiDairesiRaw,
       adres: (row.adres ?? "").toString().trim(),
       alisTuru: DEFAULT_ALIS_TURU,
-      giderKayitTuru,
-      giderKayitAltTuru: normalizeAltTur(row.giderKayitAltTuru, giderKayitTuru),
-      kdvSizIslem: kdvOrani === 0 ? "Var" : "Yoktur",
+      giderKayitTuru: DEFAULT_GIDER_KAYIT_TURU,
+      giderKayitAltTuru: DEFAULT_GIDER_ALT_TURU,
+      kdvSizIslem: "Yoktur",
       kdvOrani,
       faaliyetKodu: "",
       tutarKdvHaric,
@@ -233,7 +215,7 @@ function toInvoiceRows(sourceFile: string, payload: ModelResponse): InvoiceRow[]
       odemeTuru: "",
       aciklama: (row.aciklama ?? "").toString().trim() || "ÖKC Fişi",
       confidence: typeof row.confidence === "number" ? row.confidence : 0.5,
-      notes: (row.notes ?? "").toString().trim(),
+      notes: notes.join(" · "),
     };
   });
 }
