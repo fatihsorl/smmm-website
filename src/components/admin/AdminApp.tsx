@@ -9,6 +9,7 @@ import {
 import type { InvoiceRow } from "@/lib/invoice-types";
 import { isPdfFile } from "@/lib/upload-files";
 import InvoiceCompareView from "@/components/admin/InvoiceCompareView";
+import MukellefView from "@/components/admin/MukellefView";
 
 type SessionState = {
   authenticated: boolean;
@@ -16,7 +17,7 @@ type SessionState = {
   visionReady: boolean;
 };
 
-type AdminView = "upload" | "compare";
+type AdminView = "upload" | "compare" | "mukellef";
 
 const NAV_ITEMS: Array<{
   key: AdminView;
@@ -25,6 +26,7 @@ const NAV_ITEMS: Array<{
 }> = [
   { key: "upload", label: "Fatura Yükle", icon: UploadIcon },
   { key: "compare", label: "Excel Karşılaştır", icon: CompareIcon },
+  { key: "mukellef", label: "Mükellef Takip", icon: UsersIcon },
 ];
 
 type LocalFile = {
@@ -80,6 +82,17 @@ function CompareIcon({ className = "h-5 w-5" }: { className?: string }) {
       <path d="M4.5 13.5 8 17l3.5-3.5" />
       <path d="M16 21V7" />
       <path d="M19.5 10.5 16 7l-3.5 3.5" />
+    </svg>
+  );
+}
+
+function UsersIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      <circle cx="17" cy="8" r="2.5" />
+      <path d="M15.5 14.2c2.6.4 4.5 2.6 4.5 5.3" />
     </svg>
   );
 }
@@ -793,6 +806,7 @@ export default function AdminApp() {
 
         <main className="min-w-0 px-4 py-8 lg:px-10">
         {activeView === "compare" ? <InvoiceCompareView /> : null}
+        {activeView === "mukellef" ? <MukellefView /> : null}
         {activeView === "upload" ? (
           <>
         <div className="mb-6 mt-6">
